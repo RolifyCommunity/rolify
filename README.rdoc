@@ -8,13 +8,13 @@ Let's see an example:
 
 This library was intended to be used with CanCan[https://github.com/ryanb/cancan] and devise[https://github.com/plataformatec/devise/] but should be generic enough to be used by any other authentication/authorization solutions.
 
-== DISCLAIMER : still in early stage of development. Like a pre-alpha release, kind of ;-)
+== DISCLAIMER : still in early stage of development. Like a pre-alpha release, kind of ;-) *You've been warned !*
 
 Status:
-[x] generators
-[x] migration file
-[ ] specs
-[ ] code
+(x) generators
+(x) migration file
+( ) specs
+( ) code
 
 == Requirements
 
