@@ -8,6 +8,14 @@ Let's see an example:
 
 This library was intended to be used with CanCan[https://github.com/ryanb/cancan] and devise[https://github.com/plataformatec/devise/] but should be generic enough to be used by any other authentication/authorization solutions.
 
+== DISCLAIMER : still in early stage of development. Like a pre-alpha release, kind of ;-)
+
+Status:
+* generators &#10003;
+* migration file &#10003;
+* specs
+* code
+
 == Requirements
 
 * >= Rails 3
