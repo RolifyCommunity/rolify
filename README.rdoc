@@ -11,8 +11,8 @@ This library was intended to be used with CanCan[https://github.com/ryanb/cancan
 == DISCLAIMER : still in early stage of development. Like a pre-alpha release, kind of ;-)
 
 Status:
-[X] generators
-[X] migration file
+[x] generators
+[x] migration file
 [ ] specs
 [ ] code
 
