@@ -11,10 +11,10 @@ This library was intended to be used with CanCan[https://github.com/ryanb/cancan
 == DISCLAIMER : still in early stage of development. Like a pre-alpha release, kind of ;-)
 
 Status:
-* generators &#10003;
-* migration file &#10003;
-* specs
-* code
+[X] generators
+[X] migration file
+[ ] specs
+[ ] code
 
 == Requirements
 
