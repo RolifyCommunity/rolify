@@ -1,0 +1,3 @@
+module Rolify
+  # Your code goes here...
+end

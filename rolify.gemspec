@@ -1,0 +1,21 @@
+# -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "rolify/version"
+
+Gem::Specification.new do |s|
+  s.name        = "rolify"
+  s.version     = Rolify::VERSION
+  s.platform    = Gem::Platform::RUBY
+  s.authors     = ["Florent Monbillard"]
+  s.email       = ["f.monbillard@gmail.com"]
+  s.homepage    = ""
+  s.summary     = %q{Roles library with object scoping}
+  s.description = %q{Very simple Roles library without any authorization enforcement (built to use with cancan) supporting scope on object: user.is_moderator?(Forum.first) => # return false if user is moderator of another Forum }
+
+  s.rubyforge_project = s.name
+
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.require_paths = ["lib"]
+end
