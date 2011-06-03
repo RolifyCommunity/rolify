@@ -21,7 +21,7 @@ In <b>Rails 3</b>, add this to your Gemfile and run the +bundle+ command.
 
 Alternatively, you can install it as a plugin.
 
-  rails plugin install git://github.com/ryanb/cancan.git
+  rails plugin install git://github.com/EppO/rolify.git
 
 == Getting Started
 
