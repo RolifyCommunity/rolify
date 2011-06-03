@@ -1,4 +1,4 @@
-= Rolify
+= rolify
 
 Very simple Roles library without any authorization enforcement (built to use with cancan) supporting scope on object.
 
