@@ -1,0 +1,80 @@
+= Rolify
+
+Very simple Roles library without any authorization enforcement (built to use with cancan) supporting scope on object.
+
+Let's see an example:  
+
+  user.is_moderator?(Forum.first) => # return false if user is moderator of another Forum
+
+This library was intended to be used with CanCan[https://github.com/ryanb/cancan] and devise[https://github.com/plataformatec/devise/] but should be generic enough to be used by any other authentication/authorization solutions.
+
+== Requirements
+
+* >= Rails 3
+* ActiveRecord ORM
+
+== Installation
+
+In <b>Rails 3</b>, add this to your Gemfile and run the +bundle+ command.
+
+  gem "rolify"
+
+Alternatively, you can install it as a plugin.
+
+  rails plugin install git://github.com/ryanb/cancan.git
+
+== Getting Started
+
+=== 1. Generate Role Modle
+
+First, create your Role model and migration file using this generator:
+
+  rails g rolify:role Role User
+
+Role and User classes are the default. You can specify any Role class name you want. This is completly a new file so any name can do the job.
+For the User class name, you would probably use the one provided by your authentication solution. rolify just adds some class methods in an existing User class.
+
+=== 2. Run the migration
+
+Let's migrate !
+
+  rake db:migrate
+
+=== 3. Add a role to a user
+
+To define a global role:
+
+  user = User.find(1)
+  user.has_role "admin"
+
+To define a role scoped to a resource
+
+  user = User.find(2)
+  user.has_role "moderator", Forum.first
+
+That's it !
+
+=== 4. Check roles
+
+To check if a user has a global role
+
+  user = User.find(1)
+  user.has_role? "admin"
+  # => true
+
+To check if a user has a role scoped to a resource
+
+  user = User.find(2)
+  user.has_role "moderator", Forum.first
+  # => true
+  user.has_role "moderator", Forum.last
+  # => false
+
+== Questions or Problems?
+
+If you have any issues with rolify which you cannot find the solution to in the tiny README[https://github.com/EppO/rolify], please add an {issue on GitHub}[https://github.com/EppO/rolify/issues] or fork the project and send a pull request.
+
+== TODO
+
+* Write specs
+* Write code
