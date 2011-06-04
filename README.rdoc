@@ -78,6 +78,6 @@ If you have any issues with rolify which you cannot find the solution to in the 
 == TODO
 
 * put syntactic sugar:
-  * `is_admin?` like shortcuts
+  * +is_admin?+ like shortcuts
   * multiple role names query at the same time
 * write a tutorial showing how to use rolify with CanCan and devise
