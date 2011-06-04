@@ -1,0 +1,5 @@
+User.create(:login => "admin")
+User.create(:login => "moderator")
+Forum.create(:name => "forum 1")
+Forum.create(:name => "forum 2")
+Forum.create(:name => "forum 3")

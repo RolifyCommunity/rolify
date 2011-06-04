@@ -1,3 +1,3 @@
-module Rolify
-  # Your code goes here...
-end
+require 'active_record'
+
+require 'rolify/role'
