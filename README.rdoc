@@ -66,9 +66,9 @@ To check if a user has a global role
 To check if a user has a role scoped to a resource
 
   user = User.find(2)
-  user.has_role "moderator", Forum.first
+  user.has_role? "moderator", Forum.first
   => true
-  user.has_role "moderator", Forum.last
+  user.has_role? "moderator", Forum.last
   => false
 
 == Questions or Problems?
