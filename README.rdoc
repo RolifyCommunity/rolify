@@ -8,18 +8,6 @@ Let's see an example:
 
 This library was intended to be used with CanCan[https://github.com/ryanb/cancan] and devise[https://github.com/plataformatec/devise/] but should be generic enough to be used by any other authentication/authorization solutions.
 
-== DISCLAIMER : still in early stage of development. Like a pre-alpha release, kind of ;-) You've been warned !
-
-Status:
-
-(x) generators
-
-(x) migration file
-
-( ) specs
-
-( ) code
-
 == Requirements
 
 * >= Rails 3
@@ -88,5 +76,4 @@ If you have any issues with rolify which you cannot find the solution to in the 
 
 == TODO
 
-* Write specs
-* Write code
+* put syntactic sugar
