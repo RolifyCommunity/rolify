@@ -4,7 +4,7 @@ Very simple Roles library without any authorization enforcement supporting scope
 
 Let's see an example:  
 
-  user.is_moderator?(Forum.first) 
+  user.has_role?("moderator", Forum.first) 
   => false # if user is moderator of another Forum
 
 This library was intended to be used with CanCan[https://github.com/ryanb/cancan] and devise[https://github.com/plataformatec/devise/] but should be generic enough to be used by any other authentication/authorization solutions.
@@ -77,4 +77,7 @@ If you have any issues with rolify which you cannot find the solution to in the 
 
 == TODO
 
-* put syntactic sugar
+* put syntactic sugar:
+  * `is_admin?` like shortcuts
+  * multiple role names query at the same time
+* write a tutorial showing how to use rolify with CanCan and devise
