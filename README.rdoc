@@ -4,13 +4,14 @@ Very simple Roles library without any authorization enforcement (built to use wi
 
 Let's see an example:  
 
-  user.is_moderator?(Forum.first) => # return false if user is moderator of another Forum
+  user.is_moderator?(Forum.first) 
+  => # return false if user is moderator of another Forum
 
 This library was intended to be used with CanCan[https://github.com/ryanb/cancan] and devise[https://github.com/plataformatec/devise/] but should be generic enough to be used by any other authentication/authorization solutions.
 
 == Requirements
 
-* >= Rails 3
+* >= Rails 3.1 (rc1 is currently out)
 * ActiveRecord ORM
 
 == Installation
