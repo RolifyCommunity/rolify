@@ -13,7 +13,8 @@ module Rolify
 
       def generate_role
         template "role.rb", "app/models/role.rb"
-        inject_into_class(model_path, user_cname.camelize) do  
+        inject_into_class(model_path, user_cname.camelize) do
+          "  include Rolify"            
           "  has_and_belongs_to_many :#{role_cname.tableize}\n"
         end
       end
