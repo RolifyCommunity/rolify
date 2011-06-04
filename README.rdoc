@@ -26,7 +26,7 @@ Alternatively, you can install it as a plugin.
 
 == Getting Started
 
-=== 1. Generate Role Modle
+=== 1. Generate Role Model
 
 First, create your Role model and migration file using this generator:
 
@@ -61,15 +61,15 @@ To check if a user has a global role
 
   user = User.find(1)
   user.has_role? "admin"
-  # => true
+  => true
 
 To check if a user has a role scoped to a resource
 
   user = User.find(2)
   user.has_role "moderator", Forum.first
-  # => true
+  => true
   user.has_role "moderator", Forum.last
-  # => false
+  => false
 
 == Questions or Problems?
 
