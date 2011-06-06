@@ -22,8 +22,8 @@ describe Rolify do
     end
 
     it "should respond to has_any_role? method" do
-      @admin.should respond_to(:has_any_roles?).with(1).arguments
-      @admin.should respond_to(:has_any_roles?).with(2).arguments
+      @admin.should respond_to(:has_any_role?).with(1).arguments
+      @admin.should respond_to(:has_any_role?).with(2).arguments
     end
   end
 
@@ -65,6 +65,18 @@ describe Rolify do
     it "should not get inexisting role" do
       @admin.has_role?("dummy").should be(false)
       @admin.has_role?("dumber", Forum.first).should be(false)
+    end
+
+    it "should check if user has all of a global roles set" do
+      @admin.has_all_roles?("admin", "superadmin").should be(true)
+      @admin.has_all_roles?("admin", "dummy").should be(false)
+      @admin.has_all_roles?("dummy", "dumber").should be(false)
+    end
+
+    it "should check if user has any of a global roles set" do
+      @admin.has_any_role?("admin", "superadmin").should be(true)
+      @admin.has_any_role?("admin", "moderator").should be(true)
+      @admin.has_any_role?("dummy", "dumber").should be(false)
     end
   end
   
