@@ -17,13 +17,13 @@ describe Rolify do
     end
 
     it "should respond to has_all_roles? method" do
-      @admin.should respond_to(:has_all_roles?).with(1).arguments
-      @admin.should respond_to(:has_all_roles?).with(2).arguments
+      @admin.should respond_to(:has_all_roles?)
+      @admin.should respond_to(:has_all_roles?)
     end
 
     it "should respond to has_any_role? method" do
-      @admin.should respond_to(:has_any_role?).with(1).arguments
-      @admin.should respond_to(:has_any_role?).with(2).arguments
+      @admin.should respond_to(:has_any_role?)
+      @admin.should respond_to(:has_any_role?)
     end
   end
 
