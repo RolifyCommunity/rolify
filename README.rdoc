@@ -57,19 +57,30 @@ That's it !
 
 === 4. Check roles
 
-To check if a user has a global role
+To check if a user has a global role: 
 
   user = User.find(1)
+  user.has_role "admin" # sets a global role
   user.has_role? "admin"
   => true
 
-To check if a user has a role scoped to a resource
+To check if a user has a role scoped to a resource:
 
   user = User.find(2)
+  user.has_role "moderator", Forum.first # sets a role scoped to a resource
   user.has_role? "moderator", Forum.first
   => true
   user.has_role? "moderator", Forum.last
   => false
+
+A global role overrides resource role request: 
+
+  user = User.find(3)
+  user.has_role "moderator" # sets a global role
+  user.has_role? "moderator", Forum.first
+  => true
+  user.has_role? "moderator", Forum.last
+  => true
 
 == Questions or Problems?
 
@@ -78,6 +89,6 @@ If you have any issues with rolify which you cannot find the solution to in the 
 == TODO
 
 * put syntactic sugar:
-  * +is_admin?+ like shortcuts
+  * <tt>is_admin?</tt> and <tt>is_admin_of?(resource)</tt> like shortcuts
   * multiple role names query at the same time
 * write a tutorial showing how to use rolify with CanCan and devise
