@@ -84,7 +84,7 @@ A global role overrides resource role request:
 
 == Questions or Problems?
 
-If you have any issues with rolify which you cannot find the solution to in the tiny README[https://github.com/EppO/rolify], please add an {issue on GitHub}[https://github.com/EppO/rolify/issues] or fork the project and send a pull request.
+If you have any issue or feature request with/for rolify, please add an {issue on GitHub}[https://github.com/EppO/rolify/issues] or fork the project and send a pull request.
 
 == TODO
 
