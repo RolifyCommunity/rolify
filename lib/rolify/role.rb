@@ -15,6 +15,14 @@ module Rolify
       self.roles.where(global_role_query, role).size > 0
     end
   end
+
+  def has_all_roles?(*args)
+    
+  end
+
+  def has_any_role?(*args)
+
+  end
   
   def roles_name
     self.roles.select(:name).map { |r| r.name }
