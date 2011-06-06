@@ -1,6 +1,31 @@
 require "spec_helper"
 
-describe "Rolify::Role" do
+describe Rolify do
+  context "in a Instance level" do 
+    before(:all) do
+      @admin = User.first
+    end
+
+    it "should respond to has_role method" do 
+      @admin.should respond_to(:has_role).with(1).arguments
+      @admin.should respond_to(:has_role).with(2).arguments
+    end
+
+    it "should respond to has_role? method" do
+      @admin.should respond_to(:has_role?).with(1).arguments
+      @admin.should respond_to(:has_role?).with(2).arguments
+    end
+
+    it "should respond to has_all_roles? method" do
+      @admin.should respond_to(:has_all_roles?).with(1).arguments
+      @admin.should respond_to(:has_all_roles?).with(2).arguments
+    end
+
+    it "should respond to has_any_role? method" do
+      @admin.should respond_to(:has_any_roles?).with(1).arguments
+      @admin.should respond_to(:has_any_roles?).with(2).arguments
+    end
+  end
 
   context "with a global role" do 
     before(:all) do
