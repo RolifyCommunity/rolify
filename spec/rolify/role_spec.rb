@@ -82,12 +82,15 @@ describe Rolify do
   
   context "with a scoped role" do
     before(:all) do
-      @moderator = User.last
+      @moderator = User.find(2)
       @moderator.has_role "moderator", Forum.first
     end
       
     it "should set a scoped role" do
-      @moderator
+      expect { @moderator.has_role "visitor", Forum.last }.to change{ Role.count }.by(1)
+      supermodo = Role.last
+      supermodo.name.should eq("visitor")
+      supermodo.resource.should eq(Forum.last)
     end
     
     it "should not create another role if already existing" do
@@ -96,10 +99,7 @@ describe Rolify do
     end
     
     it "should get a scoped role" do
-      expect { @moderator.has_role "supermodo", Forum.last }.to change{ Role.count }.by(1)
-      supermodo = Role.last
-      supermodo.name.should eq("supermodo")
-      supermodo.resource.should eq(Forum.last)
+      @moderator.has_role?("moderator", Forum.first).should be(true)
     end
     
     it "should not get a global role" do
@@ -119,6 +119,56 @@ describe Rolify do
     it "should not get inexisting role" do
       @moderator.has_role?("dummy", Forum.last).should be(false)
       @moderator.has_role?("dumber").should be(false)
+    end
+    
+    it "should check if user has all of a global roles set" do
+      @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, 
+                                { :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, 
+                                { :name => "dummy", :resource => Forum.last }).should be(false)
+      @moderator.has_all_roles?({ :name => "dummy", :resource => Forum.first }, 
+                                { :name => "dumber", :resource => Forum.last }).should be(false)
+    end
+
+    it "should check if user has any of a global roles set" do
+      @moderator.has_any_role?( { :name => "moderator", :resource => Forum.first }, 
+                                { :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_any_role?( { :name => "moderator", :resource => Forum.first }, 
+                                { :name => "dummy", :resource => Forum.last }).should be(true)
+      @moderator.has_any_role?( { :name => "dummy", :resource => Forum.first }, 
+                                { :name => "dumber", :resource => Forum.last }).should be(false)
+    end
+  end
+  
+  context "with different roles" do 
+    before(:all) do 
+      @user = User.last
+      @user.has_role "admin"
+      @user.has_role "moderator", Forum.first
+      @user.has_role "visitor", Forum.last
+      @user.has_role "anonymous"
+    end
+    
+    it "should get a global role" do
+      @user.has_role?("admin").should be(true)
+      @user.has_role?("anonymous").should be(true)
+    end
+    
+    it "should get a scoped role" do
+      @user.has_role?("moderator", Forum.first).should be(true)
+      @user.has_role?("visitor", Forum.last).should be(true)
+    end
+    
+    it "should check if user has all of a mix of global and scoped roles set" do
+      @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.first }).should be(true)
+      @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.last }).should be(false)
+      @user.has_all_roles?("dummy", { :name => "dumber", :resource => Forum.last }).should be(false)
+    end
+
+    it "should check if user has any of a mix of global and scoped roles set" do
+      @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.first }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }).should be(true)
+      @user.has_any_role?("dummy", { :name => "dumber", :resource => Forum.last }).should be(false)
     end
   end
 end
