@@ -16,7 +16,7 @@ module Rolify
         inject_into_class(model_path, user_cname.camelize) do
           "  include Rolify::Roles\n" + 
           "  extend Rolify::Reloaded\n" + 
-          "  has_and_belongs_to_many :roles, :class_name => \"#{role_cname.camelize\"\n"
+          "  has_and_belongs_to_many :roles, :class_name => \"#{role_cname.camelize}\"\n"
         end
       end
 
