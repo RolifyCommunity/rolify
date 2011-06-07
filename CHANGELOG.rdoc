@@ -1,0 +1,12 @@
+# 0.3
+* multiple roles check: 
+  * ``has_all_roles?`` returns true if the user has ALL the roles in arguments
+  * ``has_any_role?`` returns true if the user has ANY the roles in arguments
+
+# 0.2
+* fixed the generator to include the lib
+* fixed the migration file with missing polymorphic field
+* added some examples in documentation
+
+# 0.1
+* first release
