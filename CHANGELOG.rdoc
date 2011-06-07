@@ -1,3 +1,6 @@
+= 0.5.1
+* fixed a nasty typo on a variable name and added a spec to make this never happen again
+
 = 0.5
 * dynamic shortcuts support
   * creates automatically new methods upon new role creation (or at startup for a Rails app)
