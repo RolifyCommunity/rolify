@@ -1,13 +1,13 @@
 module Rolify
-  def has_role(role, resource = nil)
-    role = Role.find_or_create_by_name_and_resource_type_and_resource_id( :name => role, 
+  def has_role(role_name, resource = nil)
+    role = Role.find_or_create_by_name_and_resource_type_and_resource_id( :name => role_name, 
                                                                           :resource_type => (resource.class.name if resource), 
                                                                           :resource_id => (resource.id if resource))
     self.roles << role if !roles.include?(role)
   end
   
-  def has_role?(role, resource = nil)
-    query, values = build_query(role, resource)
+  def has_role?(role_name, resource = nil)
+    query, values = build_query(role_name, resource)
     self.roles.where(*query, *values).size > 0
   end
 
@@ -43,8 +43,11 @@ module Rolify
     self.roles.where([ conditions.join(' OR '), *values ]).size > 0
   end
   
-  def has_no_role(role, resource = nil)
-    
+  def has_no_role(role_name, resource = nil)
+    role = Role.where( :name => role_name)
+    role = role.where( :resource_type => resource.class.name,
+                       :resource_id => resource.id) if resource
+    self.roles.delete(role) if role
   end
   
   def roles_name

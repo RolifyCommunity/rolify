@@ -88,11 +88,16 @@ describe Rolify do
     end
     
     it "should remove a global role of a user" do 
-      expect { @admin.has_no_role("admin") }.to change{ @admin.roles.size }.by(1)
+      expect { @admin.has_no_role("admin") }.to change{ @admin.roles.size }.by(-1)
+      @admin.has_role?("admin").should be(false)
+      @admin.has_role?("staff").should be(true)
+      @admin.has_role?("moderator", Forum.first).should be(true)
     end
     
     it "should remove a scoped role of a user" do
-      expect { @admin.has_no_role("moderator") }.to change{ @admin.roles.size }.by(1)
+      expect { @admin.has_no_role("moderator") }.to change{ @admin.roles.size }.by(-1)
+      @admin.has_role?("staff").should be(true)
+      @admin.has_role?("moderator", Forum.first).should be(false)
     end
     
     it "should not remove a another global role" do 
@@ -165,7 +170,9 @@ describe Rolify do
     end
     
     it "should remove a scoped role of a user" do 
-      expect { @moderator.has_no_role("moderator", Forum.first) }.to change{ @moderator.roles.size }.by(1)
+      expect { @moderator.has_no_role("moderator", Forum.first) }.to change{ @moderator.roles.size }.by(-1)
+      @moderator.has_role?("moderator", Forum.first).should be(false)
+      @moderator.has_role?("soldier").should be(true)
     end
     
     it "should not remove another scoped role" do
