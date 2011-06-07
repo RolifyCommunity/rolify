@@ -34,6 +34,7 @@ First, create your Role model and migration file using this generator:
 
 Role and User classes are the default. You can specify any Role class name you want. This is completly a new file so any name can do the job.
 For the User class name, you would probably use the one provided by your authentication solution. rolify just adds some class methods in an existing User class.
+*For now, please stick to Role and User class names, see #5[https://github.com/EppO/rolify/issues/5] for details*
 
 === 2. Run the migration
 
