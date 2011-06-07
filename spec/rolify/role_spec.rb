@@ -66,6 +66,10 @@ describe Rolify do
     it "should get a global role" do
       @admin.has_role?("admin").should be(true)
     end
+
+    it "should be able to use dynamic shortcut" do
+      @admin.is_admin?.should be(true)
+    end
     
     it "should get any resource request" do
       @admin.has_role?("admin", Forum.first).should be(true)
@@ -138,7 +142,13 @@ describe Rolify do
     it "should get a scoped role" do
       @moderator.has_role?("moderator", Forum.first).should be(true)
     end
-    
+
+    it "should be able to use dynamic shortcut" do
+      @moderator.is_moderator?.should be(false)
+      @moderator.is_moderator_of?(Forum.first).should be(true)
+      @moderator.is_moderator_of?(Forum.last).should be(false)
+    end
+
     it "should not get a global role" do
       @moderator.has_role?("admin").should be(false)
     end
