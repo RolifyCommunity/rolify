@@ -21,8 +21,8 @@ module Rolify
       end
 
       def copy_role_file
-        migration_template "migration.rb", "db/migrate/rolify_create_#{role_cname.tableize}"
         template "initializer.rb", "config/initializers/rolify.rb"
+        migration_template "migration.rb", "db/migrate/rolify_create_#{role_cname.tableize}"
       end
 
       def model_path
