@@ -14,12 +14,15 @@ module Rolify
       def generate_role
         template "role.rb", "app/models/role.rb"
         inject_into_class(model_path, user_cname.camelize) do
-          "  include Rolify\n" + "  has_and_belongs_to_many :#{role_cname.tableize}\n"
+          "  include Rolify::Roles\n" + 
+          "  extend Rolify::Reloaded\n" + 
+          "  has_and_belongs_to_many :roles, :class_name => \"#{role_cname.camelize\"\n"
         end
       end
 
       def copy_role_file
         migration_template "migration.rb", "db/migrate/rolify_create_#{role_cname.tableize}"
+        template "initializer.rb", "config/initializers/rolify.rb"
       end
 
       def model_path
