@@ -1,3 +1,11 @@
+= 0.5
+* dynamic shortcuts support
+  * creates automatically new methods upon new role creation (or at startup for a Rails app)
+  * <tt>has_role "admin"</tt> will create a method called <tt>is_admin?</tt>
+  * <tt>has_role "moderator", Forum.first</tt> will create 2 methods:
+     * <tt>is_moderator_of?(resource)</tt>
+     * <tt>is_moderator?</tt>
+
 = v0.4
 * removing role support
   * <tt>has_no_role</tt> removes a global role or a role scoped to a resource
