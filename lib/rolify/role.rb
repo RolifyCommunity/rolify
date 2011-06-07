@@ -43,6 +43,10 @@ module Rolify
     self.roles.where([ conditions.join(' OR '), *values ]).size > 0
   end
   
+  def has_no_role(role, resource = nil)
+    
+  end
+  
   def roles_name
     self.roles.select(:name).map { |r| r.name }
   end

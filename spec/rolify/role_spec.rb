@@ -25,6 +25,11 @@ describe Rolify do
       @admin.should respond_to(:has_any_role?)
       @admin.should respond_to(:has_any_role?)
     end
+    
+    it "should respond to has_no_role method" do
+      @admin.should respond_to(:has_no_role).with(1).arguments
+      @admin.should respond_to(:has_no_role).with(2).arguments
+    end
   end
 
   context "with a global role" do 
@@ -32,6 +37,7 @@ describe Rolify do
       @admin = User.first
       @admin.has_role "admin"
       @admin.has_role "staff"
+      @admin.has_role "moderator", Forum.first
     end
     
     it "should set a global role" do
@@ -80,12 +86,25 @@ describe Rolify do
       @admin.has_any_role?("admin", "moderator").should be(true)
       @admin.has_any_role?("dummy", "dumber").should be(false)
     end
+    
+    it "should remove a global role of a user" do 
+      expect { @admin.has_no_role("admin") }.to change{ @admin.roles.size }.by(1)
+    end
+    
+    it "should remove a scoped role of a user" do
+      expect { @admin.has_no_role("moderator") }.to change{ @admin.roles.size }.by(1)
+    end
+    
+    it "should not remove a another global role" do 
+      expect { @admin.has_no_role("global") }.not_to change{ @admin.roles.size }
+    end
   end
   
   context "with a scoped role" do
     before(:all) do
       @moderator = User.find(2)
       @moderator.has_role "moderator", Forum.first
+      @moderator.has_role "soldier"
     end
       
     it "should set a scoped role" do
@@ -139,6 +158,18 @@ describe Rolify do
                                 { :name => "dummy", :resource => Forum.last }).should be(true)
       @moderator.has_any_role?( { :name => "dummy", :resource => Forum.first }, 
                                 { :name => "dumber", :resource => Forum.last }).should be(false)
+    end
+    
+    it "should not remove a global role of a user" do 
+      expect { @moderator.has_no_role("soldier", Forum.first) }.not_to change{ @moderator.roles.size }
+    end
+    
+    it "should remove a scoped role of a user" do 
+      expect { @moderator.has_no_role("moderator", Forum.first) }.to change{ @moderator.roles.size }.by(1)
+    end
+    
+    it "should not remove another scoped role" do
+      expect { @moderator.has_no_role("visitor", Forum.first) }.not_to change{ @moderator.roles.size }
     end
   end
   
