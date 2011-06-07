@@ -4,6 +4,8 @@ describe Rolify do
   context "in a Instance level" do 
     before(:all) do
       @admin = User.first
+      @admin.has_role "admin"
+      @admin.has_role "moderator", Forum.first
     end
 
     it "should respond to has_role method" do 
@@ -29,6 +31,15 @@ describe Rolify do
     it "should respond to has_no_role method" do
       @admin.should respond_to(:has_no_role).with(1).arguments
       @admin.should respond_to(:has_no_role).with(2).arguments
+    end
+
+    it "should respond to dynamic methods" do
+      @admin.should respond_to(:is_admin?).with(0).arguments
+      @admin.should respond_to(:is_moderator_of?).with(1).arguments
+    end
+
+    it "should not respond to any unknown methods" do
+      @admin.should_not respond_to(:is_god?)
     end
   end
 

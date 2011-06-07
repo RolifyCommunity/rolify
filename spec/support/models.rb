@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_and_belongs_to_many :roles, :join_table => :users_roles
-  include Rolify
+  include Rolify::Roles
+  extend Rolify::Reloaded
 end
 
 class Role < ActiveRecord::Base
