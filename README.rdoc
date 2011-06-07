@@ -91,6 +91,6 @@ If you have any issue or feature request with/for rolify, please add an {issue o
 
 == TODO
 
-* put syntactic sugar:
-  * <tt>is_admin?</tt> and <tt>is_admin_of?(resource)</tt> like shortcuts
 * write a tutorial showing how to use rolify with CanCan and devise
+* complete tests coverage
+* performance enhancements
