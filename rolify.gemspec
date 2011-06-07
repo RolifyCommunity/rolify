@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Florent Monbillard"]
   s.email       = ["f.monbillard@gmail.com"]
   s.homepage    = "https://github.com/EppO/rolify"
-  s.summary     = %q{Roles library with object scoping}
-  s.description = %q{Very simple Roles library without any authorization enforcement (built to use with cancan) supporting scope on object: user.is_moderator?(Forum.first) => # return false if user is moderator of another Forum }
+  s.summary     = %q{Roles library with resource scoping}
+  s.description = %q{Very simple Roles library without any authorization enforcement (built to use with cancan) supporting scope on resource: user.is_moderator?(Forum.first) => # return false if user is moderator of another Forum }
 
   s.rubyforge_project = s.name
 

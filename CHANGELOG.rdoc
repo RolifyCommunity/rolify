@@ -1,7 +1,13 @@
+= v0.4
+* removing role support
+  * <tt>has_no_role</tt> removes a global role or a role scoped to a resource
+  * Please note that trying to remove a global role whereas the user a role with the same name on a resource will remove that scoped role
+  * Trying to remove a role scoped to a resource whereas the user has a global role won't remove it
+
 = v0.3
 * multiple roles check: 
-  * ``has_all_roles?`` returns true if the user has ALL the roles in arguments
-  * ``has_any_role?`` returns true if the user has ANY the roles in arguments
+  * <tt>has_all_roles?</tt> returns true if the user has ALL the roles in arguments
+  * <tt>has_any_role?</tt> returns true if the user has ANY the roles in arguments
 
 = v0.2
 * fixed the generator to include the lib
