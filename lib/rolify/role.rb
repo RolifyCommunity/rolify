@@ -1,11 +1,28 @@
 module Rolify
 
+  def self.role_cname
+    @@role_cname
+  end
+
+  def self.role_cname=(role_cname)
+    @@role_cname = role_cname
+  end
+
+  def self.user_cname
+    @@user_cname
+  end
+
+  def self.user_cname=(user_cname)
+    @@user_cname = user_cname
+  end
+
+
   module Roles
 
     def has_role(role_name, resource = nil)
-      role = Role.find_or_create_by_name_and_resource_type_and_resource_id( :name => role_name, 
-                                                                            :resource_type => (resource.class.name if resource), 
-                                                                            :resource_id => (resource.id if resource))
+      role = Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id( :name => role_name, 
+                                                                                  :resource_type => (resource.class.name if resource), 
+                                                                                  :resource_id => (resource.id if resource))
       if !roles.include?(role)
         self.class.define_dynamic_method role_name, resource
         self.roles << role
@@ -50,7 +67,7 @@ module Rolify
     end
   
     def has_no_role(role_name, resource = nil)
-      role = Role.where( :name => role_name)
+      role = self.roles.where( :name => role_name)
       role = role.where( :resource_type => resource.class.name,
                          :resource_id => resource.id) if resource
       self.roles.delete(role) if role
@@ -78,7 +95,7 @@ module Rolify
   module Reloaded
  
     def load_dynamic_methods
-      Role.all.each do |r|
+      role_cname.all.each do |r|
         define_dynamic_method(r.name, r.resource)
       end
     end
