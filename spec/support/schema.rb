@@ -20,4 +20,18 @@ ActiveRecord::Schema.define do
   create_table(:forums) do |t|
     t.string :name
   end
+
+  create_table(:privileges) do |t|
+    t.string :name
+    t.references :resource, :polymorphic => true
+  end
+
+  create_table(:customers) do |t|
+    t.string :login
+  end
+
+  create_table(:customers_privileges, :id => false) do |t|
+    t.references :customer
+    t.references :privilege
+  end
 end
