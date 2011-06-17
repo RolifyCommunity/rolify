@@ -11,7 +11,7 @@ This library was intended to be used with CanCan[https://github.com/ryanb/cancan
 
 == Requirements
 
-* >= Rails 3.1 (rc1 is currently out)
+* >= Rails 3.1 (rc3 is currently out)
 * ActiveRecord ORM
 
 == Installation
