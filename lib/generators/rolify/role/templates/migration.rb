@@ -1,15 +1,19 @@
 class RolifyCreate<%= role_cname.camelize %> < ActiveRecord::Migration
   def change
-    create_table(<%= role_cname.tableize.to_sym %>) do |t|
+    create_table(:<%= role_cname.tableizem %>) do |t|
       t.string :name
       t.references :resource, :polymorphic => true
 
       t.timestamps
     end
 
-    create_table(<%= (user_cname.tableize + "_" + role_cname.tableize).to_sym %>, :id => false) do |t|
+    create_table(:<%= (user_cname.tableize + "_" + role_cname.tableize) %>, :id => false) do |t|
       t.references :<%= user_cname.underscore.singularize %>
       t.references :<%= role_cname.underscore.singularize %>
     end
+
+    add_index(:<%= role_cname.tableize %>, :name)
+    add_index(:<%= role_cname.tableize %>, [ :name, :resource_type, :resource_id ])
+    add_index(:<%= "#{user_cname.tableize}_#{role_cname.tableize}" %>, [ :<%= user_cname.underscore.singularize %>, :<%= role_cname.underscore.singularize %> ])
   end
 end
