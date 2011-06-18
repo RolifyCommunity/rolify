@@ -95,7 +95,7 @@ module Rolify
   module Reloaded
  
     def load_dynamic_methods
-      role_cname.all.each do |r|
+      Rolify.role_cname.all.each do |r|
         define_dynamic_method(r.name, r.resource)
       end
     end
