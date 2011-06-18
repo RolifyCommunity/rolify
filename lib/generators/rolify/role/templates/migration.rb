@@ -1,6 +1,6 @@
-class RolifyCreate<%= role_cname.camelize %> < ActiveRecord::Migration
+class RolifyCreate<%= role_cname.pluralize.camelize %> < ActiveRecord::Migration
   def change
-    create_table(:<%= role_cname.tableizem %>) do |t|
+    create_table(:<%= role_cname.tableize %>) do |t|
       t.string :name
       t.references :resource, :polymorphic => true
 
@@ -14,6 +14,6 @@ class RolifyCreate<%= role_cname.camelize %> < ActiveRecord::Migration
 
     add_index(:<%= role_cname.tableize %>, :name)
     add_index(:<%= role_cname.tableize %>, [ :name, :resource_type, :resource_id ])
-    add_index(:<%= "#{user_cname.tableize}_#{role_cname.tableize}" %>, [ :<%= user_cname.underscore.singularize %>, :<%= role_cname.underscore.singularize %> ])
+    add_index(:<%= "#{user_cname.tableize}_#{role_cname.tableize}" %>, [ :<%= user_cname.underscore.singularize %>_id, :<%= role_cname.underscore.singularize %>_id ])
   end
 end
