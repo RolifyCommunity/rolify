@@ -43,6 +43,13 @@ shared_examples_for "Rolify module" do
       it "should not respond to any unknown methods" do
         @admin.should_not respond_to(:is_god?)
       end
+
+      it "should create a new dynamic method if role exists in database" do 
+        Rolify.role_cname.create(:name => "superman")
+        @admin.should respond_to(:is_superman?).with(0).arguments
+        Rolify.role_cname.create(:name => "batman", :resource => Forum.first)
+        @admin.should respond_to(:is_batman_of?).with(1).arguments
+      end
     end
 
     context "with a global role" do 
