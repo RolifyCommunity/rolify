@@ -82,7 +82,7 @@ A global role overrides resource role request:
   user.has_role? "moderator", Forum.last
   => true
 
-Please see on {the wiki}[https://github.com/EppO/rolify/wiki/Usage] for all the available commands
+Please see on {the wiki}[https://github.com/EppO/rolify/wiki/Usage] for all the available commands and the Tutorial to understand how to use {rolify}[http://eppo.github.com/rolify] with {Devise}[https://github.com/plataformatec/devise) and {CanCan}[https://github.com/ryanb/cancan].
 
 == Questions or Problems?
 
@@ -90,6 +90,5 @@ If you have any issue or feature request with/for rolify, please add an {issue o
 
 == TODO
 
-* write a tutorial showing how to use rolify with CanCan and devise
 * complete tests coverage
 * performance enhancements
