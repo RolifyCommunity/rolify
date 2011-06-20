@@ -76,6 +76,16 @@ module Rolify
     def roles_name
       self.roles.select(:name).map { |r| r.name }
     end
+
+    def method_missing(method, *args, &block)
+      if method.to_s.match(/^is_(\w+)_of[?]$/) || method.to_s.match(/^is_(\w+)[?]$/)
+        if Rolify.role_cname.where(:name => $1).count > 0
+          resource = args.first
+          self.class.define_dynamic_method $1, resource
+          has_role?("#{$1}", resource)
+        end
+      end
+    end
  
     private
  
@@ -111,7 +121,6 @@ module Rolify
           has_role?("#{role_name}", arg)
         end if !method_defined?("is_#{role_name}_of?".to_sym) && resource
       end
-    end
-    
+    end    
   end
 end
