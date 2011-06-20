@@ -1,3 +1,10 @@
+= 0.6
+* custom User and Role class names support
+  * can now use other class names for Role and User classes
+  * fixed generators and templates 
+  * join table is explicitly set to avoid alphabetical order issue
+* created a new railtie to load the dynamic shortcuts at startup
+
 = 0.5.1
 * fixed a nasty typo on a variable name and added a spec to make this never happen again
 
