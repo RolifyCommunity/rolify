@@ -46,9 +46,12 @@ shared_examples_for "Rolify module" do
 
       it "should create a new dynamic method if role exists in database" do 
         Rolify.role_cname.create(:name => "superman")
+        @admin.is_superman?.should be(false)
         @admin.should respond_to(:is_superman?).with(0).arguments
         Rolify.role_cname.create(:name => "batman", :resource => Forum.first)
+        @admin.is_batman_of?(Forum.first).should be(false)
         @admin.should respond_to(:is_batman_of?).with(1).arguments
+        @admin.should respond_to(:is_batman?).with(0).arguments
       end
     end
 
