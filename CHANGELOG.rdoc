@@ -1,3 +1,10 @@
+= 0.7
+* added a method_missing to catch newly created role outside the current ruby process (i.e. dynamic shortcut methods are not defined within this process) 
+  * dynamic shortcut is created on the fly in the method_missing to avoid extra method_missing for the same dynamic shortcut 
+  * check if the role actually exists in the database before defining the new method 
+  * first call is slower due to method_missing but next calls are fast
+  * avoid strange bugs when spawning many ruby processes as the dynamic shortcut methods were only defined in the process that used the <tt>has_role</tt> command
+
 = 0.6
 * custom User and Role class names support
   * can now use other class names for Role and User classes
