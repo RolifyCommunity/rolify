@@ -35,8 +35,6 @@ module Rolify
     end
 
     def has_all_roles?(*args)
-      conditions = []
-      values = []
       args.each do |arg|
         if arg.is_a? Hash
           return false if !self.has_role?(arg[:name], arg[:resource])
@@ -50,19 +48,7 @@ module Rolify
     end
 
     def has_any_role?(*args)
-      conditions = []
-      values = []
-      args.each do |arg|
-        if arg.is_a? Hash
-          a, v = build_query(arg[:name], arg[:resource])
-        elsif arg.is_a? String
-          a, v = build_query(arg)
-        else
-          raise ArgumentError, "Invalid argument type: only hash or string allowed"
-        end
-        conditions << a
-        values += v
-      end
+      conditions, values = sql_conditions(args)
       self.roles.where([ conditions.join(' OR '), *values ]).size > 0
     end
   
@@ -89,6 +75,23 @@ module Rolify
  
     private
  
+    def sql_conditions(args)
+      conditions = []
+      values = []
+      args.each do |arg|
+        if arg.is_a? Hash
+          a, v = build_query(arg[:name], arg[:resource])
+        elsif arg.is_a? String
+          a, v = build_query(arg)
+        else
+          raise ArgumentError, "Invalid argument type: only hash or string allowed"
+        end
+        conditions << a
+        values += v
+      end
+      [ conditions, values ]
+    end
+
     def build_query(role, resource = nil)
       query = "((name = ?) AND (resource_type IS NULL) AND (resource_id IS NULL))"
       values = [ role ]
