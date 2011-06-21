@@ -102,13 +102,14 @@ shared_examples_for "Rolify module" do
       end
 
       it "should check if user has all of a global roles set" do
-        @admin.has_role?("staff").should be(true)
+        @admin.has_all_roles?("staff").should be(true)
         @admin.has_all_roles?("admin", "staff").should be(true)
         @admin.has_all_roles?("admin", "dummy").should be(false)
         @admin.has_all_roles?("dummy", "dumber").should be(false)
       end
 
       it "should check if user has any of a global roles set" do
+        @admin.has_any_role?("staff").should be(true)
         @admin.has_any_role?("admin", "staff").should be(true)
         @admin.has_any_role?("admin", "moderator").should be(true)
         @admin.has_any_role?("dummy", "dumber").should be(false)
@@ -181,6 +182,7 @@ shared_examples_for "Rolify module" do
       end
     
       it "should check if user has all of a scoped roles set" do
+        @moderator.has_all_roles?({ :name => "visitor", :resource => Forum.last }).should be(true)
         @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, 
                                   { :name => "visitor", :resource => Forum.last }).should be(true)
         @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, 
@@ -190,6 +192,7 @@ shared_examples_for "Rolify module" do
       end
 
       it "should check if user has any of a scoped roles set" do
+        @moderator.has_any_role?( { :name => "visitor", :resource => Forum.last }).should be(true)
         @moderator.has_any_role?( { :name => "moderator", :resource => Forum.first }, 
                                   { :name => "visitor", :resource => Forum.last }).should be(true)
         @moderator.has_any_role?( { :name => "moderator", :resource => Forum.first }, 
@@ -235,12 +238,14 @@ shared_examples_for "Rolify module" do
       it "should check if user has all of a mix of global and scoped roles set" do
         @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.first }).should be(true)
         @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.last }).should be(false)
+        @user.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.first }).should be(true)
         @user.has_all_roles?("dummy", { :name => "dumber", :resource => Forum.last }).should be(false)
       end
 
       it "should check if user has any of a mix of global and scoped roles set" do
         @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.first }).should be(true)
         @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }).should be(true)
+        @user.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }).should be(true)
         @user.has_any_role?("dummy", { :name => "dumber", :resource => Forum.last }).should be(false)
       end
     end
