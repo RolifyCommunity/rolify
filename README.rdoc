@@ -1,5 +1,4 @@
-= rolify
-[![Build Status](http://travis-ci.org/EppO/rolify.png)](http://travis-ci.org/ppO/rolify])
+= rolify http://travis-ci.org/EppO/rolify.png
 
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
 
