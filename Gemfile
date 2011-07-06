@@ -8,4 +8,5 @@ gemspec
 group :test do
   gem "sqlite3"
   gem "rspec"
+  gem "rake"
 end
