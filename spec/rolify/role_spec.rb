@@ -1,10 +1,12 @@
 require "spec_helper"
 
-shared_examples_for "Rolify module" do
+shared_examples_for "Rolify module" do |dynamic|
     context "in a Instance level" do 
       before(:all) do
         Rolify.user_cname = user_cname
         Rolify.role_cname = role_cname
+        Rolify.dynamic_shortcuts = dynamic_shortcuts
+        Rolify.role_cname.destroy_all
         @admin = Rolify.user_cname.first
         @admin.has_role "admin"
         @admin.has_role "moderator", Forum.first
@@ -35,23 +37,28 @@ shared_examples_for "Rolify module" do
         @admin.should respond_to(:has_no_role).with(2).arguments
       end
 
-      it "should respond to dynamic methods" do
+      it "should respond to dynamic methods", :if => dynamic do
         @admin.should respond_to(:is_admin?).with(0).arguments
         @admin.should respond_to(:is_moderator_of?).with(1).arguments
       end
 
-      it "should not respond to any unknown methods" do
+      it "should not respond to any unknown methods", :if => dynamic do
         @admin.should_not respond_to(:is_god?)
       end
 
-      it "should create a new dynamic method if role exists in database" do 
+      it "should create a new dynamic method if role exists in database", :if => dynamic do 
         Rolify.role_cname.create(:name => "superman")
-        @admin.is_superman?.should be(false)
         @admin.should respond_to(:is_superman?).with(0).arguments
+        @admin.is_superman?.should be(false)
         Rolify.role_cname.create(:name => "batman", :resource => Forum.first)
-        @admin.is_batman_of?(Forum.first).should be(false)
         @admin.should respond_to(:is_batman_of?).with(1).arguments
         @admin.should respond_to(:is_batman?).with(0).arguments
+        @admin.is_batman_of?(Forum.first).should be(false)
+      end
+
+      it "should not have any dynamic methods if dynamic_shortcuts is disabled", :if => dynamic == false do
+        @admin.should_not respond_to(:is_admin?)
+        @admin.should_not respond_to(:is_moderator_of?)
       end
     end
 
@@ -79,7 +86,7 @@ shared_examples_for "Rolify module" do
         @admin.has_role?("admin").should be(true)
       end
 
-      it "should be able to use dynamic shortcut" do
+      it "should be able to use dynamic shortcut", :if => dynamic do
         @admin.is_admin?.should be(true)
       end
     
@@ -156,7 +163,7 @@ shared_examples_for "Rolify module" do
         @moderator.has_role?("moderator", Forum.first).should be(true)
       end
 
-      it "should be able to use dynamic shortcut" do
+      it "should be able to use dynamic shortcut", :if => dynamic do
         @moderator.is_moderator?.should be(false)
         @moderator.is_moderator_of?(Forum.first).should be(true)
         @moderator.is_moderator_of?(Forum.last).should be(false)
@@ -253,17 +260,35 @@ shared_examples_for "Rolify module" do
 end
 
 describe Rolify do
-  context "using default Role and User class names" do 
+  context "using default Role and User class names with dynamic shortcuts", true do 
     it_behaves_like "Rolify module" do
       let(:user_cname) { User } 
       let(:role_cname) { Role }
+      let(:dynamic_shortcuts) { true }
     end
- end
+  end
 
-  context "using custom User and Role class names" do 
+  context "using default Role and User class names without dynamic shortcuts", false do 
+    it_behaves_like "Rolify module" do
+      let(:user_cname) { User } 
+      let(:role_cname) { Role }
+      let(:dynamic_shortcuts) { false }
+    end
+  end
+
+  context "using custom User and Role class names with dynamic shortcuts", true do 
     it_behaves_like "Rolify module" do
       let(:user_cname) { Customer }
       let(:role_cname) { Privilege }
+      let(:dynamic_shortcuts) { true }
+    end
+  end
+
+  context "using custom User and Role class names without dynamic shortcuts", false do 
+    it_behaves_like "Rolify module" do
+      let(:user_cname) { Customer }
+      let(:role_cname) { Privilege }
+      let(:dynamic_shortcuts) { false }
     end
   end
 end
