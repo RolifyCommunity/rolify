@@ -1,5 +1,4 @@
-= rolify
-
+= rolify http://travis-ci.org/EppO/rolify.png
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
 
 Let's see an example:  
