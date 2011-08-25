@@ -16,6 +16,14 @@ module Rolify
     @@user_cname = user_cname
   end
 
+  def self.dynamic_shortcuts
+    @@dynamic_shortcuts || false
+  end
+
+  def self.dynamic_shortcuts=(is_dynamic)
+    @@dynamic_shortcuts = is_dynamic
+    Rolify.user_cname.load_dynamic_methods if is_dynamic
+  end
 
   module Roles
 
