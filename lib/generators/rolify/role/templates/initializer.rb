@@ -1,3 +1,3 @@
 Rolify.user_cname = <%= user_cname.camelize %>
 Rolify.role_cname = <%= role_cname.camelize %>
-Rolify.Rolify.dynamic_shortcuts = <%= dynamic_shortcuts.to_s %>
+Rolify.dynamic_shortcuts = <%= dynamic_shortcuts.to_s %>
