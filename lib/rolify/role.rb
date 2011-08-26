@@ -32,7 +32,7 @@ module Rolify
                                                                                   :resource_type => (resource.class.name if resource), 
                                                                                   :resource_id => (resource.id if resource))
       if !roles.include?(role)
-        self.class.define_dynamic_method role_name, resource
+        self.class.define_dynamic_method(role_name, resource) if Rolify.dynamic_shortcuts
         self.roles << role
       end
     end
@@ -76,9 +76,10 @@ module Rolify
         if Rolify.role_cname.where(:name => $1).count > 0
           resource = args.first
           self.class.define_dynamic_method $1, resource
-          has_role?("#{$1}", resource)
+          return has_role?("#{$1}", resource)
         end
-      end
+      end unless !Rolify.dynamic_shortcuts
+      super
     end
  
     private
