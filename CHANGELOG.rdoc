@@ -1,3 +1,14 @@
+= 1.0
+* added a new parameter to disable dynamic shortcut methods due to potential incompatibility with other gems using method_missing with the same pattern
+  * add <tt>Rolify.dynamic_shortcuts = false</tt> in the initializer file or 
+  * use the generator command with a third parameter: 
+    * <tt>rails g rolify:role Role User false</tt>
+* removed the railtie as it created more problems than it solved
+* code refactoring to do some speed improvements and code clean up
+* added a lot of specs to improve tests coverage
+* wrote a tutorial showing how to use rolify with CanCan and Devise
+* rolify is now on travis-ci
+
 = 0.7
 * added a method_missing to catch newly created role outside the current ruby process (i.e. dynamic shortcut methods are not defined within this process) 
   * dynamic shortcut is created on the fly in the method_missing to avoid extra method_missing for the same dynamic shortcut 
