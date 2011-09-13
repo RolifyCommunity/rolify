@@ -20,5 +20,5 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   
   s.add_development_dependency "sqlite3"
-  s.add_dependency "activerecord", "~> 3.1.0.rc1"
+  s.add_dependency "activerecord", ">= 3.1"
 end
