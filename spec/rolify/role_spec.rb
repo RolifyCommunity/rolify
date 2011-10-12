@@ -162,6 +162,10 @@ shared_examples_for "Rolify module" do |dynamic|
       it "should get a scoped role" do
         @moderator.has_role?("moderator", Forum.first).should be(true)
       end
+      
+      it "should not get a scoped role when asking for a global" do
+        @moderator.has_role?("moderator").should be(false)
+      end
 
       it "should be able to use dynamic shortcut", :if => dynamic do
         @moderator.is_moderator?.should be(false)
