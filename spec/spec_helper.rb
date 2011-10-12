@@ -2,8 +2,9 @@ require 'rubygems'
 require 'bundler/setup'
 
 Bundler.require(:default, :test)
-
 require 'rolify'
+require 'ammeter/init'
+
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
 load File.dirname(__FILE__) + '/support/schema.rb'
