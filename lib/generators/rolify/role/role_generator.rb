@@ -18,7 +18,7 @@ module Rolify
           "  include Rolify::Roles\n" + 
           "#{"  extend Rolify::Reloaded\n" if options[:dynamic_shortcuts]}" + 
           "  has_and_belongs_to_many :roles#{", :class_name => \"" + role_cname.camelize + "\"" if role_cname != "Role"}, :join_table => :#{user_cname.tableize + "_" + role_cname.tableize}\n"
-        end if File.exist? "app/models/#{role_cname.downcase}.rb"
+        end
       end
 
       def copy_role_file

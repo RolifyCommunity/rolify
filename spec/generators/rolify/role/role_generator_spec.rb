@@ -7,11 +7,18 @@ describe Rolify::Generators::RoleGenerator do
   # Tell the generator where to put its output (what it thinks of as Rails.root)
   destination File.expand_path("../../../../../tmp", __FILE__)
   before { 
-    prepare_destination 
+    prepare_destination
   }
 
   describe 'no arguments' do
+    before(:all) { arguments [] }
+
     before { 
+      capture(:stdout) {
+        generator.create_file "app/models/user.rb" do
+          "class User < ActiveRecord::Base\nend"
+        end
+      }
       run_generator 
     }
     
@@ -23,6 +30,13 @@ describe Rolify::Generators::RoleGenerator do
       it { should contain "Rolify.dynamic_shortcuts = true" }
     end
     
+    describe 'app/models/user.rb' do
+      subject { file('app/models/user.rb') }
+      it { should contain "include Rolify::Roles" }
+      it { should contain "extend Rolify::Reloaded" }
+      it { should contain "has_and_belongs_to_many :roles, :join_table => :users_roles" }
+    end
+    
     describe 'migration file' do
       subject { file('db/migrate/rolify_create_roles.rb') }
       
@@ -32,15 +46,30 @@ describe Rolify::Generators::RoleGenerator do
   end
 
   describe 'specifying user and role names' do
+    before(:all) { arguments %w(Rank Client) }
+    
     before { 
-      run_generator %w(Rank Client)
+      capture(:stdout) {
+        generator.create_file "app/models/client.rb" do
+          "class Client < ActiveRecord::Base\nend"
+        end
+      }
+      run_generator
     }
+    
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
       it { should contain "Rolify.user_cname = Client" }
       it { should contain "Rolify.role_cname = Rank" }
       it { should contain "Rolify.dynamic_shortcuts = true" }
+    end
+    
+    describe 'app/models/client.rb' do
+      subject { file('app/models/client.rb') }
+      it { should contain "include Rolify::Roles" }
+      it { should contain "extend Rolify::Reloaded" }
+      it { should contain "has_and_belongs_to_many :roles, :class_name => \"Rank\", :join_table => :clients_ranks" }
     end
     
     describe 'migration file' do
@@ -53,11 +82,28 @@ describe Rolify::Generators::RoleGenerator do
   end
   
   describe 'specifying no dynamic shortcuts' do
-    before { run_generator %w(--no-dynamic_shortcuts) }
+    before(:all) { arguments [ "Role", "User", "--no-dynamic_shortcuts" ] }
+    
+    before { 
+      capture(:stdout) {
+        generator.create_file "app/models/user.rb" do
+          "class User < ActiveRecord::Base\nend"
+        end
+      }
+      run_generator
+    }
+      
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
       it { should contain "Rolify.dynamic_shortcuts = false" }
+    end
+    
+    describe 'app/models/user.rb' do
+      subject { file('app/models/user.rb') }
+      it { should contain "include Rolify::Roles" }
+      it { should_not contain "extend Rolify::Reloaded" }
+      it { should contain "has_and_belongs_to_many :roles, :join_table => :users_roles" }
     end
     
     describe 'migration file' do
