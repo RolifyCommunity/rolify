@@ -1,16 +1,13 @@
 require 'spec_helper'
-require 'thor/actions/create_file'
 
 # Generators are not automatically loaded by Rails
 require 'generators/rolify/role/role_generator'
 
 describe Rolify::Generators::RoleGenerator do
-  include Thor::Actions
   # Tell the generator where to put its output (what it thinks of as Rails.root)
   destination File.expand_path("../../../../../tmp", __FILE__)
   before { 
     prepare_destination 
-    Rails::Generators.options[:rails][:orm] = :active_record
   }
 
   describe 'no arguments' do
