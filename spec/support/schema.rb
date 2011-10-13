@@ -20,6 +20,10 @@ ActiveRecord::Schema.define do
   create_table(:forums) do |t|
     t.string :name
   end
+  
+  create_table(:groups) do |t|
+    t.string :name
+  end
 
   create_table(:privileges) do |t|
     t.string :name
