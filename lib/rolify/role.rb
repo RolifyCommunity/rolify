@@ -28,9 +28,9 @@ module Rolify
   module Roles
 
     def has_role(role_name, resource = nil)
-      role = Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id( :name => role_name, 
-                                                                                  :resource_type => (resource.class.name if resource), 
-                                                                                  :resource_id => (resource.id if resource))
+      role = Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id(:name => role_name, 
+                                                                                        :resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
+                                                                                        :resource_id => (resource.id if resource && !resource.is_a?(Class)))
       if !roles.include?(role)
         self.class.define_dynamic_method(role_name, resource) if Rolify.dynamic_shortcuts
         self.roles << role
@@ -62,8 +62,8 @@ module Rolify
   
     def has_no_role(role_name, resource = nil)
       role = self.roles.where( :name => role_name)
-      role = role.where( :resource_type => resource.class.name,
-                         :resource_id => resource.id) if resource
+      role = role.where( :resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name),
+                         :resource_id => (resource.id if !resource.is_a?(Class)) ) if resource
       self.roles.delete(role) if role
     end
   
@@ -102,12 +102,18 @@ module Rolify
     end
 
     def build_query(role, resource = nil)
+      return [ "name = ?", role] if resource == :any
       query = "((name = ?) AND (resource_type IS NULL) AND (resource_id IS NULL))"
       values = [ role ]
       if resource
         query.insert(0, "(")
-        query += " OR ((name = ?) AND (resource_type = ?) AND (resource_id = ?)))" 
-        values << role << resource.class.name << resource.id
+        query += " OR ((name = ?) AND (resource_type = ?) AND (resource_id IS NULL))" 
+        values << role << (resource.is_a?(Class) ? resource.to_s : resource.class.name)
+        if !resource.is_a? Class
+          query += " OR ((name = ?) AND (resource_type = ?) AND (resource_id = ?))" 
+          values << role << resource.class.name << resource.id
+        end
+        query += ")"
       end
       [ [ query ], values]
     end
