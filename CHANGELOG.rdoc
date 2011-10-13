@@ -1,4 +1,18 @@
-= 1.0
+= 1.1 (unreleased)
+* added a spec to test the rails generator using ammeter gem
+* Gemfile cleanup, moved all dependencies in gemspec instead
+* edited the dependency to Rails 3.1 and newer, now that Rails 3.1 has been released
+* new role scoping capabilities
+  * instance level : ``user.has_role "moderator", Forum.first`` (*already supported in previous release*). user has the moderator role only on that Forum in particular
+  * class level : ``user.has_role "moderator", Forum``. User has the moderator role on all instances of Forum
+  * global level : ``user.has_role "moderator"`` (*already supported in previous release*). User has the moderator role globally (e.q. on all resources)
+* new scoped query capabilities
+  * ``user.has_role? "moderator", Forum.first`` (*already supported in previous release*). asks if the user has the moderator role on Forum.first instance
+  * ``user.has_role? "moderator", Forum``. asks if the user has the moderator role on all Forum instances
+  * ``user.has_role? "moderator"`` (*already supported in previous release*). asks if the user has the global moderator role
+  * ``user.has_role? "moderator", :any``. asks if the user has at least one moderator role no matter the scope is (instance, class or global).
+
+= 1.0 (Aug 25, 2011)
 * added a new parameter to disable dynamic shortcut methods due to potential incompatibility with other gems using method_missing with the same pattern
   * add <tt>Rolify.dynamic_shortcuts = false</tt> in the initializer file or 
   * use the generator command with a third parameter: 
@@ -7,26 +21,26 @@
 * code refactoring to do some speed improvements and code clean up
 * added a lot of specs to improve tests coverage
 * wrote a tutorial showing how to use rolify with CanCan and Devise
-* rolify is now on travis-ci
+* rolify is now on travis-ci to monitor build status
 
-= 0.7
+= 0.7 (June 20, 2011)
 * added a method_missing to catch newly created role outside the current ruby process (i.e. dynamic shortcut methods are not defined within this process) 
   * dynamic shortcut is created on the fly in the method_missing to avoid extra method_missing for the same dynamic shortcut 
   * check if the role actually exists in the database before defining the new method 
   * first call is slower due to method_missing but next calls are fast
   * avoid strange bugs when spawning many ruby processes as the dynamic shortcut methods were only defined in the process that used the <tt>has_role</tt> command
 
-= 0.6
+= 0.6 (June 19, 2011)
 * custom User and Role class names support
   * can now use other class names for Role and User classes
   * fixed generators and templates 
   * join table is explicitly set to avoid alphabetical order issue
 * created a new railtie to load the dynamic shortcuts at startup
 
-= 0.5.1
-* fixed a nasty typo on a variable name and added a spec to make this never happen again
+= 0.5.1 (June 07, 2011)
+* fixed a nasty typo on a variable name and added a spec to make it never happen again
 
-= 0.5
+= 0.5 (June 07, 2011)
 * dynamic shortcuts support
   * creates automatically new methods upon new role creation (or at startup for a Rails app)
   * <tt>has_role "admin"</tt> will create a method called <tt>is_admin?</tt>
@@ -34,21 +48,21 @@
      * <tt>is_moderator_of?(resource)</tt>
      * <tt>is_moderator?</tt>
 
-= v0.4
+= v0.4 (June 07, 2011)
 * removing role support
   * <tt>has_no_role</tt> removes a global role or a role scoped to a resource
   * Please note that trying to remove a global role whereas the user a role with the same name on a resource will remove that scoped role
   * Trying to remove a role scoped to a resource whereas the user has a global role won't remove it
 
-= v0.3
+= v0.3 (June 06, 2011)
 * multiple roles check: 
   * <tt>has_all_roles?</tt> returns true if the user has ALL the roles in arguments
   * <tt>has_any_role?</tt> returns true if the user has ANY the roles in arguments
 
-= v0.2
+= v0.2 (June 04, 2011)
 * fixed the generator to include the lib
 * fixed the migration file with missing polymorphic field
 * added some examples in documentation
 
-= v0.1
+= v0.1 (June 04, 2011)
 * first release
