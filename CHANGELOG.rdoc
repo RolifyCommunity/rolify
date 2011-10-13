@@ -3,14 +3,14 @@
 * Gemfile cleanup, moved all dependencies in gemspec instead
 * edited the dependency to Rails 3.1 and newer, now that Rails 3.1 has been released
 * new role scoping capabilities
-  * instance level : ``user.has_role "moderator", Forum.first`` (*already supported in previous release*). user has the moderator role only on that Forum in particular
-  * class level : ``user.has_role "moderator", Forum``. User has the moderator role on all instances of Forum
-  * global level : ``user.has_role "moderator"`` (*already supported in previous release*). User has the moderator role globally (e.q. on all resources)
+  * instance level : <tt>user.has_role "moderator", Forum.first</tt> (<em>already supported in previous release</em>). user has the moderator role only on that Forum in particular
+  * class level : <tt>user.has_role "moderator", Forum</tt>. User has the moderator role on all instances of Forum
+  * global level : <tt>user.has_role "moderator"</tt> (<em>already supported in previous release</em>). User has the moderator role globally (e.q. on all resources)
 * new scoped query capabilities
-  * ``user.has_role? "moderator", Forum.first`` (*already supported in previous release*). asks if the user has the moderator role on Forum.first instance
-  * ``user.has_role? "moderator", Forum``. asks if the user has the moderator role on all Forum instances
-  * ``user.has_role? "moderator"`` (*already supported in previous release*). asks if the user has the global moderator role
-  * ``user.has_role? "moderator", :any``. asks if the user has at least one moderator role no matter the scope is (instance, class or global).
+  * <tt>user.has_role? "moderator", Forum.first</tt> (<em>already supported in previous release</em>). asks if the user has the moderator role on Forum.first instance
+  * <tt>user.has_role? "moderator", Forum</tt>. asks if the user has the moderator role on all Forum instances
+  * <tt>user.has_role? "moderator"</tt> (<em>already supported in previous release</em>). asks if the user has the global moderator role
+  * <tt>user.has_role? "moderator", :any</tt>. asks if the user has at least one moderator role no matter the scope is (instance, class or global).
 
 = 1.0 (Aug 25, 2011)
 * added a new parameter to disable dynamic shortcut methods due to potential incompatibility with other gems using method_missing with the same pattern
