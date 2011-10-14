@@ -90,6 +90,7 @@ shared_examples_for "Rolify module" do |dynamic|
 
     it "should be able to use dynamic shortcut", :if => dynamic do
       @admin.is_admin?.should be(true)
+      @admin.is_evil?.should be(false)
     end
 
     it "should get any resource request" do
@@ -101,6 +102,7 @@ shared_examples_for "Rolify module" do |dynamic|
     it "should not get another global role" do
       Rolify.role_cname.create(:name => "global")
       @admin.has_role?("global").should be(false)
+      @admin.has_role?("global", :any).should be(false)
     end
 
     it "should not get an instance scoped role" do
@@ -189,6 +191,7 @@ shared_examples_for "Rolify module" do |dynamic|
       @moderator.is_moderator?.should be(false)
       @moderator.is_moderator_of?(Forum.first).should be(true)
       @moderator.is_moderator_of?(Forum.last).should be(false)
+      @moderator.is_moderator_of?(Forum).should be(false)
     end
 
     it "should not get a global role" do
@@ -203,6 +206,7 @@ shared_examples_for "Rolify module" do |dynamic|
     it "should not get the another role on the same resource" do
       Rolify.role_cname.create(:name => "tourist", :resource => Forum.first)
       @moderator.has_role?("tourist", Forum.first).should be(false)
+      @moderator.has_role?("tourist", :any).should be(false)
     end
 
     it "should not get inexisting role" do
@@ -278,9 +282,11 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should be able to use dynamic shortcut", :if => dynamic do
-      @manager.is_moderator?.should be(false)
-      @manager.is_moderator_of?(Forum.first).should be(true)
-      @manager.is_moderator_of?(Forum.last).should be(false)
+      @manager.is_manager?.should be(false)
+      @manager.is_manager_of?(Forum.first).should be(true)
+      @manager.is_manager_of?(Forum.last).should be(true)
+      @manager.is_manager_of?(Forum).should be(true)
+      @manager.is_manager_of?(Group).should be(false)
     end
 
     it "should not get a global role" do
@@ -295,6 +301,7 @@ shared_examples_for "Rolify module" do |dynamic|
     it "should not get the another role on the same resource" do
       Rolify.role_cname.create(:name => "member", :resource_type => "Forum")
       @manager.has_role?("member", Forum).should be(false)
+      @manager.has_role?("member", :any).should be(false)
     end
 
     it "should not get inexisting role" do
