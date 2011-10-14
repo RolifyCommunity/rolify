@@ -1,4 +1,4 @@
-= 1.1 (unreleased)
+= 1.1 (Oct 14, 2011)
 * added a spec to test the rails generator using ammeter gem
 * Gemfile cleanup, moved all dependencies in gemspec instead
 * edited the dependency to Rails 3.1 and newer, now that Rails 3.1 has been released
