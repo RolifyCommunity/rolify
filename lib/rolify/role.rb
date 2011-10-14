@@ -62,8 +62,8 @@ module Rolify
   
     def has_no_role(role_name, resource = nil)
       role = self.roles.where( :name => role_name)
-      role = role.where( :resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name),
-                         :resource_id => (resource.id if !resource.is_a?(Class)) ) if resource
+      role = role.where(:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)) if resource
+      role = role.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)
       self.roles.delete(role) if role
     end
   

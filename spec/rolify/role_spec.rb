@@ -64,11 +64,12 @@ shared_examples_for "Rolify module" do |dynamic|
   end
 
   context "with a global role" do 
-    before(:all) do
+    before do
       @admin = Rolify.user_cname.first
       @admin.has_role "admin"
       @admin.has_role "staff"
       @admin.has_role "moderator", Forum.first
+      @admin.has_role "moderator", Forum.find(2)
       @admin.has_role "manager", Group
     end
 
@@ -140,10 +141,18 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.has_role?("manager", Group).should be(true)
     end
 
-    it "should remove a scoped role of a user" do
-      expect { @admin.has_no_role("moderator") }.to change{ @admin.roles.size }.by(-1)
+    it "should remove a class scoped role of a user" do
+      expect { @admin.has_no_role("manager") }.to change{ @admin.roles.size }.by(-1)
+      @admin.has_role?("staff").should be(true)
+      @admin.has_role?("moderator", Forum.first).should be(true)
+      @admin.has_role?("manager", Group).should be(false)
+    end
+    
+    it "should remove two instance scoped roles of a user" do
+      expect { @admin.has_no_role("moderator") }.to change{ @admin.roles.size }.by(-2)
       @admin.has_role?("staff").should be(true)
       @admin.has_role?("moderator", Forum.first).should be(false)
+      @admin.has_role?("moderator", Forum.find(2)).should be(false)
       @admin.has_role?("manager", Group).should be(true)
     end
 
@@ -153,7 +162,7 @@ shared_examples_for "Rolify module" do |dynamic|
   end
 
   context "with an instance scoped role" do
-    before(:all) do
+    before do
       @moderator = Rolify.user_cname.find(2)
       @moderator.has_role "moderator", Forum.first
       @moderator.has_role "soldier"
@@ -250,9 +259,11 @@ shared_examples_for "Rolify module" do |dynamic|
   end
 
   context "with a class scoped role" do
-    before(:all) do
+    before do
       @manager = Rolify.user_cname.find(3)
       @manager.has_role "manager", Forum
+      @manager.has_role "moderator", Forum.first
+      @manager.has_role "moderator", Forum.last
       @manager.has_role "warrior"
     end
 
@@ -265,7 +276,7 @@ shared_examples_for "Rolify module" do |dynamic|
 
     it "should not create another role if already existing" do
       expect { @manager.has_role "manager", Forum }.not_to change{ Rolify.role_cname.count }
-      expect { @manager.has_role "manager" , Forum }.not_to change{ @manager.roles.size }
+      expect { @manager.has_role "manager", Forum }.not_to change{ @manager.roles.size }
     end
 
     it "should get a class scoped role" do
@@ -333,9 +344,19 @@ shared_examples_for "Rolify module" do |dynamic|
       expect { @manager.has_no_role("warrior", Forum) }.not_to change{ @manager.roles.size }
     end
 
-    it "should remove a scoped role of a user" do 
+    it "should remove a class scoped role of a user" do 
       expect { @manager.has_no_role("manager", Forum) }.to change{ @manager.roles.size }.by(-1)
-      @manager.has_role?("manager", Forum.first).should be(false)
+      @manager.has_role?("manager", Forum).should be(false)
+      @manager.has_role?("moderator", Forum.first).should be(true)
+      @manager.has_role?("moderator", Forum.last).should be(true)
+      @manager.has_role?("warrior").should be(true)
+    end
+    
+    it "should remove two instance scoped roles of a user" do 
+      expect { @manager.has_no_role("moderator", Forum) }.to change{ @manager.roles.size }.by(-2)
+      @manager.has_role?("manager", Forum).should be(true)
+      @manager.has_role?("moderator", Forum.first).should be(false)
+      @manager.has_role?("moderator", Forum.last).should be(false)
       @manager.has_role?("warrior").should be(true)
     end
 
@@ -345,8 +366,8 @@ shared_examples_for "Rolify module" do |dynamic|
   end
 
   context "with different roles" do 
-    before(:all) do 
-      @user = Rolify.user_cname.last
+    before do 
+      @user = Rolify.user_cname.find(4)
       @user.has_role "admin"
       @user.has_role "anonymous"
       @user.has_role "moderator", Forum.first

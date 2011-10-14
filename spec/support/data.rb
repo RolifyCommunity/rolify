@@ -2,9 +2,11 @@
 User.create(:login => "admin")
 User.create(:login => "moderator")
 User.create(:login => "god")
+User.create(:login => "zombie")
 Customer.create(:login => "customer VIP")
 Customer.create(:login => "customer Doe")
 Customer.create(:login => "customer John")
+Customer.create(:login => "customer Edgar")
 
 # Resources
 Forum.create(:name => "forum 1")
