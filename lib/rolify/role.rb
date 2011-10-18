@@ -43,16 +43,9 @@ module Rolify
     end
 
     def has_all_roles?(*args)
-      args.each do |arg|
-        if arg.is_a? Hash
-          return false if !self.has_role?(arg[:name], arg[:resource])
-        elsif arg.is_a? String
-          return false if !self.has_role?(arg)
-        else
-          raise ArgumentError, "Invalid argument type: only hash or string allowed"
-        end
-      end
-      true
+      conditions, values = sql_conditions(args)
+      requested_roles = Rolify.role_cname.where([ conditions.join(' OR '), *values ])
+      self.roles.where(:id => requested_roles.select(:id)).size == args.size
     end
 
     def has_any_role?(*args)
