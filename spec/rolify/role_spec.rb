@@ -374,6 +374,9 @@ shared_examples_for "Rolify module" do |dynamic|
       @user.has_role "visitor", Forum.last
       @user.has_role "manager", Forum
       @user.has_role "leader", Group
+      Rolify.role_cname.create :name => "manager", :resource => Forum.find(1)
+      Rolify.role_cname.create :name => "manager", :resource => Forum.find(2)
+      Rolify.role_cname.create :name => "manager", :resource => Forum.find(3)
     end
 
     it "should get a global role" do
@@ -400,6 +403,10 @@ shared_examples_for "Rolify module" do |dynamic|
       @user.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum }).should be(true)
       @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum.first }).should be(true)
       @user.has_all_roles?("dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
+      @user.has_all_roles?("admin", "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
+      @user.has_all_roles?({ :name => "manager", :resource => Forum.last }, "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
+      @user.has_all_roles?("admin", { :name => "dumber", :resource => Forum.last }, { :name => "manager", :resource => Forum.last })
+      @user.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum.last })
     end
 
     it "should check if user has any of a mix of global and scoped roles set" do
@@ -411,6 +418,7 @@ shared_examples_for "Rolify module" do |dynamic|
       @user.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum }).should be(true)
       @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum.first }).should be(true)
       @user.has_any_role?("dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
+      @user.has_any_role?({ :name => "manager", :resource => Forum.last }, "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(true)
     end
   end
 
