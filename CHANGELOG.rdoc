@@ -1,3 +1,7 @@
+= 2.0 (unreleased)
+* improved performance of <tt>has_all_roles?</tt> method using subselect instead of doing one DB lookup per argument in worst case
+* clean up the initializer code, detecting if it's loaded by Rails::Server or Rails::Console
+
 = 1.1 (Oct 14, 2011)
 * added a spec to test the rails generator using ammeter gem
 * Gemfile cleanup, moved all dependencies in gemspec instead
