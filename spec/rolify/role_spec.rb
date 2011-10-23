@@ -124,6 +124,10 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.has_all_roles?("admin", "staff").should be(true)
       @admin.has_all_roles?("admin", "dummy").should be(false)
       @admin.has_all_roles?("dummy", "dumber").should be(false)
+      @admin.has_all_roles?({ :name => "admin", :resource => Forum }, { :name => "admin", :resource => Group }).should be(true)
+      @admin.has_all_roles?({ :name => "admin", :resource => Forum }, { :name => "staff", :resource => Group.last }).should be(true)
+      @admin.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "admin", :resource => Forum.last }).should be(true)
+      @admin.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(false)
     end
 
     it "should check if user has any of a global roles set" do
@@ -131,6 +135,10 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.has_any_role?("admin", "staff").should be(true)
       @admin.has_any_role?("admin", "moderator").should be(true)
       @admin.has_any_role?("dummy", "dumber").should be(false)
+      @admin.has_any_role?({ :name => "admin", :resource => Forum }, { :name => "admin", :resource => Group }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => Forum }, { :name => "staff", :resource => Group.last }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "admin", :resource => Forum.last }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(true)
     end
 
     it "should remove a global role of a user" do 
@@ -225,22 +233,18 @@ shared_examples_for "Rolify module" do |dynamic|
 
     it "should check if user has all of a scoped roles set" do
       @moderator.has_all_roles?({ :name => "visitor", :resource => Forum.last }).should be(true)
-      @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, 
-      { :name => "visitor", :resource => Forum.last }).should be(true)
-      @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, 
-      { :name => "dummy", :resource => Forum.last }).should be(false)
-      @moderator.has_all_roles?({ :name => "dummy", :resource => Forum.first }, 
-      { :name => "dumber", :resource => Forum.last }).should be(false)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, { :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }).should be(false)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(false)
+      @moderator.has_all_roles?({ :name => "dummy", :resource => Forum.first }, { :name => "dumber", :resource => Forum.last }).should be(false)
     end
 
     it "should check if user has any of a scoped roles set" do
-      @moderator.has_any_role?( { :name => "visitor", :resource => Forum.last }).should be(true)
-      @moderator.has_any_role?( { :name => "moderator", :resource => Forum.first }, 
-      { :name => "visitor", :resource => Forum.last }).should be(true)
-      @moderator.has_any_role?( { :name => "moderator", :resource => Forum.first }, 
-      { :name => "dummy", :resource => Forum.last }).should be(true)
-      @moderator.has_any_role?( { :name => "dummy", :resource => Forum.first }, 
-      { :name => "dumber", :resource => Forum.last }).should be(false)
+      @moderator.has_any_role?({ :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }).should be(true)
+      @moderator.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(true)
+      @moderator.has_any_role?({ :name => "dummy", :resource => Forum.first }, { :name => "dumber", :resource => Forum.last }).should be(false)
     end
 
     it "should not remove a global role of a user" do 
@@ -322,22 +326,24 @@ shared_examples_for "Rolify module" do |dynamic|
 
     it "should check if user has all of a scoped roles set" do
       @manager.has_all_roles?({ :name => "player", :resource => Forum }).should be(true)
-      @manager.has_all_roles?({ :name => "manager", :resource => Forum }, 
-      { :name => "player", :resource => Forum }).should be(true)
-      @manager.has_all_roles?({ :name => "manager", :resource => Forum }, 
-      { :name => "dummy", :resource => Forum }).should be(false)
-      @manager.has_all_roles?({ :name => "dummy", :resource => Forum }, 
-      { :name => "dumber", :resource => Group }).should be(false)
+      @manager.has_all_roles?({ :name => "manager", :resource => Forum }, { :name => "player", :resource => Forum }).should be(true)
+      @manager.has_all_roles?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => Forum }).should be(false)
+      @manager.has_all_roles?({ :name => "dummy", :resource => Forum }, { :name => "dumber", :resource => Group }).should be(false)
+      @manager.has_all_roles?({ :name => "manager", :resource => Forum.first }, { :name => "manager", :resource => Forum.last }).should be(true)
+      @manager.has_any_roles?({ :name => "manager", :resource => Group }, { :name => "moderator", :resource => Forum.first }).should be(true)
+      @manager.has_any_roles?({ :name => "manager", :resource => Forum.first }, { :name => "moderator", :resource => Forum }).should be(true)
+      @manager.has_any_roles?({ :name => "manager", :resource => Forum.last }, { :name => "warrior", :resource => Forum.last }).should be(true)
     end
 
     it "should check if user has any of a scoped roles set" do
-      @manager.has_any_role?( { :name => "player", :resource => Forum }).should be(true)
-      @manager.has_any_role?( { :name => "manager", :resource => Forum }, 
-      { :name => "player", :resource => Forum }).should be(true)
-      @manager.has_any_role?( { :name => "manager", :resource => Forum }, 
-      { :name => "dummy", :resource => Forum }).should be(true)
-      @manager.has_any_role?( { :name => "dummy", :resource => Forum }, 
-      { :name => "dumber", :resource => Group }).should be(false)
+      @manager.has_any_role?({ :name => "player", :resource => Forum }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => Forum }, { :name => "player", :resource => Forum }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => Forum }).should be(true)
+      @manager.has_any_role?({ :name => "dummy", :resource => Forum }, { :name => "dumber", :resource => Group }).should be(false)
+      @manager.has_any_role?({ :name => "manager", :resource => Forum.first }, { :name => "manager", :resource => Forum.last }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => Group }, { :name => "moderator", :resource => Forum.first }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => Forum.first }, { :name => "moderator", :resource => Forum }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => Forum.last }, { :name => "warrior", :resource => Forum.last }).should be(true)
     end
 
     it "should not remove a global role of a user" do 
@@ -405,8 +411,8 @@ shared_examples_for "Rolify module" do |dynamic|
       @user.has_all_roles?("dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
       @user.has_all_roles?("admin", "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
       @user.has_all_roles?({ :name => "manager", :resource => Forum.last }, "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
-      @user.has_all_roles?("admin", { :name => "dumber", :resource => Forum.last }, { :name => "manager", :resource => Forum.last })
-      @user.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum.last })
+      @user.has_all_roles?("admin", { :name => "dumber", :resource => Forum.last }, { :name => "manager", :resource => Forum.last }).should be(false)
+      @user.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum.last }).should be(true)
     end
 
     it "should check if user has any of a mix of global and scoped roles set" do
