@@ -330,9 +330,9 @@ shared_examples_for "Rolify module" do |dynamic|
       @manager.has_all_roles?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => Forum }).should be(false)
       @manager.has_all_roles?({ :name => "dummy", :resource => Forum }, { :name => "dumber", :resource => Group }).should be(false)
       @manager.has_all_roles?({ :name => "manager", :resource => Forum.first }, { :name => "manager", :resource => Forum.last }).should be(true)
-      @manager.has_any_roles?({ :name => "manager", :resource => Group }, { :name => "moderator", :resource => Forum.first }).should be(true)
-      @manager.has_any_roles?({ :name => "manager", :resource => Forum.first }, { :name => "moderator", :resource => Forum }).should be(true)
-      @manager.has_any_roles?({ :name => "manager", :resource => Forum.last }, { :name => "warrior", :resource => Forum.last }).should be(true)
+      @manager.has_all_roles?({ :name => "manager", :resource => Group }, { :name => "moderator", :resource => Forum.first }).should be(false)
+      @manager.has_all_roles?({ :name => "manager", :resource => Forum.first }, { :name => "moderator", :resource => Forum }).should be(false)
+      @manager.has_all_roles?({ :name => "manager", :resource => Forum.last }, { :name => "warrior", :resource => Forum.last }).should be(true)
     end
 
     it "should check if user has any of a scoped roles set" do
