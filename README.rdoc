@@ -1,4 +1,4 @@
-= rolify {<img src="https://secure.travis-ci.org/EppO/rolify.png">}[http://travis-ci.org/EppO/rolify]
+= rolify {<img src="https://secure.travis-ci.org/EppO/rolify.png?branch=v2">}[http://travis-ci.org/EppO/rolify]
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
 
 Let's see an example:  
