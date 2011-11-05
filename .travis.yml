@@ -2,8 +2,3 @@ rvm:
   - 1.9.2
   - 1.9.3
   - ruby-head
-  - rbx-19mode
-  - jruby
-
-env:
-  - JRUBY_OPTS="--1.9"
