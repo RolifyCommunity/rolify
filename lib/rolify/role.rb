@@ -39,7 +39,7 @@ module Rolify
   
     def has_role?(role_name, resource = nil)
       query, values = build_query(role_name, resource)
-      self.roles.where(*query, *values).size > 0
+      self.roles.where(query, *values).size > 0
     end
 
     def has_all_roles?(*args)
@@ -102,7 +102,7 @@ module Rolify
     end
 
     def build_query(role, resource = nil)
-      return [ "name = ?", role] if resource == :any
+      return [ "name = ?", role ] if resource == :any
       query = "((name = ?) AND (resource_type IS NULL) AND (resource_id IS NULL))"
       values = [ role ]
       if resource
@@ -115,7 +115,7 @@ module Rolify
         end
         query += ")"
       end
-      [ [ query ], values]
+      [ query, values ]
     end
 
   end
