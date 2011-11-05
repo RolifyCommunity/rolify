@@ -12,6 +12,7 @@ This library was intended to be used with CanCan[https://github.com/ryanb/cancan
 
 * >= Rails 3.1
 * ActiveRecord ORM
+* ruby 1.9 (JRuby and Rubinius support on going)
 
 == Installation
 
