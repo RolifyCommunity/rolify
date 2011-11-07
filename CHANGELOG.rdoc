@@ -1,5 +1,5 @@
 = 2.0 (unreleased)
-* <em>improved performance of <tt>has_all_roles?</tt> method using subselect instead of doing one DB lookup per argument in worst case</em><strong>(NOT WORKING YET)</strong
+* <em>improved performance of <tt>has_all_roles?</tt> method using subselect instead of doing one DB lookup per argument in worst case</em><strong>(NOT WORKING YET)</strong>
 * clean up the initializer code
   * using a DSL to configure the library
   * setting defaults for User and Role classes
