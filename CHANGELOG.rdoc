@@ -1,7 +1,13 @@
 = 2.0 (unreleased)
-* improved performance of <tt>has_all_roles?</tt> method using subselect instead of doing one DB lookup per argument in worst case
-* clean up the initializer code, detecting if it's loaded by Rails::Server or Rails::Console
-* now also running on Rubinius, REE and Ruby 1.8
+* <em>improved performance of <tt>has_all_roles?</tt> method using subselect instead of doing one DB lookup per argument in worst case</em><strong>(NOT WORKING YET)</strong
+* clean up the initializer code
+  * using a DSL to configure the library
+  * setting defaults for User and Role classes
+  * dynamic shortcuts feature is now disabled by default. To turn it on:
+    * set it to true in the initializer file
+    * uncomment the <tt>extend Rolify::Dynamic</tt> line in the User class
+  * detecting if it's loaded by Rails::Server or Rails::Console
+* now also running on Rubinius, JRuby, REE and Ruby 1.8. all specs pass successfully, yeah !
 
 = 1.2 (Nov 4, 2011)
 * fixed a strange bug, probably rails related (thanks to @scottkf)

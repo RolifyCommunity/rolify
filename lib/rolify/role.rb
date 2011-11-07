@@ -1,19 +1,26 @@
 module Rolify
+  @@role_cname = "Role"
+  @@user_cname = "User"
+  @@dynamic_shortcuts = true
+  
+  def self.configure
+    yield self if block_given?
+  end
 
   def self.role_cname
-    @@role_cname
+    @@role_cname.constantize
   end
 
   def self.role_cname=(role_cname)
-    @@role_cname = role_cname
+    @@role_cname = role_cname.camelize
   end
 
   def self.user_cname
-    @@user_cname
+    @@user_cname.constantize
   end
 
   def self.user_cname=(user_cname)
-    @@user_cname = user_cname
+    @@user_cname = user_cname.camelize
   end
 
   def self.dynamic_shortcuts
@@ -22,7 +29,7 @@ module Rolify
 
   def self.dynamic_shortcuts=(is_dynamic)
     @@dynamic_shortcuts = is_dynamic
-    Rolify.user_cname.load_dynamic_methods if is_dynamic
+    self.user_cname.load_dynamic_methods if is_dynamic
   end
 
   module Roles
@@ -120,7 +127,7 @@ module Rolify
 
   end
 
-  module Reloaded
+  module Dynamic
  
     def load_dynamic_methods
       Rolify.role_cname.all.each do |r|
@@ -128,12 +135,11 @@ module Rolify
       end
     end
 
-
     def define_dynamic_method(role_name, resource)
       class_eval do 
         define_method("is_#{role_name}?".to_sym) do
         has_role?("#{role_name}")
-        end if !method_defined? "is_#{role_name}?".to_sym
+        end if !method_defined?("is_#{role_name}?".to_sym)
   
         define_method("is_#{role_name}_of?".to_sym) do |arg|
           has_role?("#{role_name}", arg)

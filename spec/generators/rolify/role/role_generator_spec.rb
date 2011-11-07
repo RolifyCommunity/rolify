@@ -25,15 +25,15 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
-      it { should contain "Rolify.user_cname = User" }
-      it { should contain "Rolify.role_cname = Role" }
-      it { should contain "Rolify.dynamic_shortcuts = true" }
+      it { should contain "c.user_cname = \"User\"" }
+      it { should contain "c.role_cname = \"Role\"" }
+      it { should contain "c.dynamic_shortcuts = false" }
     end
     
     describe 'app/models/user.rb' do
       subject { file('app/models/user.rb') }
       it { should contain "include Rolify::Roles" }
-      it { should contain "extend Rolify::Reloaded" }
+      it { should contain "# extend Rolify::Dynamic" }
       it { should contain "has_and_belongs_to_many :roles, :join_table => :users_roles" }
     end
     
@@ -60,15 +60,15 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
-      it { should contain "Rolify.user_cname = Client" }
-      it { should contain "Rolify.role_cname = Rank" }
-      it { should contain "Rolify.dynamic_shortcuts = true" }
+      it { should contain "c.user_cname = \"Client\"" }
+      it { should contain "c.role_cname = \"Rank\"" }
+      it { should contain "c.dynamic_shortcuts = false" }
     end
     
     describe 'app/models/client.rb' do
       subject { file('app/models/client.rb') }
       it { should contain "include Rolify::Roles" }
-      it { should contain "extend Rolify::Reloaded" }
+      it { should contain "# extend Rolify::Dynamic" }
       it { should contain "has_and_belongs_to_many :roles, :class_name => \"Rank\", :join_table => :clients_ranks" }
     end
     
@@ -81,8 +81,8 @@ describe Rolify::Generators::RoleGenerator do
     end
   end
   
-  describe 'specifying no dynamic shortcuts' do
-    before(:all) { arguments [ "Role", "User", "--no-dynamic_shortcuts" ] }
+  describe 'specifying dynamic shortcuts' do
+    before(:all) { arguments [ "Role", "User", "--dynamic_shortcuts" ] }
     
     before { 
       capture(:stdout) {
@@ -96,13 +96,13 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
-      it { should contain "Rolify.dynamic_shortcuts = false" }
+      it { should contain "c.dynamic_shortcuts = true" }
     end
     
     describe 'app/models/user.rb' do
       subject { file('app/models/user.rb') }
       it { should contain "include Rolify::Roles" }
-      it { should_not contain "extend Rolify::Reloaded" }
+      it { should contain "extend Rolify::Dynamic" }
       it { should contain "has_and_belongs_to_many :roles, :join_table => :users_roles" }
     end
     

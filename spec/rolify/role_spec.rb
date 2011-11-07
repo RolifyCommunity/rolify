@@ -50,9 +50,10 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should create a new dynamic method if role exists in database", :if => dynamic do 
-      Rolify.role_cname.create(:name => "superman")
+      other_guy = Rolify.user_cname.last
+      other_guy.has_role "superman"
       @admin.should respond_to(:is_superman?).with(0).arguments
-      Rolify.role_cname.create(:name => "batman", :resource => Forum.first)
+      other_guy.has_role("batman", Forum.first)
       @admin.should respond_to(:is_batman_of?).with(1).arguments
       @admin.should respond_to(:is_batman?).with(0).arguments
     end
@@ -91,7 +92,6 @@ shared_examples_for "Rolify module" do |dynamic|
 
     it "should be able to use dynamic shortcut", :if => dynamic do
       @admin.is_admin?.should be(true)
-      @admin.is_evil?.should be(false)
     end
 
     it "should get any resource request" do
@@ -433,32 +433,32 @@ end
 describe Rolify do
   context "using default Role and User class names with dynamic shortcuts", true do 
     it_behaves_like "Rolify module" do
-      let(:user_cname) { User } 
-      let(:role_cname) { Role }
+      let(:user_cname) { "User" } 
+      let(:role_cname) { "Role" }
       let(:dynamic_shortcuts) { true }
     end
   end
 
   context "using default Role and User class names without dynamic shortcuts", false do 
     it_behaves_like "Rolify module" do
-      let(:user_cname) { User } 
-      let(:role_cname) { Role }
+      let(:user_cname) { "User" } 
+      let(:role_cname) { "Role" }
       let(:dynamic_shortcuts) { false }
     end
   end
 
   context "using custom User and Role class names with dynamic shortcuts", true do 
     it_behaves_like "Rolify module" do
-      let(:user_cname) { Customer }
-      let(:role_cname) { Privilege }
+      let(:user_cname) { "Customer" }
+      let(:role_cname) { "Privilege" }
       let(:dynamic_shortcuts) { true }
     end
   end
 
   context "using custom User and Role class names without dynamic shortcuts", false do 
     it_behaves_like "Rolify module" do
-      let(:user_cname) { Customer }
-      let(:role_cname) { Privilege }
+      let(:user_cname) { "Customer" }
+      let(:role_cname) { "Privilege" }
       let(:dynamic_shortcuts) { false }
     end
   end
