@@ -1,19 +1,26 @@
 module Rolify
+  @@role_cname = "Role"
+  @@user_cname = "User"
+  @@dynamic_shortcuts = false
+  
+  def self.configure
+    yield self if block_given?
+  end
 
   def self.role_cname
-    @@role_cname
+    @@role_cname.constantize
   end
 
   def self.role_cname=(role_cname)
-    @@role_cname = role_cname
+    @@role_cname = role_cname.camelize
   end
 
   def self.user_cname
-    @@user_cname
+    @@user_cname.constantize
   end
 
   def self.user_cname=(user_cname)
-    @@user_cname = user_cname
+    @@user_cname = user_cname.camelize
   end
 
   def self.dynamic_shortcuts
@@ -22,7 +29,7 @@ module Rolify
 
   def self.dynamic_shortcuts=(is_dynamic)
     @@dynamic_shortcuts = is_dynamic
-    Rolify.user_cname.load_dynamic_methods if is_dynamic
+    self.user_cname.load_dynamic_methods if is_dynamic
   end
 
   module Roles
@@ -39,20 +46,12 @@ module Rolify
   
     def has_role?(role_name, resource = nil)
       query, values = build_query(role_name, resource)
-      self.roles.where(*query, *values).size > 0
+      self.roles.where(query, *values).size > 0
     end
 
     def has_all_roles?(*args)
-      args.each do |arg|
-        if arg.is_a? Hash
-          return false if !self.has_role?(arg[:name], arg[:resource])
-        elsif arg.is_a? String
-          return false if !self.has_role?(arg)
-        else
-          raise ArgumentError, "Invalid argument type: only hash or string allowed"
-        end
-      end
-      true
+      conditions, values, count = sql_conditions(args, true)
+      self.roles.where([ conditions.join(' OR '), *values ]).where(count.join(') AND (')).size > 0
     end
 
     def has_any_role?(*args)
@@ -61,7 +60,7 @@ module Rolify
     end
   
     def has_no_role(role_name, resource = nil)
-      role = self.roles.where( :name => role_name)
+      role = self.roles.where(:name => role_name)
       role = role.where(:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)) if resource
       role = role.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)
       self.roles.delete(role) if role
@@ -84,8 +83,9 @@ module Rolify
  
     private
  
-    def sql_conditions(args)
+    def sql_conditions(args, count = false)
       conditions = []
+      count_conditions = [] if count
       values = []
       args.each do |arg|
         if arg.is_a? Hash
@@ -96,13 +96,14 @@ module Rolify
           raise ArgumentError, "Invalid argument type: only hash or string allowed"
         end
         conditions << a
+        count_conditions << self.roles.where(a, *v).select("COUNT(id)").to_sql + " > 0" if count
         values += v
       end
-      [ conditions, values ]
+      count ? [ conditions, values, count_conditions ] : [ conditions, values ]
     end
 
     def build_query(role, resource = nil)
-      return [ "name = ?", role] if resource == :any
+      return [ "name = ?", [ role ] ] if resource == :any
       query = "((name = ?) AND (resource_type IS NULL) AND (resource_id IS NULL))"
       values = [ role ]
       if resource
@@ -115,12 +116,12 @@ module Rolify
         end
         query += ")"
       end
-      [ [ query ], values]
+      [ query, values ]
     end
 
   end
 
-  module Reloaded
+  module Dynamic
  
     def load_dynamic_methods
       Rolify.role_cname.all.each do |r|
@@ -128,12 +129,11 @@ module Rolify
       end
     end
 
-
     def define_dynamic_method(role_name, resource)
       class_eval do 
         define_method("is_#{role_name}?".to_sym) do
         has_role?("#{role_name}")
-        end if !method_defined? "is_#{role_name}?".to_sym
+        end if !method_defined?("is_#{role_name}?".to_sym)
   
         define_method("is_#{role_name}_of?".to_sym) do |arg|
           has_role?("#{role_name}", arg)

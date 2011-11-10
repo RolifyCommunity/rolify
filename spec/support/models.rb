@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_and_belongs_to_many :roles, :join_table => :users_roles
   include Rolify::Roles
-  extend Rolify::Reloaded
+  extend Rolify::Dynamic
 end
 
 class Role < ActiveRecord::Base
@@ -18,7 +18,7 @@ end
 class Customer < ActiveRecord::Base
   has_and_belongs_to_many :roles, :join_table => :customers_privileges, :class_name => "Privilege"
   include Rolify::Roles
-  extend Rolify::Reloaded
+  extend Rolify::Dynamic
 end
 
 class Privilege < ActiveRecord::Base

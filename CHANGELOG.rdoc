@@ -1,3 +1,16 @@
+= 2.0 (Nov 10, 2011)
+* improved performance of <tt>has_all_roles?</tt> method using one single DB query instead of doing one DB lookup per argument
+  * significant speed-up when requesting with many arguments
+  * database choice can mitigate the results
+* clean up the initializer code
+  * using a DSL to configure the library
+  * setting defaults for User and Role classes
+  * dynamic shortcuts feature is now <b>disabled</b> by default. To turn it on:
+    * set it to true in the initializer file
+    * uncomment the <tt>extend Rolify::Dynamic</tt> line in the User class
+  * detecting if it's loaded by Rails::Server or Rails::Console
+* now also running on Rubinius, JRuby, REE and Ruby 1.8. all specs pass successfully, yeah !
+
 = 1.2 (Nov 4, 2011)
 * fixed a strange bug, probably rails related (thanks to @scottkf)
   * when using rails in development mode, the <tt>config.cache_classes = false</tt> makes the role class to be loaded at every call and can lead to a <tt>AssociationTypeMismatch</tt>

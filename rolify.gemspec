@@ -21,7 +21,11 @@ Gem::Specification.new do |s|
   
   s.add_dependency "activerecord", ">= 3.1.0"
   
+<<<<<<< HEAD
   if RUBY_ENGINE == "jruby"
+=======
+  if defined?(RUBY_ENGINE) && RUBY_ENGINE == "jruby"
+>>>>>>> v2
     s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
   else
     s.add_development_dependency "sqlite3"
