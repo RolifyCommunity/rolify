@@ -125,9 +125,11 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.has_all_roles?("admin", "dummy").should be(false)
       @admin.has_all_roles?("dummy", "dumber").should be(false)
       @admin.has_all_roles?({ :name => "admin", :resource => Forum }, { :name => "admin", :resource => Group }).should be(true)
+      @admin.has_all_roles?({ :name => "admin", :resource => :any }, { :name => "admin", :resource => Group }).should be(true)
       @admin.has_all_roles?({ :name => "admin", :resource => Forum }, { :name => "staff", :resource => Group.last }).should be(true)
       @admin.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "admin", :resource => Forum.last }).should be(true)
       @admin.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(false)
+      @admin.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "dummy", :resource => :any }).should be(false)
     end
 
     it "should check if user has any of a global roles set" do
@@ -136,9 +138,11 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.has_any_role?("admin", "moderator").should be(true)
       @admin.has_any_role?("dummy", "dumber").should be(false)
       @admin.has_any_role?({ :name => "admin", :resource => Forum }, { :name => "admin", :resource => Group }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => :any }, { :name => "admin", :resource => Group }).should be(true)
       @admin.has_any_role?({ :name => "admin", :resource => Forum }, { :name => "staff", :resource => Group.last }).should be(true)
       @admin.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "admin", :resource => Forum.last }).should be(true)
       @admin.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "dummy", :resource => :any }).should be(true)
     end
 
     it "should remove a global role of a user" do 
@@ -174,6 +178,7 @@ shared_examples_for "Rolify module" do |dynamic|
       @moderator = Rolify.user_cname.find(2)
       @moderator.has_role "moderator", Forum.first
       @moderator.has_role "soldier"
+      ActiveRecord::Base.logger = nil
     end
 
     it "should set an instance scoped role" do
@@ -337,7 +342,10 @@ shared_examples_for "Rolify module" do |dynamic|
       @manager.has_role "player", Forum
       @manager.has_all_roles?({ :name => "player", :resource => Forum }).should be(true)
       @manager.has_all_roles?({ :name => "manager", :resource => Forum }, { :name => "player", :resource => Forum }).should be(true)
+      @manager.has_all_roles?({ :name => "manager", :resource => :any }, { :name => "player", :resource => Forum }).should be(true)
+      @manager.has_all_roles?({ :name => "manager", :resource => :any }, { :name => "player", :resource => :any }).should be(true)
       @manager.has_all_roles?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => Forum }).should be(false)
+      @manager.has_all_roles?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => :any }).should be(false)
       @manager.has_all_roles?({ :name => "dummy", :resource => Forum }, { :name => "dumber", :resource => Group }).should be(false)
       @manager.has_all_roles?({ :name => "manager", :resource => Forum.first }, { :name => "manager", :resource => Forum.last }).should be(true)
       @manager.has_all_roles?({ :name => "manager", :resource => Group }, { :name => "moderator", :resource => Forum.first }).should be(false)
@@ -348,7 +356,10 @@ shared_examples_for "Rolify module" do |dynamic|
     it "should check if user has any of a scoped roles set" do
       @manager.has_any_role?({ :name => "player", :resource => Forum }).should be(true)
       @manager.has_any_role?({ :name => "manager", :resource => Forum }, { :name => "player", :resource => Forum }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => Forum }, { :name => "player", :resource => :any }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => :any }, { :name => "player", :resource => :any }).should be(true)
       @manager.has_any_role?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => Forum }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => :any }).should be(true)
       @manager.has_any_role?({ :name => "dummy", :resource => Forum }, { :name => "dumber", :resource => Group }).should be(false)
       @manager.has_any_role?({ :name => "manager", :resource => Forum.first }, { :name => "manager", :resource => Forum.last }).should be(true)
       @manager.has_any_role?({ :name => "manager", :resource => Group }, { :name => "moderator", :resource => Forum.first }).should be(true)
@@ -413,6 +424,8 @@ shared_examples_for "Rolify module" do |dynamic|
     it "should check if user has all of a mix of global and scoped roles set" do
       @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum }).should be(true)
       @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum }).should be(false)
+      @user.has_all_roles?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => Forum }).should be(true)
+      @user.has_all_roles?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => :any }).should be(true)
       @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Group }).should be(false)
       @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Group.first }).should be(false)
       @user.has_all_roles?({ :name => "admin", :resource => Forum }, { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum }).should be(true)
@@ -423,10 +436,14 @@ shared_examples_for "Rolify module" do |dynamic|
       @user.has_all_roles?({ :name => "manager", :resource => Forum.last }, "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
       @user.has_all_roles?("admin", { :name => "dumber", :resource => Forum.last }, { :name => "manager", :resource => Forum.last }).should be(false)
       @user.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum.last }).should be(true)
+      @user.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => :any }, { :name => "manager", :resource => Forum.last }).should be(true)
     end
 
     it "should check if user has any of a mix of global and scoped roles set" do
       @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => Forum }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => :any }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => :any }).should be(true)
       @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum }).should be(true)
       @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Group }).should be(true)
       @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Group.first }).should be(true)
@@ -456,7 +473,7 @@ describe Rolify do
       let(:dynamic_shortcuts) { false }
     end
   end
-
+  
   context "using custom User and Role class names with dynamic shortcuts", true do 
     it_behaves_like "Rolify module" do
       let(:user_cname) { "Customer" }
@@ -464,7 +481,7 @@ describe Rolify do
       let(:dynamic_shortcuts) { true }
     end
   end
-
+  
   context "using custom User and Role class names without dynamic shortcuts", false do 
     it_behaves_like "Rolify module" do
       let(:user_cname) { "Customer" }
