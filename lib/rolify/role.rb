@@ -1,7 +1,7 @@
 module Rolify
   @@role_cname = "Role"
   @@user_cname = "User"
-  @@dynamic_shortcuts = true
+  @@dynamic_shortcuts = false
   
   def self.configure
     yield self if block_given?
