@@ -51,38 +51,7 @@ module Rolify
 
     def has_all_roles?(*args)
       conditions, values, count = sql_conditions(args, true)
-      requested_roles = Rolify.role_cname.where([ conditions.join(' OR '), *values ]).where(count.join(') AND ('))
-      return false if requested_roles == []
-      matched_roles = (requested_roles & self.roles).map do |r| 
-        if r.resource
-          { :name => r.name, :resource => r.resource }
-        elsif r.resource_type
-          { :name => r.name, :resource => r.resource_type.constantize }
-        else
-          r.name
-        end
-      end
-      args.each do |r|
-        if r.is_a? Hash
-          match = false
-          matched_roles.each do |m|
-            if (m.is_a?(String) && (m == r[:name]))
-              match = true
-              break
-            elsif (m.is_a?(Hash)) && ((m[:name] == r[:name]) && ((!m[:resource]) || 
-                  ((m[:resource].is_a?(Class) && r[:resource].is_a?(Class) && m[:resource] == r[:resource]) || 
-                  (m[:resource].is_a?(Class) && !r[:resource].is_a?(Class) && m[:resource] == r[:resource].class) || 
-                  (!m[:resource].is_a?(Class) && !r[:resource].is_a?(Class) && m[:resource] == r[:resource]))))
-              match = true
-              break
-            end
-          end
-          return false if !match
-        else
-          return false if !matched_roles.include?(r)
-        end
-      end
-      true
+      self.roles.where([ conditions.join(' OR '), *values ]).where(count.join(') AND (')).size > 0
     end
 
     def has_any_role?(*args)
@@ -91,7 +60,7 @@ module Rolify
     end
   
     def has_no_role(role_name, resource = nil)
-      role = self.roles.where( :name => role_name)
+      role = self.roles.where(:name => role_name)
       role = role.where(:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)) if resource
       role = role.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)
       self.roles.delete(role) if role
@@ -127,14 +96,14 @@ module Rolify
           raise ArgumentError, "Invalid argument type: only hash or string allowed"
         end
         conditions << a
-        count_conditions << Rolify.role_cname.where(a, *v).select("COUNT(id)").to_sql + " > 0" if count
+        count_conditions << self.roles.where(a, *v).select("COUNT(id)").to_sql + " > 0" if count
         values += v
       end
       count ? [ conditions, values, count_conditions ] : [ conditions, values ]
     end
 
     def build_query(role, resource = nil)
-      return [ "name = ?", role ] if resource == :any
+      return [ "name = ?", [ role ] ] if resource == :any
       query = "((name = ?) AND (resource_type IS NULL) AND (resource_id IS NULL))"
       values = [ role ]
       if resource
