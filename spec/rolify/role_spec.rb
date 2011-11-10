@@ -232,7 +232,12 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should check if user has all of a scoped roles set" do
+      @moderator.has_role "visitor", Forum.last
       @moderator.has_all_roles?({ :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => :any }).should be(true)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => :any }).should be(true)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => Forum }).should be(false)
       @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, { :name => "visitor", :resource => Forum.last }).should be(true)
       @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }).should be(false)
       @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(false)
@@ -240,8 +245,12 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should check if user has any of a scoped roles set" do
+      @moderator.has_role "visitor", Forum.last
       @moderator.has_any_role?({ :name => "visitor", :resource => Forum.last }).should be(true)
       @moderator.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_any_role?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_any_role?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => :any}).should be(true)
+      @moderator.has_any_role?({ :name => "moderator", :resource => Forum }, { :name => "visitor", :resource => :any }).should be(true)
       @moderator.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }).should be(true)
       @moderator.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(true)
       @moderator.has_any_role?({ :name => "dummy", :resource => Forum.first }, { :name => "dumber", :resource => Forum.last }).should be(false)
