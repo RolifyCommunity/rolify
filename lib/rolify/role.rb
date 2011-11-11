@@ -43,6 +43,7 @@ module Rolify
         self.role_ids |= [role.id]
       end
     end
+    alias_method :grant, :has_role
   
     def has_role?(role_name, resource = nil)
       query, values = build_query(role_name, resource)
@@ -65,6 +66,7 @@ module Rolify
       role = role.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)
       self.roles.delete(role) if role
     end
+    alias_method :revoke, :has_no_role
   
     def roles_name
       self.roles.select(:name).map { |r| r.name }
