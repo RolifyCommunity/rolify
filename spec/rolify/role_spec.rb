@@ -19,6 +19,11 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.should respond_to(:has_role).with(1).arguments
       @admin.should respond_to(:has_role).with(2).arguments
     end
+    
+    it "should respond to grant method" do 
+      @admin.should respond_to(:grant).with(1).arguments
+      @admin.should respond_to(:grant).with(2).arguments
+    end
 
     it "should respond to has_role? method" do
       @admin.should respond_to(:has_role?).with(1).arguments
@@ -38,6 +43,11 @@ shared_examples_for "Rolify module" do |dynamic|
     it "should respond to has_no_role method" do
       @admin.should respond_to(:has_no_role).with(1).arguments
       @admin.should respond_to(:has_no_role).with(2).arguments
+    end
+    
+    it "should respond to revoke method" do
+      @admin.should respond_to(:revoke).with(1).arguments
+      @admin.should respond_to(:revoke).with(2).arguments
     end
 
     it "should respond to dynamic methods", :if => dynamic do
