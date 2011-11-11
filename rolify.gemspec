@@ -19,13 +19,13 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  s.add_dependency "activerecord", ">= 3.1.0"
-  
   if defined?(RUBY_ENGINE) && RUBY_ENGINE == "jruby"
     s.add_development_dependency "activerecord-jdbcsqlite3-adapter"
   else
     s.add_development_dependency "sqlite3"
   end
+  s.add_development_dependency "activerecord", ">= 3.1.0"
+  s.add_development_dependency "mongoid", ">= 2.3"
   s.add_development_dependency "ammeter"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
