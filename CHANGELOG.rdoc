@@ -1,3 +1,6 @@
+= 2.1 (unreleased)
+* added syntactic sugar: <tt>grant</tt> and <tt>revoke</tt> are aliases for <tt>has_role</tt> and <tt>has_no_role</tt>
+
 = 2.0 (Nov 10, 2011)
 * improved performance of <tt>has_all_roles?</tt> method using one single DB query instead of doing one DB lookup per argument
   * significant speed-up when requesting with many arguments
