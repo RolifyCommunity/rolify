@@ -102,7 +102,7 @@ A global role overrides resource role request:
 == Resources
 
 * {Wiki}[https://github.com/EppO/rolify/wiki]
-* {Usage}[https://github.com/EppO/rolify/wiki/Usage]: all the available commands and the 
+* {Usage}[https://github.com/EppO/rolify/wiki/Usage]: all the available commands
 * {Tutorial}[https://github.com/EppO/rolify/wiki/Tutorial]: how to use {rolify}[http://eppo.github.com/rolify] with {Devise}[https://github.com/plataformatec/devise] and {CanCan}[https://github.com/ryanb/cancan].
 
 == Questions or Problems?
