@@ -8,6 +8,7 @@ module Rolify
       source_root File.expand_path('../templates', __FILE__)
       argument :role_cname, :type => :string, :default => "Role"
       argument :user_cname, :type => :string, :default => "User"
+      argument :orm_adapter, :type => :string, :default => "active_record"
       class_option :dynamic_shortcuts, :type => :boolean, :default => false
 
       desc "Generates a model with the given NAME and a migration file."
