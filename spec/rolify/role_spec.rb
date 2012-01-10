@@ -83,7 +83,7 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.has_role "admin"
       @admin.has_role "staff"
       @admin.has_role "moderator", @forum.first
-      @admin.has_role "moderator", @forum.where(name: "forum 2").first
+      @admin.has_role "moderator", @forum.where(:name => "forum 2").first
       @admin.has_role "manager", @group
     end
 
@@ -177,7 +177,7 @@ shared_examples_for "Rolify module" do |dynamic|
       expect { @admin.has_no_role("moderator") }.to change{ @admin.roles.size }.by(-2)
       @admin.has_role?("staff").should be(true)
       @admin.has_role?("moderator", @forum.first).should be(false)
-      @admin.has_role?("moderator", @forum.where(name: "forum 2").first).should be(false)
+      @admin.has_role?("moderator", @forum.where(:name => "forum 2").first).should be(false)
       @admin.has_role?("manager", @group).should be(true)
     end
 
@@ -188,7 +188,7 @@ shared_examples_for "Rolify module" do |dynamic|
 
   context "with an instance scoped role" do
     before do
-      @moderator = Rolify.user_cname.where(login: "moderator").first
+      @moderator = Rolify.user_cname.where(:login => "moderator").first
       @moderator.has_role "moderator", @forum.first
       @moderator.has_role "soldier"
       ActiveRecord::Base.logger = nil
@@ -291,7 +291,7 @@ shared_examples_for "Rolify module" do |dynamic|
 
   context "with a class scoped role" do
     before do
-      @manager = Rolify.user_cname.where(login: "god").first
+      @manager = Rolify.user_cname.where(:login => "god").first
       @manager.has_role "manager", @forum
       @manager.has_role "moderator", @forum.first
       @manager.has_role "moderator", @forum.last
@@ -407,7 +407,7 @@ shared_examples_for "Rolify module" do |dynamic|
 
   context "with different roles" do 
     before do 
-      @user = Rolify.user_cname.where(login: "zombie").first
+      @user = Rolify.user_cname.where(:login => "zombie").first
       @user.has_role "admin"
       @user.has_role "anonymous"
       @user.has_role "moderator", @forum.first
@@ -415,8 +415,8 @@ shared_examples_for "Rolify module" do |dynamic|
       @user.has_role "manager", @forum
       @user.has_role "leader", @group
       Rolify.role_cname.create :name => "manager", :resource => @forum.first
-      Rolify.role_cname.create :name => "manager", :resource => @forum.where(name: "forum 2").first
-      Rolify.role_cname.create :name => "manager", :resource => @forum.where(name: "forum 3").first
+      Rolify.role_cname.create :name => "manager", :resource => @forum.where(:name => "forum 2").first
+      Rolify.role_cname.create :name => "manager", :resource => @forum.where(:name => "forum 3").first
     end
 
     it "should get a global role" do
