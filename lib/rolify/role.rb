@@ -100,44 +100,6 @@ module Rolify
       end unless !Rolify.dynamic_shortcuts
       super
     end
- 
-    private
- 
-    def sql_conditions(args, count = false)
-      conditions = []
-      count_conditions = [] if count
-      values = []
-      args.each do |arg|
-        if arg.is_a? Hash
-          a, v = build_query(arg[:name], arg[:resource])
-        elsif arg.is_a? String
-          a, v = build_query(arg)
-        else
-          raise ArgumentError, "Invalid argument type: only hash or string allowed"
-        end
-        conditions << a
-        count_conditions << self.roles.where(a, *v).select("COUNT(id)").to_sql + " > 0" if count
-        values += v
-      end
-      count ? [ conditions, values, count_conditions ] : [ conditions, values ]
-    end
-
-    def build_query(role, resource = nil)
-      return [ "name = ?", [ role ] ] if resource == :any
-      query = "((name = ?) AND (resource_type IS NULL) AND (resource_id IS NULL))"
-      values = [ role ]
-      if resource
-        query.insert(0, "(")
-        query += " OR ((name = ?) AND (resource_type = ?) AND (resource_id IS NULL))" 
-        values << role << (resource.is_a?(Class) ? resource.to_s : resource.class.name)
-        if !resource.is_a? Class
-          query += " OR ((name = ?) AND (resource_type = ?) AND (resource_id = ?))" 
-          values << role << resource.class.name << resource.id
-        end
-        query += ")"
-      end
-      [ query, values ]
-    end
 
   end
 
