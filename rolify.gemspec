@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   end
   s.add_development_dependency "activerecord", ">= 3.1.0"
   s.add_development_dependency "mongoid", ">= 2.3"
+  s.add_development_dependency "bson_ext"
   s.add_development_dependency "ammeter"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
