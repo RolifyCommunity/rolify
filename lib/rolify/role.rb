@@ -2,6 +2,7 @@ module Rolify
   @@role_cname = "Role"
   @@user_cname = "User"
   @@dynamic_shortcuts = false
+  @@orm = "ActiveRecord"
   
   def self.configure
     yield self if block_given?
@@ -31,13 +32,30 @@ module Rolify
     @@dynamic_shortcuts = is_dynamic
     self.user_cname.load_dynamic_methods if is_dynamic
   end
+  
+  def self.orm
+    @@orm
+  end
+  
+  def self.orm=(orm)
+    @@orm = orm
+    @@adapter = Rolify::Adapter.const_get(orm.camelize)
+  end
+  
+  def self.adapter
+    @@adapter ||= Rolify::Adapter::ActiveRecord
+  end
+  
+  def self.use_mongoid
+    self.orm = "mongoid"
+  end
 
   module Roles
 
     def has_role(role_name, resource = nil)
-      role = Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id(:name => role_name, 
-                                                                                        :resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
-                                                                                        :resource_id => (resource.id if resource && !resource.is_a?(Class)))
+      role = Rolify.adapter.find_or_create_by(role_name, 
+                                              (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
+                                              (resource.id if resource && !resource.is_a?(Class)))
       if !roles.include?(role)
         self.class.define_dynamic_method(role_name, resource) if Rolify.dynamic_shortcuts
         self.role_ids |= [role.id]
@@ -46,17 +64,17 @@ module Rolify
     alias_method :grant, :has_role
   
     def has_role?(role_name, resource = nil)
-      query, values = build_query(role_name, resource)
+      query, values = Rolify.adapter.build_query(role_name, resource)
       self.roles.where(query, *values).size > 0
     end
 
     def has_all_roles?(*args)
-      conditions, values, count = sql_conditions(args, true)
+      conditions, values, count = Rolify.adapter.build_conditions(self.roles, args, true)
       self.roles.where([ conditions.join(' OR '), *values ]).where(count.join(') AND (')).size > 0
     end
 
     def has_any_role?(*args)
-      conditions, values = sql_conditions(args)
+      conditions, values = Rolify.adapter.build_conditions(self.roles, args)
       self.roles.where([ conditions.join(' OR '), *values ]).size > 0
     end
   
