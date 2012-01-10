@@ -113,4 +113,30 @@ describe Rolify::Generators::RoleGenerator do
       it { should be_a_migration }
     end
   end
+  
+  describe 'specifying orm adapter' do 
+    before(:all) { arguments [ "Role", "User", "mongoid" ] }
+    
+    before { 
+      capture(:stdout) {
+        generator.create_file "app/models/user.rb" do
+          "class User < ActiveRecord::Base\nend"
+        end
+      }
+      run_generator
+    }
+      
+    describe 'config/initializers/rolify.rb' do
+      subject { file('config/initializers/rolify.rb') }
+      it { should exist }
+      it { should_not contain "# c.use_mongoid" }
+    end
+    
+    describe 'app/models/user.rb' do
+      subject { file('app/models/user.rb') }
+      it { should contain "include Rolify::Roles" }
+      it { should contain "extend Rolify::Dynamic" }
+      it { should contain "has_and_belongs_to_many :roles, :join_table => :users_roles" }
+    end
+  end
 end
