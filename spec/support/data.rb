@@ -1,16 +1,25 @@
 # Users
-User.create(:login => "admin")
-User.create(:login => "moderator")
-User.create(:login => "god")
-User.create(:login => "zombie")
-Customer.create(:login => "customer VIP")
-Customer.create(:login => "customer Doe")
-Customer.create(:login => "customer John")
-Customer.create(:login => "customer Edgar")
+[User, Muser].each do |user|
+  user.create(:login => "admin")
+  user.create(:login => "moderator")
+  user.create(:login => "god")
+  user.create(:login => "zombie")
+end
+
+[Customer, Mcustomer].each do |customer|
+  customer.create(:login => "admin")
+  customer.create(:login => "moderator")
+  customer.create(:login => "god")
+  customer.create(:login => "zombie")
+end
 
 # Resources
-Forum.create(:name => "forum 1")
-Forum.create(:name => "forum 2")
-Forum.create(:name => "forum 3")
-Group.create(:name => "group 1")
-Group.create(:name => "group 2")
+[Forum, Mforum].each do |forum|
+  forum.create(:name => "forum 1")
+  forum.create(:name => "forum 2")
+  forum.create(:name => "forum 3")
+end
+[Group, Mgroup].each do |group|
+  group.create(:name => "group 1")
+  group.create(:name => "group 2")
+end

@@ -4,6 +4,8 @@ shared_examples_for "Rolify module" do |dynamic|
   before(:all) do
     Rolify.user_cname = user_cname
     Rolify.role_cname = role_cname
+    @forum = forum
+    @group = group
     Rolify.dynamic_shortcuts = dynamic_shortcuts
     Rolify.role_cname.destroy_all
     Rolify.use_mongoid if defined? use_mongoid
@@ -13,7 +15,7 @@ shared_examples_for "Rolify module" do |dynamic|
     before(:all) do
       @admin = Rolify.user_cname.first
       @admin.has_role "admin"
-      @admin.has_role "moderator", Forum.first
+      @admin.has_role "moderator", @forum.first
     end
 
     it "should respond to has_role method" do 
@@ -64,7 +66,7 @@ shared_examples_for "Rolify module" do |dynamic|
       other_guy = Rolify.user_cname.last
       other_guy.has_role "superman"
       @admin.should respond_to(:is_superman?).with(0).arguments
-      other_guy.has_role("batman", Forum.first)
+      other_guy.has_role("batman", @forum.first)
       @admin.should respond_to(:is_batman_of?).with(1).arguments
       @admin.should respond_to(:is_batman?).with(0).arguments
     end
@@ -80,9 +82,9 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin = Rolify.user_cname.first
       @admin.has_role "admin"
       @admin.has_role "staff"
-      @admin.has_role "moderator", Forum.first
-      @admin.has_role "moderator", Forum.find(2)
-      @admin.has_role "manager", Group
+      @admin.has_role "moderator", @forum.first
+      @admin.has_role "moderator", @forum.where(name: "forum 2").first
+      @admin.has_role "manager", @group
     end
 
     it "should set a global role" do
@@ -106,8 +108,8 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should get any resource request" do
-      @admin.has_role?("admin", Forum.first).should be(true)
-      @admin.has_role?("admin", Forum).should be(true)
+      @admin.has_role?("admin", @forum.first).should be(true)
+      @admin.has_role?("admin", @forum).should be(true)
       @admin.has_role?("admin", :any).should be(true)
     end
 
@@ -118,16 +120,16 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should not get an instance scoped role" do
-      @admin.has_role?("moderator", Forum.last).should be(false)
+      @admin.has_role?("moderator", @forum.last).should be(false)
     end
 
     it "should not get a class scoped role" do
-      @admin.has_role?("manager", Forum).should be(false)
+      @admin.has_role?("manager", @forum).should be(false)
     end
 
     it "should not get inexisting role" do
       @admin.has_role?("dummy").should be(false)
-      @admin.has_role?("dumber", Forum.first).should be(false)
+      @admin.has_role?("dumber", @forum.first).should be(false)
     end
 
     it "should check if user has all of a global roles set" do
@@ -135,12 +137,12 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.has_all_roles?("admin", "staff").should be(true)
       @admin.has_all_roles?("admin", "dummy").should be(false)
       @admin.has_all_roles?("dummy", "dumber").should be(false)
-      @admin.has_all_roles?({ :name => "admin", :resource => Forum }, { :name => "admin", :resource => Group }).should be(true)
-      @admin.has_all_roles?({ :name => "admin", :resource => :any }, { :name => "admin", :resource => Group }).should be(true)
-      @admin.has_all_roles?({ :name => "admin", :resource => Forum }, { :name => "staff", :resource => Group.last }).should be(true)
-      @admin.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "admin", :resource => Forum.last }).should be(true)
-      @admin.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(false)
-      @admin.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "dummy", :resource => :any }).should be(false)
+      @admin.has_all_roles?({ :name => "admin", :resource => @forum }, { :name => "admin", :resource => @group }).should be(true)
+      @admin.has_all_roles?({ :name => "admin", :resource => :any }, { :name => "admin", :resource => @group }).should be(true)
+      @admin.has_all_roles?({ :name => "admin", :resource => @forum }, { :name => "staff", :resource => @group.last }).should be(true)
+      @admin.has_all_roles?({ :name => "admin", :resource => @forum.first }, { :name => "admin", :resource => @forum.last }).should be(true)
+      @admin.has_all_roles?({ :name => "admin", :resource => @forum.first }, { :name => "dummy", :resource => @forum.last }).should be(false)
+      @admin.has_all_roles?({ :name => "admin", :resource => @forum.first }, { :name => "dummy", :resource => :any }).should be(false)
     end
 
     it "should check if user has any of a global roles set" do
@@ -148,35 +150,35 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.has_any_role?("admin", "staff").should be(true)
       @admin.has_any_role?("admin", "moderator").should be(true)
       @admin.has_any_role?("dummy", "dumber").should be(false)
-      @admin.has_any_role?({ :name => "admin", :resource => Forum }, { :name => "admin", :resource => Group }).should be(true)
-      @admin.has_any_role?({ :name => "admin", :resource => :any }, { :name => "admin", :resource => Group }).should be(true)
-      @admin.has_any_role?({ :name => "admin", :resource => Forum }, { :name => "staff", :resource => Group.last }).should be(true)
-      @admin.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "admin", :resource => Forum.last }).should be(true)
-      @admin.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(true)
-      @admin.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "dummy", :resource => :any }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => @forum }, { :name => "admin", :resource => @group }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => :any }, { :name => "admin", :resource => @group }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => @forum }, { :name => "staff", :resource => @group.last }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => @forum.first }, { :name => "admin", :resource => @forum.last }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => @forum.first }, { :name => "dummy", :resource => @forum.last }).should be(true)
+      @admin.has_any_role?({ :name => "admin", :resource => @forum.first }, { :name => "dummy", :resource => :any }).should be(true)
     end
 
     it "should remove a global role of a user" do 
       expect { @admin.has_no_role("admin") }.to change{ @admin.roles.size }.by(-1)
       @admin.has_role?("admin").should be(false)
       @admin.has_role?("staff").should be(true)
-      @admin.has_role?("moderator", Forum.first).should be(true)
-      @admin.has_role?("manager", Group).should be(true)
+      @admin.has_role?("moderator", @forum.first).should be(true)
+      @admin.has_role?("manager", @group).should be(true)
     end
 
     it "should remove a class scoped role of a user" do
       expect { @admin.has_no_role("manager") }.to change{ @admin.roles.size }.by(-1)
       @admin.has_role?("staff").should be(true)
-      @admin.has_role?("moderator", Forum.first).should be(true)
-      @admin.has_role?("manager", Group).should be(false)
+      @admin.has_role?("moderator", @forum.first).should be(true)
+      @admin.has_role?("manager", @group).should be(false)
     end
     
     it "should remove two instance scoped roles of a user" do
       expect { @admin.has_no_role("moderator") }.to change{ @admin.roles.size }.by(-2)
       @admin.has_role?("staff").should be(true)
-      @admin.has_role?("moderator", Forum.first).should be(false)
-      @admin.has_role?("moderator", Forum.find(2)).should be(false)
-      @admin.has_role?("manager", Group).should be(true)
+      @admin.has_role?("moderator", @forum.first).should be(false)
+      @admin.has_role?("moderator", @forum.where(name: "forum 2").first).should be(false)
+      @admin.has_role?("manager", @group).should be(true)
     end
 
     it "should not remove another global role" do 
@@ -186,26 +188,26 @@ shared_examples_for "Rolify module" do |dynamic|
 
   context "with an instance scoped role" do
     before do
-      @moderator = Rolify.user_cname.find(2)
-      @moderator.has_role "moderator", Forum.first
+      @moderator = Rolify.user_cname.where(login: "moderator").first
+      @moderator.has_role "moderator", @forum.first
       @moderator.has_role "soldier"
       ActiveRecord::Base.logger = nil
     end
 
     it "should set an instance scoped role" do
-      expect { @moderator.has_role "visitor", Forum.last }.to change{ Rolify.role_cname.count }.by(1)
+      expect { @moderator.has_role "visitor", @forum.last }.to change{ Rolify.role_cname.count }.by(1)
       visitor = Rolify.role_cname.last
       visitor.name.should eq("visitor")
-      visitor.resource.should eq(Forum.last)
+      visitor.resource.should eq(@forum.last)
     end
 
     it "should not create another role if already existing" do
-      expect { @moderator.has_role "moderator", Forum.first }.not_to change{ Rolify.role_cname.count }
-      expect { @moderator.has_role "moderator", Forum.first }.not_to change{ @moderator.roles.size }
+      expect { @moderator.has_role "moderator", @forum.first }.not_to change{ Rolify.role_cname.count }
+      expect { @moderator.has_role "moderator", @forum.first }.not_to change{ @moderator.roles.size }
     end
 
     it "should get an instance scoped role" do
-      @moderator.has_role?("moderator", Forum.first).should be(true)
+      @moderator.has_role?("moderator", @forum.first).should be(true)
     end
 
     it "should get any of instance scoped role" do
@@ -217,14 +219,14 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should not get an instance scoped role when asking for a class scoped" do 
-      @moderator.has_role?("moderator", Forum).should be(false)
+      @moderator.has_role?("moderator", @forum).should be(false)
     end
 
     it "should be able to use dynamic shortcut", :if => dynamic do
       @moderator.is_moderator?.should be(false)
-      @moderator.is_moderator_of?(Forum.first).should be(true)
-      @moderator.is_moderator_of?(Forum.last).should be(false)
-      @moderator.is_moderator_of?(Forum).should be(false)
+      @moderator.is_moderator_of?(@forum.first).should be(true)
+      @moderator.is_moderator_of?(@forum.last).should be(false)
+      @moderator.is_moderator_of?(@forum).should be(false)
     end
 
     it "should not get a global role" do
@@ -232,85 +234,85 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should not get the same role on another resource" do
-      Rolify.role_cname.create(:name => "moderator", :resource => Forum.last)
-      @moderator.has_role?("moderator", Forum.last).should be(false)
+      Rolify.role_cname.create(:name => "moderator", :resource => @forum.last)
+      @moderator.has_role?("moderator", @forum.last).should be(false)
     end
 
     it "should not get the another role on the same resource" do
-      Rolify.role_cname.create(:name => "tourist", :resource => Forum.first)
-      @moderator.has_role?("tourist", Forum.first).should be(false)
+      Rolify.role_cname.create(:name => "tourist", :resource => @forum.first)
+      @moderator.has_role?("tourist", @forum.first).should be(false)
       @moderator.has_role?("tourist", :any).should be(false)
     end
 
     it "should not get inexisting role" do
-      @moderator.has_role?("dummy", Forum.last).should be(false)
+      @moderator.has_role?("dummy", @forum.last).should be(false)
       @moderator.has_role?("dumber").should be(false)
     end
 
     it "should check if user has all of a scoped roles set" do
-      @moderator.has_role "visitor", Forum.last
-      @moderator.has_all_roles?({ :name => "visitor", :resource => Forum.last }).should be(true)
-      @moderator.has_all_roles?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_role "visitor", @forum.last
+      @moderator.has_all_roles?({ :name => "visitor", :resource => @forum.last }).should be(true)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => @forum.last }).should be(true)
       @moderator.has_all_roles?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => :any }).should be(true)
       @moderator.has_all_roles?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => :any }).should be(true)
-      @moderator.has_all_roles?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => Forum }).should be(false)
-      @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, { :name => "visitor", :resource => Forum.last }).should be(true)
-      @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }).should be(false)
-      @moderator.has_all_roles?({ :name => "moderator", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(false)
-      @moderator.has_all_roles?({ :name => "dummy", :resource => Forum.first }, { :name => "dumber", :resource => Forum.last }).should be(false)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => @forum }).should be(false)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => @forum.first }, { :name => "visitor", :resource => @forum.last }).should be(true)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => @forum.first }, { :name => "moderator", :resource => @forum.last }).should be(false)
+      @moderator.has_all_roles?({ :name => "moderator", :resource => @forum.first }, { :name => "dummy", :resource => @forum.last }).should be(false)
+      @moderator.has_all_roles?({ :name => "dummy", :resource => @forum.first }, { :name => "dumber", :resource => @forum.last }).should be(false)
     end
 
     it "should check if user has any of a scoped roles set" do
-      @moderator.has_role "visitor", Forum.last
-      @moderator.has_any_role?({ :name => "visitor", :resource => Forum.last }).should be(true)
-      @moderator.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "visitor", :resource => Forum.last }).should be(true)
-      @moderator.has_any_role?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => Forum.last }).should be(true)
+      @moderator.has_role "visitor", @forum.last
+      @moderator.has_any_role?({ :name => "visitor", :resource => @forum.last }).should be(true)
+      @moderator.has_any_role?({ :name => "moderator", :resource => @forum.first }, { :name => "visitor", :resource => @forum.last }).should be(true)
+      @moderator.has_any_role?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => @forum.last }).should be(true)
       @moderator.has_any_role?({ :name => "moderator", :resource => :any }, { :name => "visitor", :resource => :any}).should be(true)
-      @moderator.has_any_role?({ :name => "moderator", :resource => Forum }, { :name => "visitor", :resource => :any }).should be(true)
-      @moderator.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }).should be(true)
-      @moderator.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be(true)
-      @moderator.has_any_role?({ :name => "dummy", :resource => Forum.first }, { :name => "dumber", :resource => Forum.last }).should be(false)
+      @moderator.has_any_role?({ :name => "moderator", :resource => @forum }, { :name => "visitor", :resource => :any }).should be(true)
+      @moderator.has_any_role?({ :name => "moderator", :resource => @forum.first }, { :name => "moderator", :resource => @forum.last }).should be(true)
+      @moderator.has_any_role?({ :name => "moderator", :resource => @forum.first }, { :name => "dummy", :resource => @forum.last }).should be(true)
+      @moderator.has_any_role?({ :name => "dummy", :resource => @forum.first }, { :name => "dumber", :resource => @forum.last }).should be(false)
     end
 
     it "should not remove a global role of a user" do 
-      expect { @moderator.has_no_role("soldier", Forum.first) }.not_to change{ @moderator.roles.size }
+      expect { @moderator.has_no_role("soldier", @forum.first) }.not_to change{ @moderator.roles.size }
     end
 
     it "should remove a scoped role of a user" do 
-      expect { @moderator.has_no_role("moderator", Forum.first) }.to change{ @moderator.roles.size }.by(-1)
-      @moderator.has_role?("moderator", Forum.first).should be(false)
+      expect { @moderator.has_no_role("moderator", @forum.first) }.to change{ @moderator.roles.size }.by(-1)
+      @moderator.has_role?("moderator", @forum.first).should be(false)
       @moderator.has_role?("soldier").should be(true)
     end
 
     it "should not remove another scoped role" do
-      expect { @moderator.has_no_role("visitor", Forum.first) }.not_to change{ @moderator.roles.size }
+      expect { @moderator.has_no_role("visitor", @forum.first) }.not_to change{ @moderator.roles.size }
     end
   end
 
   context "with a class scoped role" do
     before do
-      @manager = Rolify.user_cname.find(3)
-      @manager.has_role "manager", Forum
-      @manager.has_role "moderator", Forum.first
-      @manager.has_role "moderator", Forum.last
+      @manager = Rolify.user_cname.where(login: "god").first
+      @manager.has_role "manager", @forum
+      @manager.has_role "moderator", @forum.first
+      @manager.has_role "moderator", @forum.last
       @manager.has_role "warrior"
     end
 
     it "should set a class scoped role" do
-      expect { @manager.has_role "player", Forum }.to change{ Rolify.role_cname.count }.by(1)
+      expect { @manager.has_role "player", @forum }.to change{ Rolify.role_cname.count }.by(1)
       player = Rolify.role_cname.last
       player.name.should eq("player")
-      player.resource_type.should eq(Forum.to_s)
+      player.resource_type.should eq(@forum.to_s)
     end
 
     it "should not create another role if already existing" do
-      expect { @manager.has_role "manager", Forum }.not_to change{ Rolify.role_cname.count }
-      expect { @manager.has_role "manager", Forum }.not_to change{ @manager.roles.size }
+      expect { @manager.has_role "manager", @forum }.not_to change{ Rolify.role_cname.count }
+      expect { @manager.has_role "manager", @forum }.not_to change{ @manager.roles.size }
     end
 
     it "should get a class scoped role" do
-      @manager.has_role?("manager", Forum).should be(true)
-      @manager.has_role?("manager", Forum.first).should be(true)
+      @manager.has_role?("manager", @forum).should be(true)
+      @manager.has_role?("manager", @forum.first).should be(true)
     end
 
     it "should get any of class scoped role" do
@@ -323,10 +325,10 @@ shared_examples_for "Rolify module" do |dynamic|
 
     it "should be able to use dynamic shortcut", :if => dynamic do
       @manager.is_manager?.should be(false)
-      @manager.is_manager_of?(Forum.first).should be(true)
-      @manager.is_manager_of?(Forum.last).should be(true)
-      @manager.is_manager_of?(Forum).should be(true)
-      @manager.is_manager_of?(Group).should be(false)
+      @manager.is_manager_of?(@forum.first).should be(true)
+      @manager.is_manager_of?(@forum.last).should be(true)
+      @manager.is_manager_of?(@forum).should be(true)
+      @manager.is_manager_of?(@group).should be(false)
     end
 
     it "should not get a global role" do
@@ -334,87 +336,87 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should not get the same role on another resource" do
-      Rolify.role_cname.create(:name => "manager", :resource_type => "Group")
-      @manager.has_role?("manager", Group).should be(false)
+      Rolify.role_cname.create(:name => "manager", :resource_type => "@group")
+      @manager.has_role?("manager", @group).should be(false)
     end
 
     it "should not get the another role on the same resource" do
-      Rolify.role_cname.create(:name => "member", :resource_type => "Forum")
-      @manager.has_role?("member", Forum).should be(false)
+      Rolify.role_cname.create(:name => "member", :resource_type => "@forum")
+      @manager.has_role?("member", @forum).should be(false)
       @manager.has_role?("member", :any).should be(false)
     end
 
     it "should not get inexisting role" do
-      @manager.has_role?("dummy", Forum).should be(false)
+      @manager.has_role?("dummy", @forum).should be(false)
       @manager.has_role?("dumber").should be(false)
     end
 
     it "should check if user has all of a scoped roles set" do
-      @manager.has_role "player", Forum
-      @manager.has_all_roles?({ :name => "player", :resource => Forum }).should be(true)
-      @manager.has_all_roles?({ :name => "manager", :resource => Forum }, { :name => "player", :resource => Forum }).should be(true)
-      @manager.has_all_roles?({ :name => "manager", :resource => :any }, { :name => "player", :resource => Forum }).should be(true)
+      @manager.has_role "player", @forum
+      @manager.has_all_roles?({ :name => "player", :resource => @forum }).should be(true)
+      @manager.has_all_roles?({ :name => "manager", :resource => @forum }, { :name => "player", :resource => @forum }).should be(true)
+      @manager.has_all_roles?({ :name => "manager", :resource => :any }, { :name => "player", :resource => @forum }).should be(true)
       @manager.has_all_roles?({ :name => "manager", :resource => :any }, { :name => "player", :resource => :any }).should be(true)
-      @manager.has_all_roles?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => Forum }).should be(false)
-      @manager.has_all_roles?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => :any }).should be(false)
-      @manager.has_all_roles?({ :name => "dummy", :resource => Forum }, { :name => "dumber", :resource => Group }).should be(false)
-      @manager.has_all_roles?({ :name => "manager", :resource => Forum.first }, { :name => "manager", :resource => Forum.last }).should be(true)
-      @manager.has_all_roles?({ :name => "manager", :resource => Group }, { :name => "moderator", :resource => Forum.first }).should be(false)
-      @manager.has_all_roles?({ :name => "manager", :resource => Forum.first }, { :name => "moderator", :resource => Forum }).should be(false)
-      @manager.has_all_roles?({ :name => "manager", :resource => Forum.last }, { :name => "warrior", :resource => Forum.last }).should be(true)
+      @manager.has_all_roles?({ :name => "manager", :resource => @forum }, { :name => "dummy", :resource => @forum }).should be(false)
+      @manager.has_all_roles?({ :name => "manager", :resource => @forum }, { :name => "dummy", :resource => :any }).should be(false)
+      @manager.has_all_roles?({ :name => "dummy", :resource => @forum }, { :name => "dumber", :resource => @group }).should be(false)
+      @manager.has_all_roles?({ :name => "manager", :resource => @forum.first }, { :name => "manager", :resource => @forum.last }).should be(true)
+      @manager.has_all_roles?({ :name => "manager", :resource => @group }, { :name => "moderator", :resource => @forum.first }).should be(false)
+      @manager.has_all_roles?({ :name => "manager", :resource => @forum.first }, { :name => "moderator", :resource => @forum }).should be(false)
+      @manager.has_all_roles?({ :name => "manager", :resource => @forum.last }, { :name => "warrior", :resource => @forum.last }).should be(true)
     end
 
     it "should check if user has any of a scoped roles set" do
-      @manager.has_any_role?({ :name => "player", :resource => Forum }).should be(true)
-      @manager.has_any_role?({ :name => "manager", :resource => Forum }, { :name => "player", :resource => Forum }).should be(true)
-      @manager.has_any_role?({ :name => "manager", :resource => Forum }, { :name => "player", :resource => :any }).should be(true)
+      @manager.has_any_role?({ :name => "player", :resource => @forum }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => @forum }, { :name => "player", :resource => @forum }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => @forum }, { :name => "player", :resource => :any }).should be(true)
       @manager.has_any_role?({ :name => "manager", :resource => :any }, { :name => "player", :resource => :any }).should be(true)
-      @manager.has_any_role?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => Forum }).should be(true)
-      @manager.has_any_role?({ :name => "manager", :resource => Forum }, { :name => "dummy", :resource => :any }).should be(true)
-      @manager.has_any_role?({ :name => "dummy", :resource => Forum }, { :name => "dumber", :resource => Group }).should be(false)
-      @manager.has_any_role?({ :name => "manager", :resource => Forum.first }, { :name => "manager", :resource => Forum.last }).should be(true)
-      @manager.has_any_role?({ :name => "manager", :resource => Group }, { :name => "moderator", :resource => Forum.first }).should be(true)
-      @manager.has_any_role?({ :name => "manager", :resource => Forum.first }, { :name => "moderator", :resource => Forum }).should be(true)
-      @manager.has_any_role?({ :name => "manager", :resource => Forum.last }, { :name => "warrior", :resource => Forum.last }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => @forum }, { :name => "dummy", :resource => @forum }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => @forum }, { :name => "dummy", :resource => :any }).should be(true)
+      @manager.has_any_role?({ :name => "dummy", :resource => @forum }, { :name => "dumber", :resource => @group }).should be(false)
+      @manager.has_any_role?({ :name => "manager", :resource => @forum.first }, { :name => "manager", :resource => @forum.last }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => @group }, { :name => "moderator", :resource => @forum.first }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => @forum.first }, { :name => "moderator", :resource => @forum }).should be(true)
+      @manager.has_any_role?({ :name => "manager", :resource => @forum.last }, { :name => "warrior", :resource => @forum.last }).should be(true)
     end
 
     it "should not remove a global role of a user" do 
-      expect { @manager.has_no_role("warrior", Forum) }.not_to change{ @manager.roles.size }
+      expect { @manager.has_no_role("warrior", @forum) }.not_to change{ @manager.roles.size }
     end
 
     it "should remove a class scoped role of a user" do 
-      expect { @manager.has_no_role("manager", Forum) }.to change{ @manager.roles.size }.by(-1)
-      @manager.has_role?("manager", Forum).should be(false)
-      @manager.has_role?("moderator", Forum.first).should be(true)
-      @manager.has_role?("moderator", Forum.last).should be(true)
+      expect { @manager.has_no_role("manager", @forum) }.to change{ @manager.roles.size }.by(-1)
+      @manager.has_role?("manager", @forum).should be(false)
+      @manager.has_role?("moderator", @forum.first).should be(true)
+      @manager.has_role?("moderator", @forum.last).should be(true)
       @manager.has_role?("warrior").should be(true)
     end
     
     it "should remove two instance scoped roles of a user" do 
-      expect { @manager.has_no_role("moderator", Forum) }.to change{ @manager.roles.size }.by(-2)
-      @manager.has_role?("manager", Forum).should be(true)
-      @manager.has_role?("moderator", Forum.first).should be(false)
-      @manager.has_role?("moderator", Forum.last).should be(false)
+      expect { @manager.has_no_role("moderator", @forum) }.to change{ @manager.roles.size }.by(-2)
+      @manager.has_role?("manager", @forum).should be(true)
+      @manager.has_role?("moderator", @forum.first).should be(false)
+      @manager.has_role?("moderator", @forum.last).should be(false)
       @manager.has_role?("warrior").should be(true)
     end
 
     it "should not remove another scoped role" do
-      expect { @manager.has_no_role("visitor", Forum.first) }.not_to change{ @manager.roles.size }
+      expect { @manager.has_no_role("visitor", @forum.first) }.not_to change{ @manager.roles.size }
     end
   end
 
   context "with different roles" do 
     before do 
-      @user = Rolify.user_cname.find(4)
+      @user = Rolify.user_cname.where(login: "zombie").first
       @user.has_role "admin"
       @user.has_role "anonymous"
-      @user.has_role "moderator", Forum.first
-      @user.has_role "visitor", Forum.last
-      @user.has_role "manager", Forum
-      @user.has_role "leader", Group
-      Rolify.role_cname.create :name => "manager", :resource => Forum.find(1)
-      Rolify.role_cname.create :name => "manager", :resource => Forum.find(2)
-      Rolify.role_cname.create :name => "manager", :resource => Forum.find(3)
+      @user.has_role "moderator", @forum.first
+      @user.has_role "visitor", @forum.last
+      @user.has_role "manager", @forum
+      @user.has_role "leader", @group
+      Rolify.role_cname.create :name => "manager", :resource => @forum.first
+      Rolify.role_cname.create :name => "manager", :resource => @forum.where(name: "forum 2").first
+      Rolify.role_cname.create :name => "manager", :resource => @forum.where(name: "forum 3").first
     end
 
     it "should get a global role" do
@@ -423,46 +425,46 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should get an instance scoped role" do
-      @user.has_role?("moderator", Forum.first).should be(true)
-      @user.has_role?("visitor", Forum.last).should be(true)
+      @user.has_role?("moderator", @forum.first).should be(true)
+      @user.has_role?("visitor", @forum.last).should be(true)
     end
 
     it "should get an class scoped role" do
-      @user.has_role?("manager", Forum).should be(true)
-      @user.has_role?("leader", Group).should be(true)
+      @user.has_role?("manager", @forum).should be(true)
+      @user.has_role?("leader", @group).should be(true)
     end
 
     it "should check if user has all of a mix of global and scoped roles set" do
-      @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum }).should be(true)
-      @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum }).should be(false)
-      @user.has_all_roles?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => Forum }).should be(true)
+      @user.has_all_roles?("admin", { :name => "moderator", :resource => @forum.first }, { :name => "manager", :resource => @forum }).should be(true)
+      @user.has_all_roles?("admin", { :name => "moderator", :resource => @forum.last }, { :name => "manager", :resource => @forum }).should be(false)
+      @user.has_all_roles?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => @forum }).should be(true)
       @user.has_all_roles?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => :any }).should be(true)
-      @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Group }).should be(false)
-      @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Group.first }).should be(false)
-      @user.has_all_roles?({ :name => "admin", :resource => Forum }, { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum }).should be(true)
-      @user.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum }).should be(true)
-      @user.has_all_roles?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum.first }).should be(true)
-      @user.has_all_roles?("dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
-      @user.has_all_roles?("admin", "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
-      @user.has_all_roles?({ :name => "manager", :resource => Forum.last }, "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
-      @user.has_all_roles?("admin", { :name => "dumber", :resource => Forum.last }, { :name => "manager", :resource => Forum.last }).should be(false)
-      @user.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum.last }).should be(true)
-      @user.has_all_roles?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => :any }, { :name => "manager", :resource => Forum.last }).should be(true)
+      @user.has_all_roles?("admin", { :name => "moderator", :resource => @forum.first }, { :name => "manager", :resource => @group }).should be(false)
+      @user.has_all_roles?("admin", { :name => "moderator", :resource => @forum.first }, { :name => "manager", :resource => @group.first }).should be(false)
+      @user.has_all_roles?({ :name => "admin", :resource => @forum }, { :name => "moderator", :resource => @forum.first }, { :name => "manager", :resource => @forum }).should be(true)
+      @user.has_all_roles?({ :name => "admin", :resource => @forum.first }, { :name => "moderator", :resource => @forum.first }, { :name => "manager", :resource => @forum }).should be(true)
+      @user.has_all_roles?("admin", { :name => "moderator", :resource => @forum.first }, { :name => "manager", :resource => @forum.first }).should be(true)
+      @user.has_all_roles?("dummy", { :name => "dumber", :resource => @forum.last }, { :name => "dumberer", :resource => @forum }).should be(false)
+      @user.has_all_roles?("admin", "dummy", { :name => "dumber", :resource => @forum.last }, { :name => "dumberer", :resource => @forum }).should be(false)
+      @user.has_all_roles?({ :name => "manager", :resource => @forum.last }, "dummy", { :name => "dumber", :resource => @forum.last }, { :name => "dumberer", :resource => @forum }).should be(false)
+      @user.has_all_roles?("admin", { :name => "dumber", :resource => @forum.last }, { :name => "manager", :resource => @forum.last }).should be(false)
+      @user.has_all_roles?({ :name => "admin", :resource => @forum.first }, { :name => "moderator", :resource => @forum.first }, { :name => "manager", :resource => @forum.last }).should be(true)
+      @user.has_all_roles?({ :name => "admin", :resource => @forum.first }, { :name => "moderator", :resource => :any }, { :name => "manager", :resource => @forum.last }).should be(true)
     end
 
     it "should check if user has any of a mix of global and scoped roles set" do
-      @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum }).should be(true)
-      @user.has_any_role?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => Forum }).should be(true)
-      @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => :any }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => @forum.first }, { :name => "manager", :resource => @forum }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => @forum }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => @forum.first }, { :name => "manager", :resource => :any }).should be(true)
       @user.has_any_role?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => :any }).should be(true)
-      @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum }).should be(true)
-      @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Group }).should be(true)
-      @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Group.first }).should be(true)
-      @user.has_any_role?({ :name => "admin", :resource => Forum }, { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum }).should be(true)
-      @user.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum }).should be(true)
-      @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum.first }).should be(true)
-      @user.has_any_role?("dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
-      @user.has_any_role?({ :name => "manager", :resource => Forum.last }, "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => @forum.last }, { :name => "manager", :resource => @forum }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => @forum.last }, { :name => "manager", :resource => @group }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => @forum.last }, { :name => "manager", :resource => @group.first }).should be(true)
+      @user.has_any_role?({ :name => "admin", :resource => @forum }, { :name => "moderator", :resource => @forum.last }, { :name => "manager", :resource => @forum }).should be(true)
+      @user.has_any_role?({ :name => "admin", :resource => @forum.first }, { :name => "moderator", :resource => @forum.last }, { :name => "manager", :resource => @forum }).should be(true)
+      @user.has_any_role?("admin", { :name => "moderator", :resource => @forum.last }, { :name => "manager", :resource => @forum.first }).should be(true)
+      @user.has_any_role?("dummy", { :name => "dumber", :resource => @forum.last }, { :name => "dumberer", :resource => @forum }).should be(false)
+      @user.has_any_role?({ :name => "manager", :resource => @forum.last }, "dummy", { :name => "dumber", :resource => @forum.last }, { :name => "dumberer", :resource => @forum }).should be(true)
     end
   end
 
@@ -475,6 +477,8 @@ describe Rolify do
         let(:user_cname) { "User" } 
         let(:role_cname) { "Role" }
         let(:dynamic_shortcuts) { true }
+        let(:forum) { Forum }
+        let(:group) { Group }
       end
     end
 
@@ -483,6 +487,8 @@ describe Rolify do
         let(:user_cname) { "User" } 
         let(:role_cname) { "Role" }
         let(:dynamic_shortcuts) { false }
+        let(:forum) { Forum }
+        let(:group) { Group }
       end
     end
   
@@ -491,6 +497,8 @@ describe Rolify do
         let(:user_cname) { "Customer" }
         let(:role_cname) { "Privilege" }
         let(:dynamic_shortcuts) { true }
+        let(:forum) { Forum }
+        let(:group) { Group }
       end
     end
   
@@ -499,45 +507,55 @@ describe Rolify do
         let(:user_cname) { "Customer" }
         let(:role_cname) { "Privilege" }
         let(:dynamic_shortcuts) { false }
+        let(:forum) { Forum }
+        let(:group) { Group }
       end
     end
   end
   
-# context "using Mongoid adapter" do 
-#    context "using default Role and User class names with dynamic shortcuts", true do 
-#      it_behaves_like "Rolify module" do
-#        let(:user_cname) { "User" } 
-#        let(:role_cname) { "Role" }
-#        let(:dynamic_shortcuts) { true }
-#        let(:use_mongoid) { true }
-#      end
-#    end
-#
-#    context "using default Role and User class names without dynamic shortcuts", false do 
-#      it_behaves_like "Rolify module" do
-#        let(:user_cname) { "User" } 
-#        let(:role_cname) { "Role" }
-#        let(:dynamic_shortcuts) { false }
-#        let(:use_mongoid) { true }
-#      end
-#    end
-#
-#    context "using custom User and Role class names with dynamic shortcuts", true do 
-#      it_behaves_like "Rolify module" do
-#        let(:user_cname) { "Customer" }
-#        let(:role_cname) { "Privilege" }
-#        let(:dynamic_shortcuts) { true }
-#        let(:use_mongoid) { true }
-#      end
-#    end
-#
-#    context "using custom User and Role class names without dynamic shortcuts", false do 
-#      it_behaves_like "Rolify module" do
-#        let(:user_cname) { "Customer" }
-#        let(:role_cname) { "Privilege" }
-#        let(:dynamic_shortcuts) { false }
-#        let(:use_mongoid) { true }
-#      end
-#    end
-#  end
+ #context "using Mongoid adapter" do 
+ #   context "using default Role and User class names with dynamic shortcuts", true do 
+ #     it_behaves_like "Rolify module" do
+ #       let(:user_cname) { "Muser" } 
+ #       let(:role_cname) { "Mrole" }
+ #       let(:dynamic_shortcuts) { true }
+ #       let(:use_mongoid) { true }
+ #       let(:forum) { Mforum }
+ #       let(:group) { Mgroup }
+ #     end
+ #   end
+ #   
+ #   context "using default Role and User class names without dynamic shortcuts", false do 
+ #     it_behaves_like "Rolify module" do
+ #       let(:user_cname) { "Muser" } 
+ #       let(:role_cname) { "Mrole" }
+ #       let(:dynamic_shortcuts) { false }
+ #       let(:use_mongoid) { true }
+ #       let(:forum) { Mforum }
+ #       let(:group) { Mgroup }
+ #     end
+ #   end
+ #   
+ #   context "using custom User and Role class names with dynamic shortcuts", true do 
+ #     it_behaves_like "Rolify module" do
+ #       let(:user_cname) { "Mcustomer" }
+ #       let(:role_cname) { "Mprivilege" }
+ #       let(:dynamic_shortcuts) { true }
+ #       let(:use_mongoid) { true }
+ #       let(:forum) { Mforum }
+ #       let(:group) { Mgroup }
+ #     end
+ #   end
+ #   
+ #   context "using custom User and Role class names without dynamic shortcuts", false do 
+ #     it_behaves_like "Rolify module" do
+ #       let(:user_cname) { "Mcustomer" }
+ #       let(:role_cname) { "Mprivilege" }
+ #       let(:dynamic_shortcuts) { false }
+ #       let(:use_mongoid) { true }
+ #       let(:forum) { Mforum }
+ #       let(:group) { Mgroup }
+ #     end
+ #   end
+ #end
 end
