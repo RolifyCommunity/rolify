@@ -34,7 +34,7 @@ class Muser
   extend Rolify::Dynamic
   has_and_belongs_to_many :mroles
   
-  field :login, type: String
+  field :login, :type => String
 end
 
 class Mrole
@@ -42,19 +42,19 @@ class Mrole
   has_and_belongs_to_many :musers
   belongs_to :resource, :polymorphic => true
   
-  field :name, type: String
+  field :name, :type => String
 end
 
 class Mforum
   include Mongoid::Document
   
-  field :name, type: String
+  field :name, :type => String
 end
 
 class Mgroup
   include Mongoid::Document
   
-  field :name, type: String
+  field :name, :type => String
 end
 
 class Mcustomer
@@ -63,7 +63,7 @@ class Mcustomer
   extend Rolify::Dynamic
   has_and_belongs_to_many :roles, :class_name => "Mprivilege"
   
-  field :login, type: String
+  field :login, :type => String
 end
 
 class Mprivilege
@@ -71,7 +71,7 @@ class Mprivilege
   has_and_belongs_to_many :mcustomers
   belongs_to :resource, :polymorphic => true
   
-  field :name, type: String
+  field :name, :type => String
 end
 
 #ActiveRecord::Base.instance_eval do
