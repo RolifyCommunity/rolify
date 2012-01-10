@@ -30,7 +30,8 @@ module Rolify
           count_conditions << relation.where(a, *v).select("COUNT(id)").to_sql + " > 0" if count
           values += v
         end
-        count ? [ conditions, values, count_conditions ] : [ conditions, values ]
+        conditions = conditions.join(' OR ')
+        count ? [ conditions, values, count_conditions.join(') AND (') ] : [ conditions, values ]
       end
       
       def self.build_query(role, resource = nil)

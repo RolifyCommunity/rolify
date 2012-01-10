@@ -70,12 +70,12 @@ module Rolify
 
     def has_all_roles?(*args)
       conditions, values, count = Rolify.adapter.build_conditions(self.roles, args, true)
-      self.roles.where([ conditions.join(' OR '), *values ]).where(count.join(') AND (')).size > 0
+      self.roles.where([ conditions, *values ]).where(count).size > 0
     end
 
     def has_any_role?(*args)
       conditions, values = Rolify.adapter.build_conditions(self.roles, args)
-      self.roles.where([ conditions.join(' OR '), *values ]).size > 0
+      self.roles.where([ conditions, *values ]).size > 0
     end
   
     def has_no_role(role_name, resource = nil)
