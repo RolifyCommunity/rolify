@@ -6,6 +6,7 @@ shared_examples_for "Rolify module" do |dynamic|
     Rolify.role_cname = role_cname
     Rolify.dynamic_shortcuts = dynamic_shortcuts
     Rolify.role_cname.destroy_all
+    Rolify.orm = orm
   end
   
   context "in a Instance level" do 
@@ -468,35 +469,79 @@ shared_examples_for "Rolify module" do |dynamic|
 end
 
 describe Rolify do
-  context "using default Role and User class names with dynamic shortcuts", true do 
-    it_behaves_like "Rolify module" do
-      let(:user_cname) { "User" } 
-      let(:role_cname) { "Role" }
-      let(:dynamic_shortcuts) { true }
+  context "using ActiveRecord adapter" do 
+    context "using default Role and User class names with dynamic shortcuts", true do 
+      it_behaves_like "Rolify module" do
+        let(:user_cname) { "User" } 
+        let(:role_cname) { "Role" }
+        let(:dynamic_shortcuts) { true }
+        let(:orm) { "active_record" }
+      end
     end
-  end
 
-  context "using default Role and User class names without dynamic shortcuts", false do 
-    it_behaves_like "Rolify module" do
-      let(:user_cname) { "User" } 
-      let(:role_cname) { "Role" }
-      let(:dynamic_shortcuts) { false }
+    context "using default Role and User class names without dynamic shortcuts", false do 
+      it_behaves_like "Rolify module" do
+        let(:user_cname) { "User" } 
+        let(:role_cname) { "Role" }
+        let(:dynamic_shortcuts) { false }
+        let(:orm) { "active_record" }
+      end
+    end
+  
+    context "using custom User and Role class names with dynamic shortcuts", true do 
+      it_behaves_like "Rolify module" do
+        let(:user_cname) { "Customer" }
+        let(:role_cname) { "Privilege" }
+        let(:dynamic_shortcuts) { true }
+        let(:orm) { "active_record" }
+      end
+    end
+  
+    context "using custom User and Role class names without dynamic shortcuts", false do 
+      it_behaves_like "Rolify module" do
+        let(:user_cname) { "Customer" }
+        let(:role_cname) { "Privilege" }
+        let(:dynamic_shortcuts) { false }
+        let(:orm) { "active_record" }
+      end
     end
   end
   
-  context "using custom User and Role class names with dynamic shortcuts", true do 
-    it_behaves_like "Rolify module" do
-      let(:user_cname) { "Customer" }
-      let(:role_cname) { "Privilege" }
-      let(:dynamic_shortcuts) { true }
-    end
-  end
-  
-  context "using custom User and Role class names without dynamic shortcuts", false do 
-    it_behaves_like "Rolify module" do
-      let(:user_cname) { "Customer" }
-      let(:role_cname) { "Privilege" }
-      let(:dynamic_shortcuts) { false }
-    end
-  end
+#  context "using Mongoid adapter" do 
+#     context "using default Role and User class names with dynamic shortcuts", true do 
+#       it_behaves_like "Rolify module" do
+#         let(:user_cname) { "User" } 
+#         let(:role_cname) { "Role" }
+#         let(:dynamic_shortcuts) { true }
+#         let(:orm) { "mongoid" }
+#       end
+#     end
+#
+#     context "using default Role and User class names without dynamic shortcuts", false do 
+#       it_behaves_like "Rolify module" do
+#         let(:user_cname) { "User" } 
+#         let(:role_cname) { "Role" }
+#         let(:dynamic_shortcuts) { false }
+#         let(:orm) { "mongoid" }
+#       end
+#     end
+#
+#     context "using custom User and Role class names with dynamic shortcuts", true do 
+#       it_behaves_like "Rolify module" do
+#         let(:user_cname) { "Customer" }
+#         let(:role_cname) { "Privilege" }
+#         let(:dynamic_shortcuts) { true }
+#         let(:orm) { "mongoid" }
+#       end
+#     end
+#
+#     context "using custom User and Role class names without dynamic shortcuts", false do 
+#       it_behaves_like "Rolify module" do
+#         let(:user_cname) { "Customer" }
+#         let(:role_cname) { "Privilege" }
+#         let(:dynamic_shortcuts) { false }
+#         let(:orm) { "mongoid" }
+#       end
+#     end
+#   end
 end
