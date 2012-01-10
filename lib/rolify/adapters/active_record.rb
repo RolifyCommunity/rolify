@@ -4,14 +4,22 @@ module Rolify
     
     class ActiveRecord < Adapter::Base
       
-      def self.find(query, values)
-        where(query, *values)
+      def self.find(relation, role_name, resource)
+        query, values = Rolify.adapter.build_query(role_name, resource)
+        relation.where(query, *values)
       end
       
       def self.find_or_create_by(role_name, resource_type = nil, resource_id = nil)
         Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id( :name => role_name, 
                                                                                     :resource_type => resource_type, 
                                                                                     :resource_id => resource_id)
+      end
+      
+      def self.delete(relation, role_name, resource = nil)
+        role = relation.where(:name => role_name)
+        role = role.where(:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)) if resource
+        role = role.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)
+        relation.delete(role) if role
       end
       
       def self.build_conditions(relation, args, count = false)
@@ -31,7 +39,7 @@ module Rolify
           values += v
         end
         conditions = conditions.join(' OR ')
-        count ? [ conditions, values, count_conditions.join(') AND (') ] : [ conditions, values ]
+        count ? [ [ conditions, *values ], count_conditions.join(') AND (') ] : [ conditions, *values ]
       end
       
       def self.build_query(role, resource = nil)
