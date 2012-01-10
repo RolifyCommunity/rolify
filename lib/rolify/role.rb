@@ -2,7 +2,7 @@ module Rolify
   @@role_cname = "Role"
   @@user_cname = "User"
   @@dynamic_shortcuts = false
-  @@orm = "ActiveRecord"
+  @@orm = "active_record"
   
   def self.configure
     yield self if block_given?
