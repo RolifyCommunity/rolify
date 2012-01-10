@@ -64,25 +64,22 @@ module Rolify
     alias_method :grant, :has_role
   
     def has_role?(role_name, resource = nil)
-      query, values = Rolify.adapter.build_query(role_name, resource)
-      self.roles.where(query, *values).size > 0
+      Rolify.adapter.find(self.roles, role_name, resource).size > 0
     end
 
     def has_all_roles?(*args)
-      conditions, values, count = Rolify.adapter.build_conditions(self.roles, args, true)
-      self.roles.where([ conditions, *values ]).where(count).size > 0
+      conditions, count = Rolify.adapter.build_conditions(self.roles, args, true)
+      self.roles.where(conditions).where(count).size > 0
     end
 
     def has_any_role?(*args)
-      conditions, values = Rolify.adapter.build_conditions(self.roles, args)
-      self.roles.where([ conditions, *values ]).size > 0
+      conditions = Rolify.adapter.build_conditions(self.roles, args)
+      puts "#{conditions.inspect}"
+      self.roles.where(conditions).size > 0
     end
   
     def has_no_role(role_name, resource = nil)
-      role = self.roles.where(:name => role_name)
-      role = role.where(:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)) if resource
-      role = role.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)
-      self.roles.delete(role) if role
+      Rolify.adapter.delete(self.roles, role_name, resource)
     end
     alias_method :revoke, :has_no_role
   

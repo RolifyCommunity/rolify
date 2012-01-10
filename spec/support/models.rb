@@ -32,14 +32,14 @@ class Muser
   include Mongoid::Document
   include Rolify::Roles
   extend Rolify::Dynamic
-  has_and_belongs_to_many :mroles
+  has_and_belongs_to_many :roles, :class_name => "Mrole"
   
   field :login, :type => String
 end
 
 class Mrole
   include Mongoid::Document
-  has_and_belongs_to_many :musers
+  has_and_belongs_to_many :users, :class_name => "Muser"
   belongs_to :resource, :polymorphic => true
   
   field :name, :type => String

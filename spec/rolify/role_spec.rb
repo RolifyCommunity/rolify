@@ -513,49 +513,49 @@ describe Rolify do
     end
   end
   
- #context "using Mongoid adapter" do 
- #   context "using default Role and User class names with dynamic shortcuts", true do 
- #     it_behaves_like "Rolify module" do
- #       let(:user_cname) { "Muser" } 
- #       let(:role_cname) { "Mrole" }
- #       let(:dynamic_shortcuts) { true }
- #       let(:use_mongoid) { true }
- #       let(:forum) { Mforum }
- #       let(:group) { Mgroup }
- #     end
- #   end
- #   
- #   context "using default Role and User class names without dynamic shortcuts", false do 
- #     it_behaves_like "Rolify module" do
- #       let(:user_cname) { "Muser" } 
- #       let(:role_cname) { "Mrole" }
- #       let(:dynamic_shortcuts) { false }
- #       let(:use_mongoid) { true }
- #       let(:forum) { Mforum }
- #       let(:group) { Mgroup }
- #     end
- #   end
- #   
- #   context "using custom User and Role class names with dynamic shortcuts", true do 
- #     it_behaves_like "Rolify module" do
- #       let(:user_cname) { "Mcustomer" }
- #       let(:role_cname) { "Mprivilege" }
- #       let(:dynamic_shortcuts) { true }
- #       let(:use_mongoid) { true }
- #       let(:forum) { Mforum }
- #       let(:group) { Mgroup }
- #     end
- #   end
- #   
- #   context "using custom User and Role class names without dynamic shortcuts", false do 
- #     it_behaves_like "Rolify module" do
- #       let(:user_cname) { "Mcustomer" }
- #       let(:role_cname) { "Mprivilege" }
- #       let(:dynamic_shortcuts) { false }
- #       let(:use_mongoid) { true }
- #       let(:forum) { Mforum }
- #       let(:group) { Mgroup }
- #     end
- #   end
- #end
+  #context "using Mongoid adapter" do 
+  #  context "using default Role and User class names with dynamic shortcuts", true do 
+  #    it_behaves_like "Rolify module" do
+  #      let(:user_cname) { "Muser" } 
+  #      let(:role_cname) { "Mrole" }
+  #      let(:dynamic_shortcuts) { true }
+  #      let(:use_mongoid) { true }
+  #      let(:forum) { Mforum }
+  #      let(:group) { Mgroup }
+  #    end
+  #  end
+  #
+  #  context "using default Role and User class names without dynamic shortcuts", false do 
+  #    it_behaves_like "Rolify module" do
+  #      let(:user_cname) { "Muser" } 
+  #      let(:role_cname) { "Mrole" }
+  #      let(:dynamic_shortcuts) { false }
+  #      let(:use_mongoid) { true }
+  #      let(:forum) { Mforum }
+  #      let(:group) { Mgroup }
+  #    end
+  #  end
+  #
+  #  context "using custom User and Role class names with dynamic shortcuts", true do 
+  #    it_behaves_like "Rolify module" do
+  #      let(:user_cname) { "Mcustomer" }
+  #      let(:role_cname) { "Mprivilege" }
+  #      let(:dynamic_shortcuts) { true }
+  #      let(:use_mongoid) { true }
+  #      let(:forum) { Mforum }
+  #      let(:group) { Mgroup }
+  #    end
+  #  end
+  #
+  #  context "using custom User and Role class names without dynamic shortcuts", false do 
+  #    it_behaves_like "Rolify module" do
+  #      let(:user_cname) { "Mcustomer" }
+  #      let(:role_cname) { "Mprivilege" }
+  #      let(:dynamic_shortcuts) { false }
+  #      let(:use_mongoid) { true }
+  #      let(:forum) { Mforum }
+  #      let(:group) { Mgroup }
+  #    end
+  #  end
+  #end
 end
