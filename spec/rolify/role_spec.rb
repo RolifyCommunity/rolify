@@ -157,7 +157,7 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.has_any_role?({ :name => "admin", :resource => @forum.first }, { :name => "dummy", :resource => :any }).should be(true)
     end
 
-    it "should remove a global role of a user" do 
+    it "should remove a global role of a user" do
       expect { @admin.has_no_role("admin") }.to change{ @admin.roles.size }.by(-1)
       @admin.has_role?("admin").should be(false)
       @admin.has_role?("staff").should be(true)
@@ -366,6 +366,7 @@ shared_examples_for "Rolify module" do |dynamic|
     end
 
     it "should check if user has any of a scoped roles set" do
+      @manager.has_role "player", @forum
       @manager.has_any_role?({ :name => "player", :resource => @forum }).should be(true)
       @manager.has_any_role?({ :name => "manager", :resource => @forum }, { :name => "player", :resource => @forum }).should be(true)
       @manager.has_any_role?({ :name => "manager", :resource => @forum }, { :name => "player", :resource => :any }).should be(true)

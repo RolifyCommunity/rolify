@@ -7,9 +7,8 @@ Rolify.use_mongoid
 # Mongoid models
 class User
   include Mongoid::Document
-  include Rolify::Roles
-  extend Rolify::Dynamic
-  has_and_belongs_to_many :roles
+  extend Rolify::Configuration
+  rolify
   
   field :login, :type => String
 end
@@ -36,9 +35,8 @@ end
 
 class Customer
   include Mongoid::Document
-  include Rolify::Roles
-  extend Rolify::Dynamic
-  has_and_belongs_to_many :roles, :class_name => "Privilege"
+  extend Rolify::Configuration
+  rolify
   
   field :login, :type => String
 end
