@@ -93,7 +93,7 @@ module Rolify
                                               (resource.id if resource && !resource.is_a?(Class)))
       if !roles.include?(role)
         self.class.define_dynamic_method(role_name, resource) if Rolify.dynamic_shortcuts
-        self.role_ids |= [role.id]
+        Rolify.adapter.add(self, role)
       end
     end
     alias_method :grant, :has_role
@@ -103,14 +103,20 @@ module Rolify
     end
 
     def has_all_roles?(*args)
-      conditions, count = Rolify.adapter.build_conditions(self.roles, args, true)
-      self.roles.where(conditions).where(count).size > 0
+      args.each do |arg|
+        if arg.is_a? Hash
+          return false if !self.has_role?(arg[:name], arg[:resource])
+        elsif arg.is_a? String
+          return false if !self.has_role?(arg)
+        else
+          raise ArgumentError, "Invalid argument type: only hash or string allowed"
+        end
+      end
+      true
     end
 
     def has_any_role?(*args)
-      conditions = Rolify.adapter.build_conditions(self.roles, args)
-      #puts "#{conditions.inspect}"
-      self.roles.where(conditions).size > 0
+      Rolify.adapter.where(self.roles, args).size > 0
     end
   
     def has_no_role(role_name, resource = nil)

@@ -4,9 +4,14 @@ module Rolify
     
     class Mongoid < Adapter::Base
       
-      def self.find(roles, role_name, resource)
+      def self.find(relation, role_name, resource)
         query = build_query(role_name, resource)
-        roles.any_of(*query)
+        relation.any_of(*query)
+      end
+      
+      def self.where(relation, args)
+        conditions = build_conditions(relation, args)
+        relation.any_of(*conditions)
       end
       
       def self.find_or_create_by(role_name, resource_type = nil, resource_id = nil)
@@ -15,16 +20,19 @@ module Rolify
                                             :resource_id => resource_id)
       end
       
+      def self.add(relation, role)
+        relation.roles << role
+      end
+      
       def self.delete(relation, role_name, resource = nil)
         role = { :name => role_name }
         role.merge!({:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)}) if resource
         role.merge!({ :resource_id => resource.id }) if resource && !resource.is_a?(Class)
-        relation.destroy_all(role)
+        relation.where(role).destroy_all
       end
       
-      def self.build_conditions(relation, args, count = false)
+      def self.build_conditions(relation, args)
         conditions = []
-        count_conditions = [] if count
         args.each do |arg|
           if arg.is_a? Hash
             query = build_query(arg[:name], arg[:resource])
@@ -34,10 +42,8 @@ module Rolify
             raise ArgumentError, "Invalid argument type: only hash or string allowed"
           end
           conditions += query
-          #count_conditions << relation.where(a, *v).select("COUNT(id)").to_sql + " > 0" if count
         end
-        #count ? [ conditions, count_conditions.join(') AND (') ] : [ conditions, *values ]
-        relation.any_of(*conditions)
+        conditions
       end
       
       def self.build_query(role, resource = nil)

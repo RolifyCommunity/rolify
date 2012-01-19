@@ -9,10 +9,19 @@ module Rolify
         relation.where(query, *values)
       end
       
+      def self.where(relation, args)
+        conditions, values = build_conditions(relation, args)
+        relation.where(conditions, *values)
+      end
+      
       def self.find_or_create_by(role_name, resource_type = nil, resource_id = nil)
         Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id( :name => role_name, 
                                                                                     :resource_type => resource_type, 
                                                                                     :resource_id => resource_id)
+      end
+      
+      def self.add(relation, role)
+        relation.role_ids |= [role.id]
       end
       
       def self.delete(relation, role_name, resource = nil)
@@ -22,9 +31,8 @@ module Rolify
         relation.delete(role) if role
       end
       
-      def self.build_conditions(relation, args, count = false)
+      def self.build_conditions(relation, args)
         conditions = []
-        count_conditions = [] if count
         values = []
         args.each do |arg|
           if arg.is_a? Hash
@@ -35,11 +43,10 @@ module Rolify
             raise ArgumentError, "Invalid argument type: only hash or string allowed"
           end
           conditions << a
-          count_conditions << relation.where(a, *v).select("COUNT(id)").to_sql + " > 0" if count
           values += v
         end
         conditions = conditions.join(' OR ')
-        count ? [ [ conditions, *values ], count_conditions.join(') AND (') ] : [ conditions, *values ]
+        [ conditions, values ]
       end
       
       def self.build_query(role, resource = nil)
