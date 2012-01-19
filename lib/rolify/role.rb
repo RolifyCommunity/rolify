@@ -3,7 +3,8 @@ module Rolify
   @@user_cname = "User"
   @@dynamic_shortcuts = false
   @@orm = "active_record"
-  
+
+
   def self.configure
     yield self if block_given?
   end
@@ -30,27 +31,61 @@ module Rolify
 
   def self.dynamic_shortcuts=(is_dynamic)
     @@dynamic_shortcuts = is_dynamic
-    self.user_cname.load_dynamic_methods if is_dynamic
   end
-  
+
   def self.orm
     @@orm
   end
-  
+
   def self.orm=(orm)
     @@orm = orm
     @@adapter = Rolify::Adapter.const_get(orm.camelize)
   end
-  
+
   def self.adapter
     @@adapter ||= Rolify::Adapter::ActiveRecord
   end
-  
+
   def self.use_mongoid
     self.orm = "mongoid"
   end
 
-  module Roles
+
+  module Configuration
+    def rolify(options = { :role_cname => 'Role' })
+       include InstanceMethods
+       extend Rolify::Dynamic if Rolify.dynamic_shortcuts
+       rolify_options = { :class_name => options[:role_cname].camelize }
+       rolify_options.merge!({ :join_table => "#{self.to_s.tableize}_#{options[:role_cname].tableize}" }) if Rolify.orm == "active_record"
+       has_and_belongs_to_many :roles, rolify_options
+
+       load_dynamic_methods if Rolify.dynamic_shortcuts
+       Rolify.role_cname = options[:role_cname]
+    end
+  end
+
+  module Dynamic
+ 
+    def load_dynamic_methods
+      Rolify.role_cname.all.each do |r|
+        define_dynamic_method(r.name, r.resource)
+      end
+    end
+
+    def define_dynamic_method(role_name, resource)
+      class_eval do 
+        define_method("is_#{role_name}?".to_sym) do
+        has_role?("#{role_name}")
+        end if !method_defined?("is_#{role_name}?".to_sym)
+  
+        define_method("is_#{role_name}_of?".to_sym) do |arg|
+          has_role?("#{role_name}", arg)
+        end if !method_defined?("is_#{role_name}_of?".to_sym) && resource
+      end
+    end
+  end
+  
+  module InstanceMethods
 
     def has_role(role_name, resource = nil)
       role = Rolify.adapter.find_or_create_by(role_name, 
@@ -74,7 +109,7 @@ module Rolify
 
     def has_any_role?(*args)
       conditions = Rolify.adapter.build_conditions(self.roles, args)
-      puts "#{conditions.inspect}"
+      #puts "#{conditions.inspect}"
       self.roles.where(conditions).size > 0
     end
   
@@ -97,27 +132,6 @@ module Rolify
       end unless !Rolify.dynamic_shortcuts
       super
     end
-
   end
-
-  module Dynamic
- 
-    def load_dynamic_methods
-      Rolify.role_cname.all.each do |r|
-        define_dynamic_method(r.name, r.resource)
-      end
-    end
-
-    def define_dynamic_method(role_name, resource)
-      class_eval do 
-        define_method("is_#{role_name}?".to_sym) do
-        has_role?("#{role_name}")
-        end if !method_defined?("is_#{role_name}?".to_sym)
   
-        define_method("is_#{role_name}_of?".to_sym) do |arg|
-          has_role?("#{role_name}", arg)
-        end if !method_defined?("is_#{role_name}_of?".to_sym) && resource
-      end
-    end    
-  end
 end

@@ -3,10 +3,10 @@ require "spec_helper"
 shared_examples_for "Rolify module" do |dynamic|
   before(:all) do
     Rolify.user_cname = user_cname
-    Rolify.role_cname = role_cname
     @forum = forum
     @group = group
     Rolify.dynamic_shortcuts = dynamic_shortcuts
+    Rolify.user_cname.rolify :role_cname => role_cname
     Rolify.role_cname.destroy_all
   end
   
