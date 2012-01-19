@@ -1,6 +1,9 @@
 = 3.0 (unreleased)
 * support for Mongoid
 
+= 2.2 (Jan 18, 2012)
+* fixed a bug in the initiliazer file regarding dynamic shortcuts
+
 = 2.1 (Nov 30, 2011)
 * added syntactic sugar: <tt>grant</tt> and <tt>revoke</tt> are aliases for <tt>has_role</tt> and <tt>has_no_role</tt>
 * check if RUBY_ENGINE is defined in the gemspec to be able to use jdbc with JRuby for SQLite
