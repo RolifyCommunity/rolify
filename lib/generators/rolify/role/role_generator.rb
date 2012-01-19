@@ -16,9 +16,7 @@ module Rolify
       def generate_role
         template "role.rb", "app/models/#{role_cname.downcase}.rb"
         inject_into_class(model_path, user_cname.camelize) do
-          "  include Rolify::Roles\n" + 
-          "  #{'# ' if !options[:dynamic_shortcuts]}extend Rolify::Dynamic\n" + 
-          "  has_and_belongs_to_many :roles#{", :class_name => \"" + role_cname.camelize + "\"" if role_cname != "Role"}, :join_table => :#{user_cname.tableize + "_" + role_cname.tableize}\n"
+          " rolify\n"
         end
       end
 
