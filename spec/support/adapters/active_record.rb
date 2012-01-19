@@ -4,9 +4,8 @@ load File.dirname(__FILE__) + '/../schema.rb'
 
 # ActiveRecord models
 class User < ActiveRecord::Base
-  has_and_belongs_to_many :roles, :join_table => :users_roles
-  include Rolify::Roles
-  extend Rolify::Dynamic
+  extend Rolify::Configuration
+  rolify
 end
 
 class Role < ActiveRecord::Base
@@ -21,9 +20,8 @@ class Group < ActiveRecord::Base
 end
 
 class Customer < ActiveRecord::Base
-  has_and_belongs_to_many :roles, :join_table => :customers_privileges, :class_name => "Privilege"
-  include Rolify::Roles
-  extend Rolify::Dynamic
+  extend Rolify::Configuration
+  rolify :role_cname => "Privilege"
 end
 
 class Privilege < ActiveRecord::Base
