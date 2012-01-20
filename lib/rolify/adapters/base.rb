@@ -19,7 +19,7 @@ module Rolify
         raise NotImplementedError.new("You must implement add")
       end
       
-      def self.delete(relation, role_name, resource = nil)
+      def self.remove(relation, role_name, resource = nil)
         raise NotImplementedError.new("You must implement delete")
       end
       

@@ -24,7 +24,7 @@ module Rolify
         relation.role_ids |= [role.id]
       end
       
-      def self.delete(relation, role_name, resource = nil)
+      def self.remove(relation, role_name, resource = nil)
         role = relation.where(:name => role_name)
         role = role.where(:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)) if resource
         role = role.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)

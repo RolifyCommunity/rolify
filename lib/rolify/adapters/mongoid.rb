@@ -6,7 +6,14 @@ module Rolify
       
       def self.find(relation, role_name, resource)
         query = build_query(role_name, resource)
-        relation.any_of(*query)
+        puts "#{query.inspect}"
+        criteria = relation.where(query.pop)
+        query.each do |condition|
+          criteria = criteria.or(condition)
+          puts "#{condition}: #{criteria.inspect}"
+        end
+        puts "#{criteria.inspect}"
+        criteria
       end
       
       def self.where(relation, args)
@@ -24,12 +31,14 @@ module Rolify
         relation.roles << role
       end
       
-      def self.delete(relation, role_name, resource = nil)
+      def self.remove(relation, role_name, resource = nil)
         role = { :name => role_name }
         role.merge!({:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)}) if resource
         role.merge!({ :resource_id => resource.id }) if resource && !resource.is_a?(Class)
         relation.where(role).destroy_all
       end
+      
+      private
       
       def self.build_conditions(relation, args)
         conditions = []
