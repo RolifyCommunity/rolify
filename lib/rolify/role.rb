@@ -120,7 +120,7 @@ module Rolify
     end
   
     def has_no_role(role_name, resource = nil)
-      Rolify.adapter.delete(self.roles, role_name, resource)
+      Rolify.adapter.remove(self.roles, role_name, resource)
     end
     alias_method :revoke, :has_no_role
   
