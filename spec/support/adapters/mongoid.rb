@@ -7,7 +7,7 @@ Rolify.use_mongoid
 # Mongoid models
 class User
   include Mongoid::Document
-  extend Rolify::Configuration
+  extend Rolify::Role
   rolify
   
   field :login, :type => String
@@ -35,7 +35,7 @@ end
 
 class Customer
   include Mongoid::Document
-  extend Rolify::Configuration
+  extend Rolify::Role
   rolify
   
   field :login, :type => String
