@@ -6,14 +6,11 @@ module Rolify
       
       def self.find(relation, role_name, resource)
         query = build_query(role_name, resource)
-        puts "#{query.inspect}"
-        criteria = relation.where(query.pop)
         query.each do |condition|
-          criteria = criteria.or(condition)
-          puts "#{condition}: #{criteria.inspect}"
+          criteria = relation.where(condition)
+          return criteria.all if !criteria.empty?
         end
-        puts "#{criteria.inspect}"
-        criteria
+        []
       end
       
       def self.where(relation, args)
