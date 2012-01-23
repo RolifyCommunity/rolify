@@ -15,9 +15,7 @@ module Rolify
       end
       
       def self.find_or_create_by(role_name, resource_type = nil, resource_id = nil)
-        Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id( :name => role_name, 
-                                                                                    :resource_type => resource_type, 
-                                                                                    :resource_id => resource_id)
+        Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id( role_name, resource_type, resource_id)
       end
       
       def self.add(relation, role)
