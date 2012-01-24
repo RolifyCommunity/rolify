@@ -6,3 +6,7 @@ rvm:
   - rbx
   - jruby
   - ree
+
+before_install:
+  - gem update --system
+  - gem --version
