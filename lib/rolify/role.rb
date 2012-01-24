@@ -112,6 +112,7 @@ module Rolify
         self.class.define_dynamic_method(role_name, resource) if Rolify.dynamic_shortcuts
         Rolify.adapter.add(self, role)
       end
+      role
     end
     alias_method :grant, :has_role
   
