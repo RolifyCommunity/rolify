@@ -23,12 +23,14 @@ end
 
 class Forum
   include Mongoid::Document
+  extend Rolify::Role
   
   field :name, :type => String
 end
 
 class Group
   include Mongoid::Document
+  extend Rolify::Role
   
   field :name, :type => String
 end

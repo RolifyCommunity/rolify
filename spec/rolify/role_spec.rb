@@ -79,10 +79,10 @@ shared_examples_for "Rolify module" do |dynamic|
   context "as a Resource" do
     before(:all) do
       @admin = Rolify.user_cname.first
-      @forum_role = (@admin.has_role("forum", Forum.first)).last
-      @group_role = (@admin.has_role("group", Group.last)).last
+      @forum_role = @admin.has_role("forum", Forum.first)
+      @group_role = @admin.has_role("group", Group.last)
       @tourist = Rolify.user_cname.last
-      @tourist_role = (@tourist.has_role("forum", Forum.last)).last
+      @tourist_role = @tourist.has_role("forum", Forum.last)
     end
     
     it "should respond to roles" do
@@ -98,23 +98,23 @@ shared_examples_for "Rolify module" do |dynamic|
     end
     
     it "should get all roles binded to an instance resource" do
-      Forum.first.role_ids.should include(@forum_role)
-      Group.last.role_ids.should include(@group_role)
+      Forum.first.roles.should include(@forum_role)
+      Group.last.roles.should include(@group_role)
     end
     
     it "should not get roles binded to another instance resource" do
-      Forum.first.role_ids.should_not include(@group_role)
-      Group.last.role_ids.should_not include(@forum_role)
+      Forum.first.roles.should_not include(@groupe_role)
+      Group.last.roles.should_not include(@forum_role)
     end
     
     it "should get all roles binded to a class resource" do
-      roles = Rolify.role_cname.where(:id => [ @tourist_role, @forum_role ])
+      roles = Rolify.role_cname.find([ @tourist_role.id, @forum_role.id ])
       Forum.with_role("forum").should include(*roles)
     end
     
     it "should get all roles binded to a class resource and a specific user" do
-      Forum.with_role("forum", @admin).should include(Rolify.role_cname.where(:id => @forum_role).first)
-      Forum.with_role("forum", @admin).should_not include(Rolify.role_cname.where(:id => @tourist_role).first)
+      Forum.with_role("forum", @admin).should include(@forum_role)
+      Forum.with_role("forum", @admin).should_not include(@tourist_role)
     end
   end
 
