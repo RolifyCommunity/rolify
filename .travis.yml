@@ -10,3 +10,7 @@ rvm:
 env:
     - ADAPTER=active_record
     - ADAPTER=mongoid
+
+before_install:
+  - gem update --system
+  - gem --version
