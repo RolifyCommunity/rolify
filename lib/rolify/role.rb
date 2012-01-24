@@ -35,9 +35,9 @@ module Rolify
   module Roles
 
     def has_role(role_name, resource = nil)
-      role = Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id(:name => role_name, 
-                                                                                        :resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
-                                                                                        :resource_id => (resource.id if resource && !resource.is_a?(Class)))
+      role = Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id(role_name, 
+                                                                                        (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
+                                                                                        (resource.id if resource && !resource.is_a?(Class)))
       if !roles.include?(role)
         self.class.define_dynamic_method(role_name, resource) if Rolify.dynamic_shortcuts
         self.role_ids |= [role.id]
