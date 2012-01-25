@@ -12,5 +12,5 @@ env:
     - ADAPTER=mongoid
 
 before_install:
-  - gem install rubygems-update -v 1.8.12
+  - gem update --system
   - gem --version
