@@ -95,7 +95,7 @@ module Rolify
   
   module Resource
        
-    def with_role(role_name, user = nil)
+    def find_roles(role_name, user = nil)
       roles = user ? user.roles : Rolify.role_cname
       roles.where(:resource_type => self.to_s)
     end

@@ -91,10 +91,10 @@ shared_examples_for "Rolify module" do |dynamic|
     end
     
     it "should respond to with_roles" do
-      Forum.should respond_to(:with_role).with(1).arguments
-      Forum.should respond_to(:with_role).with(2).arguments
-      Group.should respond_to(:with_role).with(1).arguments
-      Group.should respond_to(:with_role).with(2).arguments
+      Forum.should respond_to(:find_roles).with(1).arguments
+      Forum.should respond_to(:find_roles).with(2).arguments
+      Group.should respond_to(:find_roles).with(1).arguments
+      Group.should respond_to(:find_roles).with(2).arguments
     end
     
     it "should get all roles binded to an instance resource" do
@@ -109,12 +109,12 @@ shared_examples_for "Rolify module" do |dynamic|
     
     it "should get all roles binded to a class resource" do
       roles = Rolify.role_cname.find([ @tourist_role.id, @forum_role.id ])
-      Forum.with_role("forum").should include(*roles)
+      Forum.find_roles("forum").should include(*roles)
     end
     
     it "should get all roles binded to a class resource and a specific user" do
-      Forum.with_role("forum", @admin).should include(@forum_role)
-      Forum.with_role("forum", @admin).should_not include(@tourist_role)
+      Forum.find_roles("forum", @admin).should include(@forum_role)
+      Forum.find_roles("forum", @admin).should_not include(@tourist_role)
     end
   end
 
