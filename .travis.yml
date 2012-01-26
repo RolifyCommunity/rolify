@@ -14,3 +14,4 @@ env:
 before_install:
   - gem update --system
   - gem --version
+  - ruby -v
