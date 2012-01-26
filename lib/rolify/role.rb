@@ -68,7 +68,7 @@ module Rolify
       resourcify_options = { :class_name => options[:role_cname].camelize }
       resourcify_options.merge!({ :as => :resource })
       has_many :roles, resourcify_options
-      extend Resource
+      include Resource
     end
   end
 
@@ -94,12 +94,24 @@ module Rolify
   end
   
   module Resource
-       
-    def find_roles(role_name = nil, user = nil)
-      roles = user && (user != :any) ? user.roles : Rolify.role_cname
-      roles = roles.where(:resource_type => self.to_s)
-      roles = roles.where(:name => role_name) if role_name && (role_name != :any)
-      roles
+    def self.included(base)
+      base.extend ClassMethods
+      base.send :include, InstanceMethods
+    end
+    
+    module InstanceMethods
+      def applied_roles
+        self.roles + Rolify.role_cname.where(:resource_type => self.class.to_s, :resource_id => nil)
+      end
+    end
+    
+    module ClassMethods 
+      def find_roles(role_name = nil, user = nil)
+        roles = user && (user != :any) ? user.roles : Rolify.role_cname
+        roles = roles.where(:resource_type => self.to_s)
+        roles = roles.where(:name => role_name) if role_name && (role_name != :any)
+        roles
+      end
     end
   end
   

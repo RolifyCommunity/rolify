@@ -100,8 +100,8 @@ shared_examples_for "Rolify module" do |dynamic|
     end
     
     it "should get all roles binded to an instance resource" do
-      Forum.first.all_roles.should include(@forum_role, @godfather_role, @sneaky_role)
-      Group.last.all_roles.should include(@group_role)
+      Forum.first.applied_roles.should include(@forum_role, @godfather_role, @sneaky_role)
+      Group.last.applied_roles.should include(@group_role)
     end
     
     it "should not get roles binded to another instance resource" do
