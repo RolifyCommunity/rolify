@@ -32,7 +32,95 @@ module Rolify
     self.user_cname.load_dynamic_methods if is_dynamic
   end
 
-  module Roles
+  def self.orm
+    @@orm
+  end
+
+  def self.orm=(orm)
+    @@orm = orm
+    @@adapter = Rolify::Adapter.const_get(orm.camelize)
+  end
+
+  def self.adapter
+    @@adapter ||= Rolify::Adapter::ActiveRecord
+  end
+
+  def self.use_mongoid
+    self.orm = "mongoid"
+  end
+
+
+  module Role
+    
+    def rolify(options = { :role_cname => 'Role' })
+       include InstanceMethods
+       extend Dynamic if Rolify.dynamic_shortcuts
+       rolify_options = { :class_name => options[:role_cname].camelize }
+       rolify_options.merge!({ :join_table => "#{self.to_s.tableize}_#{options[:role_cname].tableize}" }) if Rolify.orm == "active_record"
+       has_and_belongs_to_many :roles, rolify_options
+
+       load_dynamic_methods if Rolify.dynamic_shortcuts
+       Rolify.role_cname = options[:role_cname]
+    end
+    
+    def resourcify(options = { :role_cname => 'Role' })
+      resourcify_options = { :class_name => options[:role_cname].camelize }
+      resourcify_options.merge!({ :as => :resource })
+      has_many :roles, resourcify_options
+      include Resource
+    end
+  end
+
+  module Dynamic
+ 
+    def load_dynamic_methods
+      Rolify.role_cname.all.each do |r|
+        define_dynamic_method(r.name, r.resource)
+      end
+    end
+
+    def define_dynamic_method(role_name, resource)
+      class_eval do 
+        define_method("is_#{role_name}?".to_sym) do
+        has_role?("#{role_name}")
+        end if !method_defined?("is_#{role_name}?".to_sym)
+  
+        define_method("is_#{role_name}_of?".to_sym) do |arg|
+          has_role?("#{role_name}", arg)
+        end if !method_defined?("is_#{role_name}_of?".to_sym) && resource
+      end
+    end
+  end
+  
+  module Resource
+    def self.included(base)
+      base.extend ClassMethods
+      base.send :include, InstanceMethods
+    end
+    
+    module InstanceMethods
+      def applied_roles
+        self.roles + Rolify.role_cname.where(:resource_type => self.class.to_s, :resource_id => nil)
+      end
+    end
+    
+    module ClassMethods 
+      def find_roles(role_name = nil, user = nil)
+        roles = user && (user != :any) ? user.roles : Rolify.role_cname
+        roles = roles.where(:resource_type => self.to_s)
+        roles = roles.where(:name => role_name) if role_name && (role_name != :any)
+        roles
+      end
+      
+      def with_role(role_name, user = nil)
+        resources = joins("INNER JOIN \"roles\" ON \"roles\".\"resource_type\" = '#{self.to_s}'")
+        resources = resources.where("roles.name = ? AND roles.resource_type = ?", role_name, self.to_s)
+        user ? resources.where("roles.id IN (?)", user.roles) : resources
+      end
+    end
+  end
+  
+  module InstanceMethods
 
     def has_role(role_name, resource = nil)
       role = Rolify.role_cname.find_or_create_by_name_and_resource_type_and_resource_id(role_name, 
