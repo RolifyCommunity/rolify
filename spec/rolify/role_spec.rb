@@ -142,6 +142,14 @@ shared_examples_for "Rolify module" do |dynamic|
       Forum.find_roles(:any, @admin).should_not include(@group_role)
       Forum.find_roles(:any, @admin).should_not include(@sneaky_role)
     end
+    
+    
+    it "should get all resources binded to a specific role and a specific user having one this role" do
+      Forum.with_role("forum", @admin).should include(Forum.first)
+      Forum.with_role("forum", @tourist).should include(Forum.last)
+      Forum.with_role("godfather", @admin).should == Forum.all
+      Group.with_role("group", @admin).should include(Group.last)
+    end
   end
 
   context "with a global role" do 
