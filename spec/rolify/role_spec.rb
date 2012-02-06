@@ -177,6 +177,13 @@ shared_examples_for "Rolify module" do |dynamic|
       superadmin.name.should eq("superadmin")
       superadmin.resource.should be(nil)
     end
+    
+    it "should set a global role using symbol" do
+      expect { @admin.has_role :superman }.to change{ Rolify.role_cname.count }.by(1)
+      superman = Rolify.role_cname.last
+      superman.name.should eq("superman")
+      superman.resource.should be(nil)
+    end
 
     it "should not create another role if already existing" do
       expect { @admin.has_role "admin" }.not_to change{ Rolify.role_cname.count }
@@ -185,6 +192,10 @@ shared_examples_for "Rolify module" do |dynamic|
 
     it "should get a global role" do
       @admin.has_role?("admin").should be(true)
+    end
+    
+    it "should get a global role using symbol" do
+      @admin.has_role?(:admin).should be(true)
     end
 
     it "should be able to use dynamic shortcut", :if => dynamic do
@@ -196,11 +207,19 @@ shared_examples_for "Rolify module" do |dynamic|
       @admin.has_role?("admin", Forum).should be(true)
       @admin.has_role?("admin", :any).should be(true)
     end
+    
+    it "should get any resource request using symbols" do
+      @admin.has_role?(:admin, Forum.first).should be(true)
+      @admin.has_role?(:admin, Forum).should be(true)
+      @admin.has_role?(:admin, :any).should be(true)
+    end
 
     it "should not get another global role" do
       Rolify.role_cname.create(:name => "global")
       @admin.has_role?("global").should be(false)
       @admin.has_role?("global", :any).should be(false)
+      @admin.has_role?(:global).should be(false)
+      @admin.has_role?(:global, :any).should be(false)
     end
 
     it "should not get an instance scoped role" do
@@ -284,6 +303,13 @@ shared_examples_for "Rolify module" do |dynamic|
       visitor.name.should eq("visitor")
       visitor.resource.should eq(Forum.last)
     end
+    
+    it "should set an instance scoped role using symbols" do
+      expect { @moderator.has_role :modo, Forum.last }.to change{ Rolify.role_cname.count }.by(1)
+      visitor = Rolify.role_cname.last
+      visitor.name.should eq("modo")
+      visitor.resource.should eq(Forum.last)
+    end
 
     it "should not create another role if already existing" do
       expect { @moderator.has_role "moderator", Forum.first }.not_to change{ Rolify.role_cname.count }
@@ -293,17 +319,24 @@ shared_examples_for "Rolify module" do |dynamic|
     it "should get an instance scoped role" do
       @moderator.has_role?("moderator", Forum.first).should be(true)
     end
+    
+    it "should get an instance scoped role using symbols" do
+      @moderator.has_role?(:moderator, Forum.first).should be(true)
+    end
 
     it "should get any of instance scoped role" do
       @moderator.has_role?("moderator", :any).should be(true)
+      @moderator.has_role?(:moderator, :any).should be(true)
     end
 
     it "should not get an instance scoped role when asking for a global" do
       @moderator.has_role?("moderator").should be(false)
+      @moderator.has_role?(:moderator).should be(false)
     end
 
     it "should not get an instance scoped role when asking for a class scoped" do 
       @moderator.has_role?("moderator", Forum).should be(false)
+      @moderator.has_role?(:moderator, Forum).should be(false)
     end
 
     it "should be able to use dynamic shortcut", :if => dynamic do
@@ -315,6 +348,7 @@ shared_examples_for "Rolify module" do |dynamic|
 
     it "should not get a global role" do
       @moderator.has_role?("admin").should be(false)
+      @moderator.has_role?(:admin).should be(false)
     end
 
     it "should not get the same role on another resource" do
@@ -388,6 +422,13 @@ shared_examples_for "Rolify module" do |dynamic|
       player.name.should eq("player")
       player.resource_type.should eq(Forum.to_s)
     end
+    
+    it "should set a class scoped role using symbols" do
+      expect { @manager.has_role :gambler, Forum }.to change{ Rolify.role_cname.count }.by(1)
+      player = Rolify.role_cname.last
+      player.name.should eq("gambler")
+      player.resource_type.should eq(Forum.to_s)
+    end
 
     it "should not create another role if already existing" do
       expect { @manager.has_role "manager", Forum }.not_to change{ Rolify.role_cname.count }
@@ -397,14 +438,18 @@ shared_examples_for "Rolify module" do |dynamic|
     it "should get a class scoped role" do
       @manager.has_role?("manager", Forum).should be(true)
       @manager.has_role?("manager", Forum.first).should be(true)
+      @manager.has_role?(:manager, Forum).should be(true)
+      @manager.has_role?(:manager, Forum.first).should be(true)
     end
 
     it "should get any of class scoped role" do
       @manager.has_role?("manager", :any).should be(true)
+      @manager.has_role?(:manager, :any).should be(true)
     end
 
     it "should not get a scoped role when asking for a global" do
       @manager.has_role?("manager").should be(false)
+      @manager.has_role?(:manager).should be(false)
     end
 
     it "should be able to use dynamic shortcut", :if => dynamic do
@@ -507,16 +552,22 @@ shared_examples_for "Rolify module" do |dynamic|
     it "should get a global role" do
       @user.has_role?("admin").should be(true)
       @user.has_role?("anonymous").should be(true)
+      @user.has_role?(:admin).should be(true)
+      @user.has_role?(:anonymous).should be(true)
     end
 
     it "should get an instance scoped role" do
       @user.has_role?("moderator", Forum.first).should be(true)
       @user.has_role?("visitor", Forum.last).should be(true)
+      @user.has_role?(:moderator, Forum.first).should be(true)
+      @user.has_role?(:visitor, Forum.last).should be(true)
     end
 
     it "should get an class scoped role" do
       @user.has_role?("manager", Forum).should be(true)
       @user.has_role?("leader", Group).should be(true)
+      @user.has_role?(:manager, Forum).should be(true)
+      @user.has_role?(:leader, Group).should be(true)
     end
 
     it "should check if user has all of a mix of global and scoped roles set" do
