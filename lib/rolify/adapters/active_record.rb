@@ -36,7 +36,7 @@ module Rolify
       end
       
       def self.in(relation, roles)
-        relation.where("#{Rolify.role_cname.to_s.tableize}.id IN (?)", roles)
+        relation.where("#{Rolify.role_cname.to_s.tableize}.id IN (?) AND ((resource_id = #{relation.table_name}.id) || (resource_id IS NULL))", roles)
       end
       
       private
