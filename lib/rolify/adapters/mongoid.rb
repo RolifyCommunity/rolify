@@ -36,18 +36,19 @@ module Rolify
       end
       
       def self.resources_find(roles_table, relation, role_name)
-        roles = roles_table.classify.constantize.where(:resource_type => relation.to_s)
-#        puts "#{roles.all.map{|r| [r.id, r.name]}.inspect} | #{relation.count}"
-        result = relation.where(:"#{roles_table}.name" => role_name) #.where(:"#{roles_table}.id".in => roles.map{ |r| r.id })
-#        puts "#{result.all.map{|r| r.name}.inspect} xD"
-        result
+        roles = roles_table.classify.constantize.where(:name => role_name, :resource_type => relation.to_s)
+        resources = []
+        roles.each do |role|
+          return relation.all if role.resource_id.nil?
+          resources << role.resource
+        end
+        resources
       end
       
-      def self.in(relation, roles)
-#        puts "#{relation.all.map{|r| r.name}.inspect} | #{roles.inspect}"
-        result = relation.where(:"#{Rolify.role_cname.to_s.tableize}.id".in => roles.map{ |r| r.id })
-#        puts "#{result.map{|r| r.name}.inspect}"
-        result
+      def self.in(resources, roles)
+        return [] if resources.empty? || roles.empty?
+        resources.delete_if { |resource| (resource.applied_roles && roles).empty? }
+        resources
       end
       
       private

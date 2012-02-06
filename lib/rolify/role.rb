@@ -115,7 +115,7 @@ module Rolify
       
       def with_role(role_name, user = nil)
         resources = Rolify.adapter.resources_find(Rolify.role_cname.to_s.tableize, self, role_name)
-        user ? Rolify.adapter.in(resources, user.roles) : resources
+        user ? Rolify.adapter.in(resources, user.roles.where(:name => role_name)) : resources
       end
     end
   end
