@@ -114,9 +114,8 @@ module Rolify
       end
       
       def with_role(role_name, user = nil)
-        resources = joins("INNER JOIN \"#{Rolify.role_cname.to_s.tableize}\" ON \"#{Rolify.role_cname.to_s.tableize}\".\"resource_type\" = '#{self.to_s}'")
-        resources = resources.where("#{Rolify.role_cname.to_s.tableize}.name = ? AND #{Rolify.role_cname.to_s.tableize}.resource_type = ?", role_name, self.to_s)
-        user ? resources.where("#{Rolify.role_cname.to_s.tableize}.id IN (?)", user.roles) : resources
+        resources = Rolify.adapter.resources_find(Rolify.role_cname.to_s.tableize, self, role_name)
+        user ? Rolify.adapter.in(resources, user.roles) : resources
       end
     end
   end

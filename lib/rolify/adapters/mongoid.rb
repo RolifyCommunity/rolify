@@ -35,6 +35,21 @@ module Rolify
         relation.where(role).destroy_all
       end
       
+      def self.resources_find(roles_table, relation, role_name)
+        roles = roles_table.classify.constantize.where(:resource_type => relation.to_s)
+#        puts "#{roles.all.map{|r| [r.id, r.name]}.inspect} | #{relation.count}"
+        result = relation.where(:"#{roles_table}.name" => role_name) #.where(:"#{roles_table}.id".in => roles.map{ |r| r.id })
+#        puts "#{result.all.map{|r| r.name}.inspect} xD"
+        result
+      end
+      
+      def self.in(relation, roles)
+#        puts "#{relation.all.map{|r| r.name}.inspect} | #{roles.inspect}"
+        result = relation.where(:"#{Rolify.role_cname.to_s.tableize}.id".in => roles.map{ |r| r.id })
+#        puts "#{result.map{|r| r.name}.inspect}"
+        result
+      end
+      
       private
       
       def self.build_conditions(relation, args)
