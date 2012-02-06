@@ -1,3 +1,10 @@
+User.destroy_all
+Role.destroy_all
+Forum.destroy_all
+Group.destroy_all
+Privilege.destroy_all
+Customer.destroy_all
+
 # Users
 User.create(:login => "admin")
 User.create(:login => "moderator")
