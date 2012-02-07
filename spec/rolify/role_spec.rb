@@ -179,9 +179,9 @@ shared_examples_for "Rolify module" do |dynamic|
     end
     
     it "should set a global role using symbol" do
-      expect { @admin.has_role :superman }.to change{ Rolify.role_cname.count }.by(1)
+      expect { @admin.has_role :spiderman }.to change{ Rolify.role_cname.count }.by(1)
       superman = Rolify.role_cname.last
-      superman.name.should eq("superman")
+      superman.name.should eq("spiderman")
       superman.resource.should be(nil)
     end
 
