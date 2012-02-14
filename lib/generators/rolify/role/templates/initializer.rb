@@ -7,6 +7,4 @@ Rolify.configure do |c|
   
   # Dynamic shortcuts for Role class (user.is_admin? like methods). Default is: false
   <%= "# " if !options[:dynamic_shortcuts] %>c.dynamic_shortcuts = <%= options[:dynamic_shortcuts] == true ? true : false %> if !defined?(Rails::Server) || !defined?(Rails::Console)
-  
-  c.user_cname.extend(Rolify::Role)
 end
