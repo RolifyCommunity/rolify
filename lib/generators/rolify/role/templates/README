@@ -1,0 +1,11 @@
+===============================================================================
+
+Now, you just have to run the migration using rake command:
+
+   rake db:migrate
+
+An initializer file has been created here: config/initializers/rolify.rb, 
+you can change rolify settings to match your needs. 
+Defaults values are commented out.
+
+===============================================================================

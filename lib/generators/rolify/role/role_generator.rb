@@ -33,6 +33,10 @@ module Rolify
       def self.next_migration_number(path)
         Time.now.utc.strftime("%Y%m%d%H%M%S")
       end
+      
+      def show_readme
+        readme "README" if behavior == :invoke
+      end
     end
   end
 end
