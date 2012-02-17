@@ -4,5 +4,5 @@ Rolify.configure do |c|
   # Role class provided by Rolify. Default is: "Role"
   <%= "# " if role_cname == "Role" %>c.role_cname = "<%= role_cname %>"
   # Dynamic shortcuts for Role class (user.is_admin? like methods). Default is: false
-  <%= "# " if !options[:dynamic_shortcuts] %>c.dynamic_shortcuts = <%= options[:dynamic_shortcuts] == true ? true : false %> if !defined?(Rails::Server) || !defined?(Rails::Console)
+  <%= "# " if !options[:dynamic_shortcuts] %>c.dynamic_shortcuts = <%= options[:dynamic_shortcuts] == true ? true : false %> if defined?(Rails::Server) || defined?(Rails::Console)
 end
