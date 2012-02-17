@@ -6,9 +6,15 @@ require 'generators/rolify/role/role_generator'
 describe Rolify::Generators::RoleGenerator do
   # Tell the generator where to put its output (what it thinks of as Rails.root)
   destination File.expand_path("../../../../../tmp", __FILE__)
+  teardown :cleanup_destination_root
+  
   before { 
     prepare_destination
   }
+  
+  def cleanup_destination_root
+    FileUtils.rm_rf destination_root
+  end
 
   describe 'no arguments' do
     before(:all) { arguments [] }
