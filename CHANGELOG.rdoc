@@ -2,6 +2,10 @@
 * support for Mongoid
 * roles search on resources on instance level (e.g. <tt>Forum.first.roles</tt>) and class level (e.g. <tt>Forum.with_role("admin", user)</tt>)
 
+= 2.2.2 (Feb 17, 2012)
+* fixed another bug occurring when dynamic shortcuts is enabled
+* display now a README file after running the generator to show the next setup steps
+
 = 2.2.1 (Jan 24, 2012)
 * Fixed a backward incompatible change introduced in Rails 3.2 release (<tt>find_or_create_by_* generated methods</tt>)
 
