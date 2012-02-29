@@ -1,6 +1,6 @@
 require "spec_helper"
-require_relative "shared_examples"
-require_relative "dynamic"
+require "rolify/shared_examples"
+require "rolify/dynamic"
 
 describe Rolify do
   context "using custom User and Role class names" do 
