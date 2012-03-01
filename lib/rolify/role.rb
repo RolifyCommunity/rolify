@@ -49,6 +49,14 @@ module Rolify
   def self.use_mongoid
     self.orm = "mongoid"
   end
+  
+  def self.use_defaults
+    @@role_cname = "Role"
+    @@user_cname = "User"
+    @@dynamic_shortcuts = false
+    @@orm = "active_record"
+    @@adapter = Rolify::Adapter::ActiveRecord
+  end
 
 
   module Role
