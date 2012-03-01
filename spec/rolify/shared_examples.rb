@@ -1,5 +1,6 @@
 shared_examples_for "Rolify module" do
   before(:all) do
+    reset_defaults
     Rolify.user_cname = user_cname
     Rolify.dynamic_shortcuts = false
     Rolify.user_cname.rolify :role_cname => role_cname
