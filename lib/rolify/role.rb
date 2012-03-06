@@ -183,6 +183,15 @@ module Rolify
       end unless !Rolify.dynamic_shortcuts
       super
     end
+    
+    def respond_to?(method, include_private = false)
+      if Rolify.dynamic_shortcuts && (method.to_s.match(/^is_(\w+)_of[?]$/) || method.to_s.match(/^is_(\w+)[?]$/))
+        return true if Rolify.role_cname.where(:name => $1).count > 0
+        false
+      else
+        super
+      end
+    end
   end
   
 end
