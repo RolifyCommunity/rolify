@@ -5,5 +5,6 @@ task :default => :spec
 
 desc "Run all specs"
 task "spec" do
-  exec "bundle exec rspec spec"
+  sh "bundle exec rspec spec"
+  sh "export ADAPTER=mongoid && bundle exec rspec spec && unset ADAPTER"
 end
