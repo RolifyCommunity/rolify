@@ -78,7 +78,7 @@ shared_examples_for Rolify::Dynamic do
       end
   
       it { should respond_to(:is_superman?).with(0).arguments }
-      it { should_not respond_to(:is_superman?).with(1).arguments }
+      it { should_not respond_to(:is_superman_of?).with(1).arguments }
       
       it { subject.is_superman?.should be(false) }
     end
