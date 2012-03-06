@@ -93,10 +93,10 @@ module Rolify
         define_method("is_#{role_name}?".to_sym) do
           has_role?("#{role_name}")
         end if !method_defined?("is_#{role_name}?".to_sym)
-  
+        
         define_method("is_#{role_name}_of?".to_sym) do |arg|
           has_role?("#{role_name}", arg)
-        end if !method_defined?("is_#{role_name}_of?".to_sym) && resource
+        end if !method_defined?("is_#{role_name}_of?".to_sym) && !!resource
       end
     end
   end
@@ -186,7 +186,9 @@ module Rolify
     
     def respond_to?(method, include_private = false)
       if Rolify.dynamic_shortcuts && (method.to_s.match(/^is_(\w+)_of[?]$/) || method.to_s.match(/^is_(\w+)[?]$/))
-        return true if Rolify.role_cname.where(:name => $1).count > 0
+        query = Rolify.role_cname.where(:name => $1)
+        query = query.where("resource_type NOT NULL") if method.to_s.match(/^is_(\w+)_of[?]$/)
+        return true if query.count > 0
         false
       else
         super
