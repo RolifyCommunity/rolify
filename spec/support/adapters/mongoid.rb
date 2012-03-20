@@ -38,7 +38,7 @@ end
 class Customer
   include Mongoid::Document
   extend Rolify::Role
-  rolify
+  rolify :role_cname => "Privilege"
   
   field :login, :type => String
 end

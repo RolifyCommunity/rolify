@@ -51,6 +51,10 @@ module Rolify
         resources
       end
       
+      def self.exists?(relation, column)
+        relation.where(column.to_sym.ne => nil)
+      end
+      
       private
       
       def self.build_conditions(relation, args)

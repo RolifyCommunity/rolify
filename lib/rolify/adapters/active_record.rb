@@ -39,6 +39,10 @@ module Rolify
         relation.where("#{Rolify.role_cname.to_s.tableize}.id IN (?) AND ((resource_id = #{relation.table_name}.id) OR (resource_id IS NULL))", roles)
       end
       
+      def self.exists?(relation, column)
+        relation.where("#{column} IS NOT NULL")
+      end
+      
       private
       
       def self.build_conditions(relation, args)

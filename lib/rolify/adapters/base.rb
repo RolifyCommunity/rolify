@@ -23,6 +23,18 @@ module Rolify
         raise NotImplementedError.new("You must implement delete")
       end
       
+      def self.resources_find(roles_table, relation, role_name)
+       raise NotImplementedError.new("You must implement resources_find")
+      end
+      
+      def self.in(resources, roles)
+        raise NotImplementedError.new("You must implement in")
+      end
+      
+      def self.exists?(relation, column)
+        raise NotImplementedError.new("You must implement exists?")
+      end
+      
       def self.build_conditions(relation, args)
         raise NotImplementedError.new("You must implement build_conditions")
       end

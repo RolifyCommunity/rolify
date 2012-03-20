@@ -187,7 +187,7 @@ module Rolify
     def respond_to?(method, include_private = false)
       if Rolify.dynamic_shortcuts && (method.to_s.match(/^is_(\w+)_of[?]$/) || method.to_s.match(/^is_(\w+)[?]$/))
         query = Rolify.role_cname.where(:name => $1)
-        query = query.where("resource_type NOT NULL") if method.to_s.match(/^is_(\w+)_of[?]$/)
+        query = Rolify.adapter.exists?(query, :resource_type) if method.to_s.match(/^is_(\w+)_of[?]$/)
         return true if query.count > 0
         false
       else
