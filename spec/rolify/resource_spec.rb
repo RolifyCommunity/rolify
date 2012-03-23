@@ -5,15 +5,18 @@ describe Rolify::Resource do
     reset_defaults
     Forum.resourcify
     Group.resourcify
-    @forum_role = admin.has_role("forum", Forum.first)
-    @godfather_role = admin.has_role("godfather", Forum)
-    @group_role = admin.has_role("group", Group.last)
-    @tourist_role = tourist.has_role("forum", Forum.last)
-    @sneaky_role = tourist.has_role("group", Forum.first)
   end
 
-  let (:admin) { Rolify.user_cname.first }
-  let (:tourist) { Rolify.user_cname.last }
+  # Users
+  let(:admin)   { Rolify.user_cname.first }
+  let(:tourist) { Rolify.user_cname.last }
+  
+  # roles
+  let!(:forum_role)      { admin.has_role("forum", Forum.first) }
+  let!(:godfather_role)  { admin.has_role("godfather", Forum) }
+  let!(:group_role)      { admin.has_role("group", Group.last) }
+  let!(:tourist_role)    { tourist.has_role("forum", Forum.last) }
+  let!(:sneaky_role)     { tourist.has_role("group", Forum.first) }
 
   describe ".with_roles" do
     subject { Group }
@@ -87,25 +90,27 @@ describe Rolify::Resource do
   end
 
   describe ".find_role" do
+
     context "without using a role name parameter" do 
+      
       context "on the Forum class" do
         subject { Forum }
 
         it "should get all roles binded to a Forum class or instance" do
-          subject.find_roles.should include(@forum_role, @godfather_role, @tourist_role, @sneaky_role)
+          subject.find_roles.should include(forum_role, godfather_role, tourist_role, sneaky_role)
         end
 
         it "should not get roles not binded to a Forum class or instance" do
-          subject.find_roles.should_not include(@group_role)
+          subject.find_roles.should_not include(group_role)
         end
 
         context "using :any parameter" do
           it "should get all roles binded to any Forum class or instance" do
-            subject.find_roles(:any, :any).should include(@forum_role, @godfather_role, @tourist_role, @sneaky_role)
+            subject.find_roles(:any, :any).should include(forum_role, godfather_role, tourist_role, sneaky_role)
           end
 
           it "should not get roles not binded to a Forum class or instance" do
-            subject.find_roles(:any, :any).should_not include(@group_role)
+            subject.find_roles(:any, :any).should_not include(group_role)
           end
         end
       end
@@ -114,20 +119,20 @@ describe Rolify::Resource do
         subject { Group }
         
         it "should get all roles binded to a Group class or instance" do
-          subject.find_roles.should include(@group_role)
+          subject.find_roles.should include(group_role)
         end
 
         it "should not get roles not binded to a Group class or instance" do
-          subject.find_roles.should_not include(@forum_role, @godfather_role, @tourist_role, @sneaky_role)
+          subject.find_roles.should_not include(forum_role, godfather_role, tourist_role, sneaky_role)
         end
 
         context "using :any parameter" do
           it "should get all roles binded to Group class or instance" do
-            subject.find_roles(:any, :any).should include(@group_role)
+            subject.find_roles(:any, :any).should include(group_role)
           end
 
           it "should not get roles not binded to a Group class or instance" do
-            subject.find_roles(:any, :any).should_not include(@forum_role, @godfather_role, @tourist_role, @sneaky_role)
+            subject.find_roles(:any, :any).should_not include(forum_role, godfather_role, tourist_role, sneaky_role)
           end
         end
       end
@@ -139,31 +144,31 @@ describe Rolify::Resource do
 
         context "without using a user parameter" do
           it "should get all roles binded to a Forum class or instance and forum role name" do
-            subject.find_roles("forum").should include(@forum_role, @tourist_role)
+            subject.find_roles("forum").should include(forum_role, tourist_role)
           end
 
           it "should not get roles not binded to a Forum class or instance and forum role name" do
-            subject.find_roles("forum").should_not include(@godfather_role, @sneaky_role, @group_role)
+            subject.find_roles("forum").should_not include(godfather_role, sneaky_role, group_role)
           end
         end
 
         context "using a user parameter" do
           it "should get all roles binded to any resource" do
-            subject.find_roles("forum", admin).should include(@forum_role)
+            subject.find_roles("forum", admin).should include(forum_role)
           end
 
           it "should not get roles not binded to the admin user and forum role name" do
-            subject.find_roles("forum", admin).should_not include(@godfather_role, @tourist_role, @sneaky_role, @group_role)
+            subject.find_roles("forum", admin).should_not include(godfather_role, tourist_role, sneaky_role, group_role)
           end
         end
 
         context "using :any parameter" do
           it "should get all roles binded to any resource with forum role name" do
-            subject.find_roles("forum", :any).should include(@forum_role, @tourist_role)
+            subject.find_roles("forum", :any).should include(forum_role, tourist_role)
           end
 
           it "should not get roles not binded to a resource with forum role name" do
-            subject.find_roles("forum", :any).should_not include(@godfather_role, @sneaky_role, @group_role)
+            subject.find_roles("forum", :any).should_not include(godfather_role, sneaky_role, group_role)
           end
         end
       end
@@ -173,103 +178,102 @@ describe Rolify::Resource do
         
         context "without using a user parameter" do
           it "should get all roles binded to a Group class or instance and group role name" do
-            subject.find_roles("group").should include(@group_role)
+            subject.find_roles("group").should include(group_role)
           end
 
           it "should not get roles not binded to a Forum class or instance and forum role name" do
-            subject.find_roles("group").should_not include(@tourist_role, @godfather_role, @sneaky_role, @forum_role)
+            subject.find_roles("group").should_not include(tourist_role, godfather_role, sneaky_role, forum_role)
           end
         end
 
         context "using a user parameter" do
           it "should get all roles binded to any resource" do
-            subject.find_roles("group", admin).should include(@group_role)
+            subject.find_roles("group", admin).should include(group_role)
           end
 
           it "should not get roles not binded to the admin user and forum role name" do
-            subject.find_roles("group", admin).should_not include(@godfather_role, @tourist_role, @sneaky_role, @forum_role)
+            subject.find_roles("group", admin).should_not include(godfather_role, tourist_role, sneaky_role, forum_role)
           end
         end
 
         context "using :any parameter" do
           it "should get all roles binded to any resource with forum role name" do
-            subject.find_roles("group", :any).should include(@group_role)
+            subject.find_roles("group", :any).should include(group_role)
           end
 
           it "should not get roles not binded to a resource with forum role name" do
-            subject.find_roles("group", :any).should_not include(@godfather_role, @sneaky_role, @forum_role, @tourist_role)
+            subject.find_roles("group", :any).should_not include(godfather_role, sneaky_role, forum_role, tourist_role)
           end
         end
       end
     end
 
-  end
+    context "using :any as role name parameter" do 
+      context "on the Forum class" do
+        subject { Forum }
 
-  context "using :any as role name parameter" do 
-    context "on the Forum class" do
-      subject { Forum }
+        context "without using a user parameter" do
+          it "should get all roles binded to a Forum class or instance" do
+            subject.find_roles(:any).should include(forum_role, godfather_role, tourist_role, sneaky_role)
+          end
 
-      context "without using a user parameter" do
-        it "should get all roles binded to a Forum class or instance" do
-          subject.find_roles(:any).should include(@forum_role, @godfather_role, @tourist_role, @sneaky_role)
+          it "should not get roles not binded to a Forum class or instance" do
+            subject.find_roles(:any).should_not include(group_role)
+          end
         end
-        
-        it "should not get roles not binded to a Forum class or instance" do
-          subject.find_roles(:any).should_not include(@group_role)
+
+        context "using a user parameter" do
+          it "should get all roles binded to a Forum class or instance and admin user" do
+            subject.find_roles(:any, admin).should include(forum_role, godfather_role)
+          end
+
+          it "should not get roles not binded to the admin user and Forum class or instance" do
+            subject.find_roles(:any, admin).should_not include(tourist_role, sneaky_role, group_role)
+          end
+        end
+
+        context "using :any as user parameter" do
+          it "should get all roles binded to a Forum class or instance" do
+            subject.find_roles(:any, :any).should include(forum_role, godfather_role, tourist_role, sneaky_role)
+          end
+
+          it "should not get roles not binded to a Forum class or instance" do
+            subject.find_roles(:any, :any).should_not include(group_role)
+          end
         end
       end
 
-      context "using a user parameter" do
-        it "should get all roles binded to a Forum class or instance and admin user" do
-          subject.find_roles(:any, admin).should include(@forum_role, @godfather_role)
+      context "on the Group class" do
+        subject { Group }
+
+        context "without using a user parameter" do
+          it "should get all roles binded to a Group class or instance" do
+            subject.find_roles(:any).should include(group_role)
+          end
+
+          it "should not get roles not binded to a Group class or instance" do
+            subject.find_roles(:any).should_not include(forum_role, godfather_role, tourist_role, sneaky_role)
+          end
         end
 
-        it "should not get roles not binded to the admin user and Forum class or instance" do
-          subject.find_roles(:any, admin).should_not include(@tourist_role, @sneaky_role, @group_role)
-        end
-      end
+        context "using a user parameter" do
+          it "should get all roles binded to a Group class or instance and admin user" do
+            subject.find_roles(:any, admin).should include(group_role)
+          end
 
-      context "using :any as user parameter" do
-        it "should get all roles binded to a Forum class or instance" do
-          subject.find_roles(:any, :any).should include(@forum_role, @godfather_role, @tourist_role, @sneaky_role)
-        end
-        
-        it "should not get roles not binded to a Forum class or instance" do
-          subject.find_roles(:any, :any).should_not include(@group_role)
-        end
-      end
-    end
-
-    context "on the Group class" do
-      subject { Group }
-      
-      context "without using a user parameter" do
-        it "should get all roles binded to a Group class or instance" do
-          subject.find_roles(:any).should include(@group_role)
-        end
-        
-        it "should not get roles not binded to a Group class or instance" do
-          subject.find_roles(:any).should_not include(@forum_role, @godfather_role, @tourist_role, @sneaky_role)
-        end
-      end
-
-      context "using a user parameter" do
-        it "should get all roles binded to a Group class or instance and admin user" do
-          subject.find_roles(:any, admin).should include(@group_role)
+          it "should not get roles not binded to the admin user and Group class or instance" do
+            subject.find_roles(:any, admin).should_not include(forum_role, godfather_role, tourist_role, sneaky_role)
+          end
         end
 
-        it "should not get roles not binded to the admin user and Group class or instance" do
-          subject.find_roles(:any, admin).should_not include(@forum_role, @godfather_role, @tourist_role, @sneaky_role)
-        end
-      end
+        context "using :any as user parameter" do
+          it "should get all roles binded to a Group class or instance" do
+            subject.find_roles(:any, :any).should include(group_role)
+          end
 
-      context "using :any as user parameter" do
-        it "should get all roles binded to a Group class or instance" do
-          subject.find_roles(:any, :any).should include(@group_role)
-        end
-        
-        it "should not get roles not binded to a Group class or instance" do
-          subject.find_roles(:any, :any).should_not include(@forum_role, @godfather_role, @tourist_role, @sneaky_role)
+          it "should not get roles not binded to a Group class or instance" do
+            subject.find_roles(:any, :any).should_not include(forum_role, godfather_role, tourist_role, sneaky_role)
+          end
         end
       end
     end
@@ -281,15 +285,15 @@ describe Rolify::Resource do
     it { should respond_to :roles }
 
     context "on a Forum instance" do 
-      its(:roles) { should include(@forum_role, @sneaky_role) } 
-      its(:roles) { subject.should_not include(@group_role, @godfather_role, @tourist_role) }
+      its(:roles) { should include(forum_role, sneaky_role) } 
+      its(:roles) { subject.should_not include(group_role, godfather_role, tourist_role) }
     end
 
     context "on a Group instance" do
       subject { Group.last }
 
-      its(:roles) { should include(@group_role) } 
-      its(:roles) { should_not include(@forum_role, @godfather_role, @sneaky_role, @tourist_role) }
+      its(:roles) { should include(group_role) } 
+      its(:roles) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role) }
     end
   end
 
@@ -297,15 +301,15 @@ describe Rolify::Resource do
     context "on a Forum instance" do
       subject { Forum.first }
 
-      its(:applied_roles) { should include(@forum_role, @godfather_role, @sneaky_role) }
-      its(:applied_roles) { should_not include(@group_role, @tourist_role) }
+      its(:applied_roles) { should include(forum_role, godfather_role, sneaky_role) }
+      its(:applied_roles) { should_not include(group_role, tourist_role) }
     end
 
     context "on a Group instance" do
       subject { Group.last }
 
-      its(:applied_roles) { should include(@group_role) }
-      its(:applied_roles) { should_not include(@forum_role, @godfather_role, @sneaky_role, @tourist_role) }
+      its(:applied_roles) { should include(group_role) }
+      its(:applied_roles) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role) }
     end
   end
 end
