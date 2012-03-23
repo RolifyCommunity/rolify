@@ -51,10 +51,10 @@ module Rolify
         args.each do |arg|
           if arg.is_a? Hash
             a, v = build_query(arg[:name], arg[:resource])
-          elsif arg.is_a? String
-            a, v = build_query(arg)
+          elsif arg.is_a?(String) || arg.is_a?(Symbol)
+            a, v = build_query(arg.to_s)
           else
-            raise ArgumentError, "Invalid argument type: only hash or string allowed"
+            raise ArgumentError, "Invalid argument type: only hash or string or a symbol allowed"
           end
           conditions << a
           values += v

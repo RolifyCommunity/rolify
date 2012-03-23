@@ -62,10 +62,10 @@ module Rolify
         args.each do |arg|
           if arg.is_a? Hash
             query = build_query(arg[:name], arg[:resource])
-          elsif arg.is_a? String
+          elsif arg.is_a?(String) || arg.is_a?(Symbol)
             query = build_query(arg)
           else
-            raise ArgumentError, "Invalid argument type: only hash or string allowed"
+            raise ArgumentError, "Invalid argument type: only hash or string or symbol allowed"
           end
           conditions += query
         end

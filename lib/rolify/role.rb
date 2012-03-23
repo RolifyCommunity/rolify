@@ -151,10 +151,10 @@ module Rolify
       args.each do |arg|
         if arg.is_a? Hash
           return false if !self.has_role?(arg[:name], arg[:resource])
-        elsif arg.is_a? String
+        elsif arg.is_a?(String) || arg.is_a?(Symbol)
           return false if !self.has_role?(arg)
         else
-          raise ArgumentError, "Invalid argument type: only hash or string allowed"
+          raise ArgumentError, "Invalid argument type: only hash or string or symbol allowed"
         end
       end
       true
