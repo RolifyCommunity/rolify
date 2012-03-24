@@ -5,12 +5,19 @@ shared_context "global role", :scope => :global do
   
   before(:all) do
     load_roles
+    create_other_roles
   end
   
   def load_roles
     Rolify.role_cname.destroy_all
     admin.roles = []
     admin.has_role "admin"
+    admin.has_role "staff"
+    admin.has_role "manager", Group
+    admin.has_role "player", Forum
+    admin.has_role "moderator", Forum.last
+    admin.has_role "moderator", Group.last
+    admin.has_role "anonymous", Forum.first
   end
 end
 
@@ -19,6 +26,7 @@ shared_context "class scoped role", :scope => :class do
   
   before(:all) do
     load_roles
+    create_other_roles
   end
   
   let(:manager) { Rolify.user_cname.where(:login => "moderator").first }
@@ -27,6 +35,11 @@ shared_context "class scoped role", :scope => :class do
     Rolify.role_cname.destroy_all
     manager.roles = []
     manager.has_role "manager", Forum
+    manager.has_role "player", Forum 
+    manager.has_role "warrior"
+    manager.has_role "moderator", Forum.last
+    manager.has_role "moderator", Group.last
+    manager.has_role "anonymous", Forum.first
   end
 end
 
@@ -35,6 +48,7 @@ shared_context "instance scoped role", :scope => :instance do
   
   before(:all) do
     load_roles
+    create_other_roles
   end
   
   let(:moderator) { Rolify.user_cname.where(:login => "god").first }
@@ -43,21 +57,18 @@ shared_context "instance scoped role", :scope => :instance do
     Rolify.role_cname.destroy_all
     moderator.roles = []
     moderator.has_role "moderator", Forum.first
+    moderator.has_role "anonymous", Forum.last
+    moderator.has_role "visitor", Forum
+    moderator.has_role "soldier"
   end
 end
 
-shared_context "with different roles" do 
-  subject do
-    user = Rolify.user_cname.where(:login => "zombie").first
-    user.has_role "admin"
-    user.has_role "anonymous"
-    user.has_role "moderator", Forum.first
-    user.has_role "visitor", Forum.last
-    user.has_role "manager", Forum
-    user.has_role "leader", Group
-    Rolify.role_cname.create :name => "manager", :resource => Forum.first
-    Rolify.role_cname.create :name => "manager", :resource => Forum.where(:name => "forum 2").first
-    Rolify.role_cname.create :name => "manager", :resource => Forum.where(:name => "forum 3").first
-    user
-  end
+def create_other_roles
+  Rolify.role_cname.create :name => "superhero"
+  Rolify.role_cname.create :name => "admin", :resource_type => "Group"
+  Rolify.role_cname.create :name => "admin", :resource => Forum.first
+  Rolify.role_cname.create :name => "VIP", :resource_type => "Forum"
+  Rolify.role_cname.create :name => "manager", :resource => Forum.last
+  Rolify.role_cname.create :name => "roomate", :resource => Forum.first
+  Rolify.role_cname.create :name => "moderator", :resource => Group.first
 end

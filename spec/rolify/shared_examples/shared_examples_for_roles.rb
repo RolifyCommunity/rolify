@@ -78,30 +78,4 @@ shared_examples_for Rolify::Role do
     it_should_behave_like "#has_no_role_examples", "String", :to_s
     it_should_behave_like "#has_no_role_examples", "Symbol", :to_sym
   end
-
-  #context "with different roles" do 
-  #
-  #  it "should get a global role" do
-  #    @user.has_role?("admin").should be(true)
-  #    @user.has_role?("anonymous").should be(true)
-  #    @user.has_role?(:admin).should be(true)
-  #    @user.has_role?(:anonymous).should be(true)
-  #  end
-  #
-  #  it "should get an instance scoped role" do
-  #    @user.has_role?("moderator", Forum.first).should be(true)
-  #    @user.has_role?("visitor", Forum.last).should be(true)
-  #    @user.has_role?(:moderator, Forum.first).should be(true)
-  #    @user.has_role?(:visitor, Forum.last).should be(true)
-  #  end
-  #
-  #  it "should get an class scoped role" do
-  #    @user.has_role?("manager", Forum).should be(true)
-  #    @user.has_role?("leader", Group).should be(true)
-  #    @user.has_role?(:manager, Forum).should be(true)
-  #    @user.has_role?(:leader, Group).should be(true)
-  #  end
-  #
-  #end
-
 end

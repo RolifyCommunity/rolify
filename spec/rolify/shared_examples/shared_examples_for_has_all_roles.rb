@@ -1,10 +1,6 @@
 shared_examples_for "#has_all_roles?_examples" do |param_name, param_method|
   context "using #{param_name} as parameter" do
-    context "with a global role", :scope => :global do
-      before(:all) do
-        subject.has_role "staff".send(param_method)
-      end
-      
+    context "with a global role", :scope => :global do  
       context "on global roles only request" do
         it { subject.has_all_roles?("staff".send(param_method)).should be_true }
         it { subject.has_all_roles?("admin".send(param_method), "staff".send(param_method)).should be_true }
@@ -22,12 +18,7 @@ shared_examples_for "#has_all_roles?_examples" do |param_name, param_method|
       end
     end
     
-    context "with a class scoped role", :scope => :class do
-      before(:all) do
-        manager.has_role "player".send(param_method), Forum 
-        manager.has_role "warrior".send(param_method)
-      end
-        
+    context "with a class scoped role", :scope => :class do        
       context "on class scoped roles only" do
         it { subject.has_all_roles?({ :name => "player".send(param_method), :resource => Forum }).should be_true }
         it { subject.has_all_roles?({ :name => "manager".send(param_method), :resource => Forum }, { :name => "player".send(param_method), :resource => Forum }).should be_true }
@@ -47,12 +38,6 @@ shared_examples_for "#has_all_roles?_examples" do |param_name, param_method|
     end
     
     context "with a instance scoped role", :scope => :instance do
-      before(:all) do
-        moderator.has_role "anonymous".send(param_method), Forum.last
-        moderator.has_role "visitor".send(param_method), Forum
-        moderator.has_role "soldier".send(param_method)
-      end
-      
       context "on instance scoped roles only" do
         it { subject.has_all_roles?({ :name => "moderator".send(param_method), :resource => :any }, { :name => "anonymous".send(param_method), :resource => Forum.last }).should be_true }
         it { subject.has_all_roles?({ :name => "moderator".send(param_method), :resource => :any }, { :name => "anonymous".send(param_method), :resource => :any }).should be_true }

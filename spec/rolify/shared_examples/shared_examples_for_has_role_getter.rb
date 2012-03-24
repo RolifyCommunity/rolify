@@ -17,7 +17,7 @@ shared_examples_for "#has_role?_examples" do |param_name, param_method|
       end
 
       it "should not get an instance scoped role" do
-        subject.has_role?("moderator".send(param_method), Forum.last).should be_false
+        subject.has_role?("moderator".send(param_method), Group.first).should be_false
       end
 
       it "should not get a class scoped role" do

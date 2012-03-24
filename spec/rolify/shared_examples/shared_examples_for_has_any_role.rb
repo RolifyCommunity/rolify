@@ -54,21 +54,18 @@ shared_examples_for "#has_any_role?_examples" do |param_name, param_method|
       it { subject.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }).should be_true }
       it { subject.has_any_role?({ :name => "moderator", :resource => Forum.first }, { :name => "dummy", :resource => Forum.last }).should be_true }
       it { subject.has_any_role?({ :name => "dummy", :resource => Forum.first }, { :name => "dumber", :resource => Forum.last }).should be_false }
+      it { subject.has_any_role?("warrior", { :name => "moderator", :resource => Forum.first }, { :name => "leader", :resource => Group }).should be(true) }
+      it { subject.has_any_role?("warrior", { :name => "moderator", :resource => :any }, { :name => "leader", :resource => Forum }).should be(true) }
+      it { subject.has_any_role?("warrior", { :name => "moderator", :resource => Forum.first }, { :name => "leader", :resource => :any }).should be(true) }
+      it { subject.has_any_role?("warrior", { :name => "moderator", :resource => :any }, { :name => "leader", :resource => :any }).should be(true) }
+      it { subject.has_any_role?("warrior", { :name => "moderator", :resource => Forum.last }, { :name => "leader", :resource => Forum }).should be(true) }
+      it { subject.has_any_role?("warrior", { :name => "moderator", :resource => Forum.last }, { :name => "leader", :resource => Group }).should be(true) }
+      it { subject.has_any_role?("warrior", { :name => "moderator", :resource => Forum.last }, { :name => "leader", :resource => Group.first }).should be(true) }
+      it { subject.has_any_role?({ :name => "warrior", :resource => Forum }, { :name => "moderator", :resource => Forum.last }, { :name => "leader", :resource => Forum }).should be(true) }
+      it { subject.has_any_role?({ :name => "warrior", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }, { :name => "leader", :resource => Forum }).should be(true) }
+      it { subject.has_any_role?("warrior", { :name => "moderator", :resource => Forum.last }, { :name => "leader", :resource => Forum.first }).should be(true) }
+      it { subject.has_any_role?("dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false) }
+      it { subject.has_any_role?({ :name => "leader", :resource => Group.last }, "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(true) }
     end
-    
-    #  it "should check if user has any of a mix of global and scoped roles set" do
-    #    @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => Forum }).should be(true)
-    #    @user.has_any_role?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => Forum }).should be(true)
-    #    @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.first }, { :name => "manager", :resource => :any }).should be(true)
-    #    @user.has_any_role?("admin", { :name => "moderator", :resource => :any }, { :name => "manager", :resource => :any }).should be(true)
-    #    @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum }).should be(true)
-    #    @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Group }).should be(true)
-    #    @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Group.first }).should be(true)
-    #    @user.has_any_role?({ :name => "admin", :resource => Forum }, { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum }).should be(true)
-    #    @user.has_any_role?({ :name => "admin", :resource => Forum.first }, { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum }).should be(true)
-    #    @user.has_any_role?("admin", { :name => "moderator", :resource => Forum.last }, { :name => "manager", :resource => Forum.first }).should be(true)
-    #    @user.has_any_role?("dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(false)
-    #    @user.has_any_role?({ :name => "manager", :resource => Forum.last }, "dummy", { :name => "dumber", :resource => Forum.last }, { :name => "dumberer", :resource => Forum }).should be(true)
-    #  end
   end
 end

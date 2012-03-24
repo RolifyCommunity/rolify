@@ -6,21 +6,21 @@ shared_examples_for "#has_role_examples" do |param_name, param_method|
       end
 
       it "should create a role to the roles table" do
-        expect { subject.has_role "staff".send(param_method) }.to change{ Rolify.role_cname.count }.by(1)
+        expect { subject.has_role "moderator".send(param_method) }.to change{ Rolify.role_cname.count }.by(1)
       end
 
       context "considering a new global role" do
         subject { Rolify.role_cname.last }
 
-        its(:name) { should eq("staff") }
+        its(:name) { should eq("moderator") }
         its(:resource_type) { should be(nil) }
         its(:resource_id) { should be(nil) }
       end
 
       context "should not create another role" do
         it "if the role was already assigned to the user" do
-          subject.has_role "spiderman".send(param_method)
-          expect { subject.has_role "spiderman".send(param_method) }.not_to change{ subject.roles.size }
+          subject.has_role "manager".send(param_method)
+          expect { subject.has_role "manager".send(param_method) }.not_to change{ subject.roles.size }
         end
 
         it "if the role already exists in the db" do
