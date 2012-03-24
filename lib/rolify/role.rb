@@ -1,66 +1,11 @@
+require 'rolify/configure'
+require 'rolify/dynamic'
+require 'rolify/resource'
+
 module Rolify
-  @@role_cname = "Role"
-  @@user_cname = "User"
-  @@dynamic_shortcuts = false
-  @@orm = "active_record"
-
-
-  def self.configure
-    yield self if block_given?
-  end
-
-  def self.role_cname
-    @@role_cname.constantize
-  end
-
-  def self.role_cname=(role_cname)
-    @@role_cname = role_cname.camelize
-  end
-
-  def self.user_cname
-    @@user_cname.constantize
-  end
-
-  def self.user_cname=(user_cname)
-    @@user_cname = user_cname.camelize
-  end
-
-  def self.dynamic_shortcuts
-    @@dynamic_shortcuts || false
-  end
-
-  def self.dynamic_shortcuts=(is_dynamic)
-    @@dynamic_shortcuts = is_dynamic
-  end
-
-  def self.orm
-    @@orm
-  end
-
-  def self.orm=(orm)
-    @@orm = orm
-    @@adapter = Rolify::Adapter.const_get(orm.camelize)
-  end
-
-  def self.adapter
-    @@adapter ||= Rolify::Adapter::ActiveRecord
-  end
-
-  def self.use_mongoid
-    self.orm = "mongoid"
-  end
+  extend Configure
   
-  def self.use_defaults
-    @@role_cname = "Role"
-    @@user_cname = "User"
-    @@dynamic_shortcuts = false
-    @@orm = "active_record"
-    @@adapter = Rolify::Adapter::ActiveRecord
-  end
-
-
-  module Role
-    
+  module Role  
     def rolify(options = { :role_cname => 'Role' })
        include InstanceMethods
        extend Dynamic if Rolify.dynamic_shortcuts
@@ -79,57 +24,8 @@ module Rolify
       include Resource
     end
   end
-
-  module Dynamic
- 
-    def load_dynamic_methods
-      Rolify.role_cname.all.each do |r|
-        define_dynamic_method(r.name, r.resource)
-      end
-    end
-
-    def define_dynamic_method(role_name, resource)
-      class_eval do 
-        define_method("is_#{role_name}?".to_sym) do
-          has_role?("#{role_name}")
-        end if !method_defined?("is_#{role_name}?".to_sym)
-        
-        define_method("is_#{role_name}_of?".to_sym) do |arg|
-          has_role?("#{role_name}", arg)
-        end if !method_defined?("is_#{role_name}_of?".to_sym) && !!resource
-      end
-    end
-  end
-  
-  module Resource
-    def self.included(base)
-      base.extend ClassMethods
-      base.send :include, InstanceMethods
-    end
-    
-    module InstanceMethods
-      def applied_roles
-        self.roles + Rolify.role_cname.where(:resource_type => self.class.to_s, :resource_id => nil)
-      end
-    end
-    
-    module ClassMethods 
-      def find_roles(role_name = nil, user = nil)
-        roles = user && (user != :any) ? user.roles : Rolify.role_cname
-        roles = roles.where(:resource_type => self.to_s)
-        roles = roles.where(:name => role_name) if role_name && (role_name != :any)
-        roles
-      end
-      
-      def with_role(role_name, user = nil)
-        resources = Rolify.adapter.resources_find(Rolify.role_cname.to_s.tableize, self, role_name)
-        user ? Rolify.adapter.in(resources, user.roles.where(:name => role_name)) : resources
-      end
-    end
-  end
   
   module InstanceMethods
-
     def has_role(role_name, resource = nil)
       role = Rolify.adapter.find_or_create_by(role_name, 
                                               (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
