@@ -1,10 +1,10 @@
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
+ActiveRecord::Base.extend Rolify
 
 load File.dirname(__FILE__) + '/../schema.rb'
 
 # ActiveRecord models
 class User < ActiveRecord::Base
-  extend Rolify::Role
   rolify
 end
 
@@ -14,17 +14,14 @@ class Role < ActiveRecord::Base
 end
 
 class Forum < ActiveRecord::Base
-  extend Rolify::Role
   #resourcify done during specs setup to be able to use custom user classes
 end
 
 class Group < ActiveRecord::Base
-  extend Rolify::Role
   #resourcify done during specs setup to be able to use custom user classes
 end
 
 class Customer < ActiveRecord::Base
-  extend Rolify::Role
   rolify :role_cname => "Privilege"
 end
 

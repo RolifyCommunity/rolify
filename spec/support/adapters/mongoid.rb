@@ -2,12 +2,17 @@ Mongoid.configure do |config|
   config.master = Mongo::Connection.new.db("godfather")
 end
 
+::Mongoid::Document.module_eval do
+  def self.included(base)
+    base.extend Rolify
+  end
+end
+
 Rolify.use_mongoid
 
 # Mongoid models
 class User
   include Mongoid::Document
-  extend Rolify::Role
   rolify
   
   field :login, :type => String
@@ -23,21 +28,20 @@ end
 
 class Forum
   include Mongoid::Document
-  extend Rolify::Role
+  #resourcify done during specs setup to be able to use custom user classes
   
   field :name, :type => String
 end
 
 class Group
   include Mongoid::Document
-  extend Rolify::Role
+  #resourcify done during specs setup to be able to use custom user classes
   
   field :name, :type => String
 end
 
 class Customer
   include Mongoid::Document
-  extend Rolify::Role
   rolify :role_cname => "Privilege"
   
   field :login, :type => String
