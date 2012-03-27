@@ -1,7 +1,4 @@
 Rolify.configure do |c|
-  # User class to put the roles association. Default is: "User"
-  <%= "# " if user_cname == "User" %>c.user_cname = "<%= user_cname %>"
-  
   # By default ORM adapter is ActiveRecord. uncomment to use mongoid
   <%= "# " if orm_adapter == "active_record" %>c.use_mongoid
   

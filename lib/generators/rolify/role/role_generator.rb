@@ -14,15 +14,15 @@ module Rolify
       desc "Generates a model with the given NAME and a migration file."
 
       def generate_role
-        template "role.rb", "app/models/#{role_cname.downcase}.rb"
+        template "role-#{orm_adapter}.rb", "app/models/#{role_cname.downcase}.rb"
         inject_into_class(model_path, user_cname.camelize) do
-          " rolify\n"
+          "\trolify\n"
         end
       end
 
       def copy_role_file
         template "initializer.rb", "config/initializers/rolify.rb"
-        migration_template "migration.rb", "db/migrate/rolify_create_#{role_cname.tableize}"
+        migration_template "migration.rb", "db/migrate/rolify_create_#{role_cname.tableize}" if orm_adapter == "active_record"
       end
 
       def model_path
@@ -34,7 +34,7 @@ module Rolify
       end
       
       def show_readme
-        readme "README" if behavior == :invoke
+        readme "README-#{orm_adapter}" if behavior == :invoke
       end
     end
   end

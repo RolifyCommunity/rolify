@@ -31,8 +31,15 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
-      it { should contain "c.user_cname = \"User\"" }
       it { should contain "c.dynamic_shortcuts = false" }
+    end
+    
+    describe 'app/models/role.rb' do
+      subject { file('app/models/role.rb') }
+      it { should exist }
+      it { should contain "class Role < ActiveRecord::Base" }
+      it { should contain "has_and_belongs_to_many :users, :join_table => :users_roles" }
+      it { should contain "belongs_to :resource, :polymorphic => true" }
     end
     
     describe 'app/models/user.rb' do
@@ -63,8 +70,15 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
-      it { should contain "c.user_cname = \"Client\"" }
       it { should contain "c.dynamic_shortcuts = false" }
+    end
+    
+    describe 'app/models/rank.rb' do
+      subject { file('app/models/rank.rb') }
+      it { should exist }
+      it { should contain "class Rank < ActiveRecord::Base" }
+      it { should contain "has_and_belongs_to_many :clients, :join_table => :clients_ranks" }
+      it { should contain "belongs_to :resource, :polymorphic => true" }
     end
     
     describe 'app/models/client.rb' do
@@ -99,6 +113,14 @@ describe Rolify::Generators::RoleGenerator do
       it { should contain "c.dynamic_shortcuts = true" }
     end
     
+    describe 'app/models/role.rb' do
+      subject { file('app/models/role.rb') }
+      it { should exist }
+      it { should contain "class Role < ActiveRecord::Base" }
+      it { should contain "has_and_belongs_to_many :users, :join_table => :users_roles" }
+      it { should contain "belongs_to :resource, :polymorphic => true" }
+    end
+    
     describe 'app/models/user.rb' do
       subject { file('app/models/user.rb') }
       it { should contain "rolify" }
@@ -118,7 +140,13 @@ describe Rolify::Generators::RoleGenerator do
     before { 
       capture(:stdout) {
         generator.create_file "app/models/user.rb" do
-          "class User < ActiveRecord::Base\nend"
+          <<-CLASS 
+          class User
+            include Mongoid::Document
+
+            field :login, :type => String
+          end
+          CLASS
         end
       }
       run_generator
@@ -128,6 +156,14 @@ describe Rolify::Generators::RoleGenerator do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
       it { should_not contain "# c.use_mongoid" }
+    end
+    
+    describe 'app/models/role.rb' do
+      subject { file('app/models/role.rb') }
+      it { should exist }
+      it { should contain "class Role\n" }
+      it { should contain "has_and_belongs_to_many :users\n" }
+      it { should contain "belongs_to :resource, :polymorphic => true" }
     end
     
     describe 'app/models/user.rb' do
