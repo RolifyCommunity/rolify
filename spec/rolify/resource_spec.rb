@@ -3,13 +3,15 @@ require "spec_helper"
 describe Rolify::Resource do
   before(:all) do
     reset_defaults
-    Forum.resourcify
-    Group.resourcify
+    #Role.destroy_all
+    User.rolify :role_cname => "Role"
+    Forum.resourcify :role_cname => "Role"
+    Group.resourcify :role_cname => "Role"
   end
 
   # Users
-  let(:admin)   { Rolify.user_cname.first }
-  let(:tourist) { Rolify.user_cname.last }
+  let(:admin)   { User.first }
+  let(:tourist) { User.last }
   
   # roles
   let!(:forum_role)      { admin.has_role("forum", Forum.first) }

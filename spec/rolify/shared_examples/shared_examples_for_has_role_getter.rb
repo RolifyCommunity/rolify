@@ -10,7 +10,7 @@ shared_examples_for "#has_role?_examples" do |param_name, param_method|
       end
 
       context "with another global role" do
-        before(:all) { Rolify.role_cname.create(:name => "global") }
+        before(:all) { role_class.create(:name => "global") }
 
         it { subject.has_role?("global".send(param_method)).should be_false }
         it { subject.has_role?("global".send(param_method), :any).should be_false }
@@ -42,27 +42,27 @@ shared_examples_for "#has_role?_examples" do |param_name, param_method|
       end
 
       it "should not get a global role" do
-        Rolify.role_cname.create(:name => "admin")
+        role_class.create(:name => "admin")
         subject.has_role?("admin".send(param_method)).should be_false
       end
 
       context "with another class scoped role" do
         context "on the same resource but with a different name" do
-          before(:all) { Rolify.role_cname.create(:name => "member", :resource_type => "Forum") }
+          before(:all) { role_class.create(:name => "member", :resource_type => "Forum") }
 
           it { subject.has_role?("member".send(param_method), Forum).should be_false }
           it { subject.has_role?("member".send(param_method), :any).should be_false }
         end
 
         context "on another resource with the same name" do
-          before(:all) { Rolify.role_cname.create(:name => "manager", :resource_type => "Group") }
+          before(:all) { role_class.create(:name => "manager", :resource_type => "Group") }
 
           it { subject.has_role?("manager".send(param_method), Group).should be_false }
           it { subject.has_role?("manager".send(param_method), :any).should be_true }
         end
 
         context "on another resource with another name" do
-          before(:all) { Rolify.role_cname.create(:name => "defenders", :resource_type => "Group") }
+          before(:all) { role_class.create(:name => "defenders", :resource_type => "Group") }
 
           it { subject.has_role?("defenders".send(param_method), Group).should be_false }
           it { subject.has_role?("defenders".send(param_method), :any).should be_false }
@@ -90,41 +90,41 @@ shared_examples_for "#has_role?_examples" do |param_name, param_method|
       end
 
       it "should not get a global role" do
-        Rolify.role_cname.create(:name => "admin")
+        role_class.create(:name => "admin")
         subject.has_role?("admin".send(param_method)).should be_false
       end
 
       context "with another instance scoped role" do
         context "on the same resource but with a different role name" do
-          before(:all) { Rolify.role_cname.create(:name => "member", :resource => Forum.first) }
+          before(:all) { role_class.create(:name => "member", :resource => Forum.first) }
 
           it { subject.has_role?("member".send(param_method), Forum.first).should be_false }
           it { subject.has_role?("member".send(param_method), :any).should be_false }
         end
 
         context "on another resource of the same type but with the same role name" do
-          before(:all) { Rolify.role_cname.create(:name => "moderator", :resource => Forum.last) }
+          before(:all) { role_class.create(:name => "moderator", :resource => Forum.last) }
 
           it { subject.has_role?("moderator".send(param_method), Forum.last).should be_false }
           it { subject.has_role?("moderator".send(param_method), :any).should be_true }
         end
 
         context "on another resource of different type but with the same role name" do
-          before(:all) { Rolify.role_cname.create(:name => "moderator", :resource => Group.last) }
+          before(:all) { role_class.create(:name => "moderator", :resource => Group.last) }
 
           it { subject.has_role?("moderator".send(param_method), Group.last).should be_false }
           it { subject.has_role?("moderator".send(param_method), :any).should be_true }
         end
 
         context "on another resource of the same type and with another role name" do
-          before(:all) { Rolify.role_cname.create(:name => "member", :resource => Forum.last) }
+          before(:all) { role_class.create(:name => "member", :resource => Forum.last) }
 
           it { subject.has_role?("member".send(param_method), Forum.last).should be_false }
           it { subject.has_role?("member".send(param_method), :any).should be_false }
         end
 
         context "on another resource of different type and with another role name" do
-          before(:all) { Rolify.role_cname.create(:name => "member", :resource => Group.first) }
+          before(:all) { role_class.create(:name => "member", :resource => Group.first) }
 
           it { subject.has_role?("member".send(param_method), Group.first).should be_false }
           it { subject.has_role?("member".send(param_method), :any).should be_false }

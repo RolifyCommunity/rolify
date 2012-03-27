@@ -1,7 +1,7 @@
 module Rolify
   module Dynamic
     def load_dynamic_methods
-      Rolify.role_cname.all.each do |r|
+      self.role_class.all.each do |r|
         define_dynamic_method(r.name, r.resource)
       end
     end

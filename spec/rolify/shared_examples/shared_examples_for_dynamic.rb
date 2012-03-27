@@ -1,16 +1,15 @@
 shared_examples_for Rolify::Dynamic do 
   before(:all) do
-    Rolify.user_cname = user_cname
     Rolify.dynamic_shortcuts = true
-    Rolify.role_cname.destroy_all
-    Rolify.user_cname.rolify :role_cname => role_cname
-    Forum.resourcify :role_cname => role_cname
-    Group.resourcify :role_cname => role_cname
+    role_class.destroy_all
+    user_class.rolify :role_cname => role_class.to_s
+    Forum.resourcify :role_cname => role_class.to_s
+    Group.resourcify :role_cname => role_class.to_s
   end
   
   context "using a global role" do
     subject do 
-      admin = Rolify.user_cname.first
+      admin = user_class.first
       admin.has_role "admin"
       admin.has_role "moderator", Forum.first
       admin
@@ -27,7 +26,7 @@ shared_examples_for Rolify::Dynamic do
   
   context "using a resource scoped role" do
     subject do 
-      moderator = Rolify.user_cname.where(:login => "moderator").first
+      moderator = user_class.where(:login => "moderator").first
       moderator.has_role "moderator", Forum.first
       moderator
     end
@@ -49,7 +48,7 @@ shared_examples_for Rolify::Dynamic do
   
   context "using a class scoped role" do
     subject do 
-      manager = Rolify.user_cname.where(:login => "god").first
+      manager = user_class.where(:login => "god").first
       manager.has_role "manager", Forum
       manager
     end
@@ -73,11 +72,11 @@ shared_examples_for Rolify::Dynamic do
   
   context "if the role doesn't exist in the database" do
     
-    subject { Rolify.user_cname.first }
+    subject { user_class.first }
     
     context "using a global role" do
       before(:all) do
-        other_guy = Rolify.user_cname.last
+        other_guy = user_class.last
         other_guy.has_role "superman"
       end
   
@@ -90,7 +89,7 @@ shared_examples_for Rolify::Dynamic do
     
     context "using a resource scope role" do
       before(:all) do
-        other_guy = Rolify.user_cname.last
+        other_guy = user_class.last
         other_guy.has_role("batman", Forum.first)
       end
       

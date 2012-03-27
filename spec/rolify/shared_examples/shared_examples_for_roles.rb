@@ -9,24 +9,23 @@ require "rolify/shared_examples/shared_examples_for_has_no_role"
 shared_examples_for Rolify::Role do
   before(:all) do
     reset_defaults
-    Rolify.user_cname = user_cname
     Rolify.dynamic_shortcuts = false
-    Rolify.user_cname.rolify :role_cname => role_cname
-    Rolify.role_cname.destroy_all
-    Forum.resourcify :role_cname => role_cname
-    Group.resourcify :role_cname => role_cname
+    user_class.rolify :role_cname => role_class.to_s
+    role_class.destroy_all
+    Forum.resourcify :role_cname => role_class.to_s
+    Group.resourcify :role_cname => role_class.to_s
   end
 
   context "in a Instance level" do 
     before(:all) do
-      admin = Rolify.user_cname.first
+      admin = user_class.first
       admin.has_role "admin"
       admin.has_role "moderator", Forum.first
       admin
     end
 
     subject do
-      Rolify.user_cname.first
+      user_class.first
     end
 
     it { should respond_to(:has_role).with(1).arguments }

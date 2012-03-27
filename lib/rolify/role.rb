@@ -1,20 +1,20 @@
 module Rolify
   module Role
     def has_role(role_name, resource = nil)
-      role = Rolify.adapter.find_or_create_by(role_name, 
-      (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
-      (resource.id if resource && !resource.is_a?(Class)))
+      role = self.class.adapter.find_or_create_by(role_name, 
+                                                  (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
+                                                  (resource.id if resource && !resource.is_a?(Class)))
 
       if !roles.include?(role)
         self.class.define_dynamic_method(role_name, resource) if Rolify.dynamic_shortcuts
-        Rolify.adapter.add(self, role)
+        self.class.adapter.add(self, role)
       end
       role
     end
     alias_method :grant, :has_role
 
     def has_role?(role_name, resource = nil)
-      Rolify.adapter.find(self.roles, role_name, resource).size > 0
+      self.class.adapter.find(self.roles, role_name, resource).size > 0
     end
 
     def has_all_roles?(*args)
@@ -31,11 +31,11 @@ module Rolify
     end
 
     def has_any_role?(*args)
-      Rolify.adapter.where(self.roles, args).size > 0
+      self.class.adapter.where(self.roles, args).size > 0
     end
 
     def has_no_role(role_name, resource = nil)
-      Rolify.adapter.remove(self.roles, role_name, resource)
+      self.class.adapter.remove(self.roles, role_name, resource)
     end
     alias_method :revoke, :has_no_role
 
@@ -45,7 +45,7 @@ module Rolify
 
     def method_missing(method, *args, &block)
       if method.to_s.match(/^is_(\w+)_of[?]$/) || method.to_s.match(/^is_(\w+)[?]$/)
-        if Rolify.role_cname.where(:name => $1).count > 0
+        if self.class.role_class.where(:name => $1).count > 0
           resource = args.first
           self.class.define_dynamic_method $1, resource
           return has_role?("#{$1}", resource)
@@ -56,8 +56,8 @@ module Rolify
 
     def respond_to?(method, include_private = false)
       if Rolify.dynamic_shortcuts && (method.to_s.match(/^is_(\w+)_of[?]$/) || method.to_s.match(/^is_(\w+)[?]$/))
-        query = Rolify.role_cname.where(:name => $1)
-        query = Rolify.adapter.exists?(query, :resource_type) if method.to_s.match(/^is_(\w+)_of[?]$/)
+        query = self.class.role_class.where(:name => $1)
+        query = self.class.adapter.exists?(query, :resource_type) if method.to_s.match(/^is_(\w+)_of[?]$/)
         return true if query.count > 0
         false
       else

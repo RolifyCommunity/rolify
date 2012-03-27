@@ -11,6 +11,7 @@ require 'rolify/resource'
 
 module Rolify
   extend Configure
+  attr_accessor :role_cname, :adapter
 
   def rolify(options = { :role_cname => 'Role' })
     include Role
@@ -20,13 +21,20 @@ module Rolify
     has_and_belongs_to_many :roles, rolify_options
 
     load_dynamic_methods if Rolify.dynamic_shortcuts
-    Rolify.role_cname = options[:role_cname]
+    self.role_cname = options[:role_cname]
+    self.adapter = Rolify::Adapter.const_get(Rolify.orm.camelize).new(options[:role_cname])
   end
 
   def resourcify(options = { :role_cname => 'Role' })
+    include Resource
     resourcify_options = { :class_name => options[:role_cname].camelize }
     resourcify_options.merge!({ :as => :resource })
     has_many :roles, resourcify_options
-    include Resource
+    self.role_cname = options[:role_cname]
+    self.adapter = Rolify::Adapter.const_get(Rolify.orm.camelize).new(options[:role_cname])
+  end
+  
+  def role_class
+    self.role_cname.constantize
   end
 end

@@ -1,7 +1,7 @@
 module Rolify
   module Adapter  
     class Mongoid < Adapter::Base
-      def self.find(relation, role_name, resource)
+      def find(relation, role_name, resource)
         query = build_query(role_name, resource)
         query.each do |condition|
           criteria = relation.where(condition)
@@ -10,29 +10,29 @@ module Rolify
         []
       end
 
-      def self.where(relation, args)
+      def where(relation, args)
         conditions = build_conditions(relation, args)
         relation.any_of(*conditions)
       end
 
-      def self.find_or_create_by(role_name, resource_type = nil, resource_id = nil)
-        Rolify.role_cname.find_or_create_by(:name => role_name, 
-        :resource_type => resource_type, 
-        :resource_id => resource_id)
+      def find_or_create_by(role_name, resource_type = nil, resource_id = nil)
+        self.role_class.find_or_create_by(:name => role_name, 
+                                          :resource_type => resource_type, 
+                                          :resource_id => resource_id)
       end
 
-      def self.add(relation, role)
+      def add(relation, role)
         relation.roles << role
       end
 
-      def self.remove(relation, role_name, resource = nil)
+      def remove(relation, role_name, resource = nil)
         role = { :name => role_name }
         role.merge!({:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)}) if resource
         role.merge!({ :resource_id => resource.id }) if resource && !resource.is_a?(Class)
         relation.where(role).destroy_all
       end
 
-      def self.resources_find(roles_table, relation, role_name)
+      def resources_find(roles_table, relation, role_name)
         roles = roles_table.classify.constantize.where(:name => role_name, :resource_type => relation.to_s)
         resources = []
         roles.each do |role|
@@ -42,19 +42,19 @@ module Rolify
         resources
       end
 
-      def self.in(resources, roles)
+      def in(resources, roles)
         return [] if resources.empty? || roles.empty?
         resources.delete_if { |resource| (resource.applied_roles && roles).empty? }
         resources
       end
 
-      def self.exists?(relation, column)
+      def exists?(relation, column)
         relation.where(column.to_sym.ne => nil)
       end
 
       private
 
-      def self.build_conditions(relation, args)
+      def build_conditions(relation, args)
         conditions = []
         args.each do |arg|
           if arg.is_a? Hash
@@ -69,7 +69,7 @@ module Rolify
         conditions
       end
 
-      def self.build_query(role, resource = nil)
+      def build_query(role, resource = nil)
         return [{ :name => role }] if resource == :any
         query = [{ :name => role, :resource_type => nil, :resource_id => nil }]
         if resource

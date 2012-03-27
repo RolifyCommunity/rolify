@@ -6,11 +6,11 @@ shared_examples_for "#has_role_examples" do |param_name, param_method|
       end
 
       it "should create a role to the roles table" do
-        expect { subject.has_role "moderator".send(param_method) }.to change{ Rolify.role_cname.count }.by(1)
+        expect { subject.has_role "moderator".send(param_method) }.to change{ role_class.count }.by(1)
       end
 
       context "considering a new global role" do
-        subject { Rolify.role_cname.last }
+        subject { role_class.last }
 
         its(:name) { should eq("moderator") }
         its(:resource_type) { should be(nil) }
@@ -24,8 +24,8 @@ shared_examples_for "#has_role_examples" do |param_name, param_method|
         end
 
         it "if the role already exists in the db" do
-          Rolify.role_cname.create :name => "god"
-          expect { subject.has_role "god".send(param_method) }.not_to change{ Rolify.role_cname.count }
+          role_class.create :name => "god"
+          expect { subject.has_role "god".send(param_method) }.not_to change{ role_class.count }
         end
       end
     end
@@ -36,11 +36,11 @@ shared_examples_for "#has_role_examples" do |param_name, param_method|
       end
 
       it "should create a role in the roles table" do
-        expect { subject.has_role "moderator".send(param_method), Forum }.to change{ Rolify.role_cname.count }.by(1)
+        expect { subject.has_role "moderator".send(param_method), Forum }.to change{ role_class.count }.by(1)
       end
 
       context "considering a new class scoped role" do
-        subject { Rolify.role_cname.last }
+        subject { role_class.last }
 
         its(:name) { should eq("moderator") }
         its(:resource_type) { should eq(Forum.to_s) }
@@ -54,8 +54,8 @@ shared_examples_for "#has_role_examples" do |param_name, param_method|
         end
 
         it "if already existing in the database" do
-          Rolify.role_cname.create :name => "hacker", :resource_type => "Forum"
-          expect { subject.has_role "hacker".send(param_method), Forum }.not_to change{ Rolify.role_cname.count }
+          role_class.create :name => "hacker", :resource_type => "Forum"
+          expect { subject.has_role "hacker".send(param_method), Forum }.not_to change{ role_class.count }
         end
       end
     end
@@ -66,11 +66,11 @@ shared_examples_for "#has_role_examples" do |param_name, param_method|
       end
 
       it "should create a role in the roles table" do
-        expect { subject.has_role "member".send(param_method), Forum.last }.to change{ Rolify.role_cname.count }.by(1)
+        expect { subject.has_role "member".send(param_method), Forum.last }.to change{ role_class.count }.by(1)
       end
 
       context "considering a new class scoped role" do
-        subject { Rolify.role_cname.last }
+        subject { role_class.last }
 
         its(:name) { should eq("member") }
         its(:resource) { should eq(Forum.last) }
@@ -83,8 +83,8 @@ shared_examples_for "#has_role_examples" do |param_name, param_method|
         end
 
         it "if already existing in the database" do
-          Rolify.role_cname.create :name => "ghost", :resource_type => "Forum", :resource_id => Forum.first.id
-          expect { subject.has_role "ghost".send(param_method), Forum.first }.not_to change{ Rolify.role_cname.count }
+          role_class.create :name => "ghost", :resource_type => "Forum", :resource_id => Forum.first.id
+          expect { subject.has_role "ghost".send(param_method), Forum.first }.not_to change{ role_class.count }
         end
       end
     end
