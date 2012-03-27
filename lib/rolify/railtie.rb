@@ -5,7 +5,7 @@ module Rolify
   class Railtie < Rails::Railtie
     initializer 'rolify.initialize' do
       ActiveSupport.on_load(:active_record) do
-        ActiveRecord::Base.send :extend, Rolify::Role
+        ActiveRecord::Base.send :extend, Rolify
       end
       
       config.after_initialize do

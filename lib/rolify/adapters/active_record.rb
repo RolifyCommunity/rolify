@@ -1,3 +1,5 @@
+require 'rolify/adapters/base'
+
 module Rolify
   module Adapter   
     class ActiveRecord < Adapter::Base    
