@@ -2,6 +2,7 @@
 * support for Mongoid
 * roles search on resources on instance level (e.g. <tt>Forum.first.roles</tt>) and class level (e.g. <tt>Forum.with_role("admin", user)</tt>)
 * heavy lifting and redesign of the library, code and specs refactoring
+* enhanced drastically specs coverage: 1001 examples !
 
 = 2.2.2 (Feb 17, 2012)
 * fixed another bug occurring when dynamic shortcuts is enabled
