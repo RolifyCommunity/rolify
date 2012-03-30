@@ -36,7 +36,9 @@ First, create your Role model and migration file using this generator:
 Role and User classes are the default. You can specify any Role class name you want. This is completly a new file so any name can do the job.
 For the User class name, you would probably use the one provided by your authentication solution. rolify just adds some class methods in an existing User class.
 
-=== 2. Run the migration
+If you want to use Mongoid instead of ActiveRecord, follow these instructions[https://github.com/EppO/rolify/wiki/Configuration], and skip to step #3
+
+=== 2. Run the migration (only required when using ActiveRecord)
 
 Let's migrate !
 
@@ -98,6 +100,32 @@ A global role overrides resource role request:
   => true
   user.has_role? "moderator", Forum.last
   => true
+
+=== 5. Resource roles querying 
+
+Starting from rolify 3.0, you can search roles on instance level or class level resources.
+
+==== Instance level
+
+  forum = Forum.first
+  forum.roles
+  # => [ list of roles that are only binded to forum instance ]
+  forum.applied_roles
+  # => [ list of roles binded to forum instance and to the Forum class ]
+
+==== Class level
+
+  Forum.with_role("admin")
+  # => [ list of Forum instances that has role "admin" binded to it ] 
+  Forum.with_role("admin", current_user)
+  # => [ list of Forum instances that has role "admin" binded to it and belongs to current_user roles ]
+  
+  Forum.find_roles
+  # => [ list of roles that binded to any Forum instance or to the Forum class ]
+  Forum.find_roles("admin")
+  # => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name ]
+  Forum.find_roles("admin", current_user)
+  # => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name and belongs to current_user roles ]
 
 == Resources
 
