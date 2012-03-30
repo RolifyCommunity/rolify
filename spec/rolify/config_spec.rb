@@ -90,7 +90,7 @@ describe Rolify do
         end
       end
       
-      context "using :orm setter method" do
+      context "using :use_mongoid method" do
         before do
           Rolify.use_mongoid
         end
@@ -117,6 +117,36 @@ describe Rolify do
           subject { Forum }
 
           its("adapter.class") { should be(Rolify::Adapter::Mongoid) }
+        end
+      end
+    end
+    
+    describe :dynamic_shortcuts do
+      context "using defaults values" do
+        subject { Rolify.dynamic_shortcuts }
+
+        it { should be_false }
+      end
+      
+      context "using custom values" do
+        context "using :dynamic_shortcuts setter method" do
+          before do
+            Rolify.dynamic_shortcuts = true
+          end
+
+          subject { Rolify.dynamic_shortcuts }
+
+          it { should be_true }
+        end
+
+        context "using :use_dynamic_shortcuts method" do
+          before do
+            Rolify.use_dynamic_shortcuts
+          end
+
+          subject { Rolify.dynamic_shortcuts }
+
+          it { should be_true }
         end
       end
     end

@@ -1,29 +1,11 @@
 module Rolify
   module Configure
-    #@@role_cname = "Role"
-    #@@user_cname = "User"
     @@dynamic_shortcuts = false
     @@orm = "active_record"
      
     def configure
       yield self if block_given?
     end
-
-    #def role_cname
-    #  @@role_cname.constantize
-    #end
-    #
-    #def role_cname=(role_cname)
-    #  @@role_cname = role_cname.camelize
-    #end
-    #
-    #def user_cname
-    #  @@user_cname.constantize
-    #end
-    #
-    #def user_cname=(user_cname)
-    #  @@user_cname = user_cname.camelize
-    #end
 
     def dynamic_shortcuts
       @@dynamic_shortcuts || false
@@ -44,10 +26,12 @@ module Rolify
     def use_mongoid
       self.orm = "mongoid"
     end
+    
+    def use_dynamic_shortcuts
+      self.dynamic_shortcuts = true #if defined?(Rails::Server) || defined?(Rails::Console)
+    end
 
     def use_defaults
-      #@@role_cname = "Role"
-      #@@user_cname = "User"
       @@dynamic_shortcuts = false
       @@orm = "active_record"
       @@adapter = Rolify::Adapter::ActiveRecord.new("Role")
