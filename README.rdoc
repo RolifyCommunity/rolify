@@ -4,7 +4,7 @@ Very simple Roles library without any authorization enforcement supporting scope
 
 Let's see an example:  
 
-  user.has_role?("moderator", Forum.first) 
+  user.has_role?(:moderator, Forum.first) 
   => false # if user is moderator of another Forum
 
 This library was intended to be used with CanCan[https://github.com/ryanb/cancan] and devise[https://github.com/plataformatec/devise/] but should be generic enough to be used by any other authentication/authorization solutions.
@@ -49,17 +49,17 @@ Let's migrate !
 To define a global role:
 
   user = User.find(1)
-  user.has_role "admin"
+  user.has_role :admin
 
 To define a role scoped to a resource instance
 
   user = User.find(2)
-  user.has_role "moderator", Forum.first
+  user.has_role :moderator, Forum.first
 
 To define a role scoped to a resource class
 
   user = User.find(3)
-  user.has_role "moderator", Forum
+  user.has_role :moderator, Forum
 
 That's it !
 
@@ -68,37 +68,37 @@ That's it !
 To check if a user has a global role: 
 
   user = User.find(1)
-  user.has_role "admin" # sets a global role
-  user.has_role? "admin"
+  user.has_role :admin # sets a global role
+  user.has_role? :admin
   => true
 
 To check if a user has a role scoped to a resource instance:
 
   user = User.find(2)
-  user.has_role "moderator", Forum.first # sets a role scoped to a resource instance
-  user.has_role? "moderator", Forum.first
+  user.has_role :moderator, Forum.first # sets a role scoped to a resource instance
+  user.has_role? :moderator, Forum.first
   => true
-  user.has_role? "moderator", Forum.last
+  user.has_role? :moderator, Forum.last
   => false
 
 To check if a user has a role scoped to a resource class:
 
   user = User.find(3)
-  user.has_role "moderator", Forum # sets a role scoped to a resource class
-  user.has_role? "moderator", Forum
+  user.has_role :moderator, Forum # sets a role scoped to a resource class
+  user.has_role? :moderator, Forum
   => true
-  user.has_role? "moderator", Forum.first
+  user.has_role? :moderator, Forum.first
   => true
-  user.has_role? "moderator", Forum.last
+  user.has_role? :moderator, Forum.last
   => true
 
 A global role overrides resource role request: 
 
   user = User.find(4)
-  user.has_role "moderator" # sets a global role
-  user.has_role? "moderator", Forum.first
+  user.has_role :moderator # sets a global role
+  user.has_role? :moderator, Forum.first
   => true
-  user.has_role? "moderator", Forum.last
+  user.has_role? :moderator, Forum.last
   => true
 
 === 5. Resource roles querying 
@@ -115,16 +115,16 @@ Starting from rolify 3.0, you can search roles on instance level or class level 
 
 ==== Class level
 
-  Forum.with_role("admin")
+  Forum.with_role(:admin)
   # => [ list of Forum instances that has role "admin" binded to it ] 
-  Forum.with_role("admin", current_user)
+  Forum.with_role(:admin, current_user)
   # => [ list of Forum instances that has role "admin" binded to it and belongs to current_user roles ]
   
   Forum.find_roles
   # => [ list of roles that binded to any Forum instance or to the Forum class ]
-  Forum.find_roles("admin")
+  Forum.find_roles(:admin)
   # => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name ]
-  Forum.find_roles("admin", current_user)
+  Forum.find_roles(:admin, current_user)
   # => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name and belongs to current_user roles ]
 
 == Resources
