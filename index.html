@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="rolify : Role management library with resource scoping" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>rolify</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/EppO/rolify">Fork Me on GitHub</a>
+
+          <h1 id="project_title">rolify</h1>
+          <h2 id="project_tagline">Role management library with resource scoping</h2>
+
+          <section id="downloads">
+            <a class="zip_download_link" href="https://github.com/EppO/rolify/zipball/master">Download this project as a .zip file</a>
+            <a class="tar_download_link" href="https://github.com/EppO/rolify/tarball/master">Download this project as a tar.gz file</a>
+          </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><strong>Very simple Role management library without any authorization enforcement supporting scope on resource object (class checking and resource checking).</strong></p>
+
+<p>Let’s see an example:</p>
+
+<div class="highlight">
+<pre><span class="o">&gt;</span> <span class="n">user</span><span class="o">.</span><span class="n">has_role?</span><span class="p">(</span><span class="ss">:moderator</span><span class="p">,</span> <span class="no">Forum</span><span class="o">.</span><span class="n">first</span><span class="p">)</span>
+<span class="o">=&gt;</span> <span class="kp">false</span> <span class="c1"># if user is moderator of another Forum</span>
+</pre>
+</div>
+
+
+<p>This library is generic enough to be used by any authentication/authorization solutions. Look at his <a href="https://github.com/EppO/rolify/wiki/Tutorial">Tutorial</a> if you want to checkout an example showing how to integrate <a href="https://github.com/EppO/rolify">rolify</a> with <a href="https://github.com/ryanb/cancan">CanCan</a> and <a href="https://github.com/plataformatec/devise">Devise</a>.</p>
+
+<h2>Dependencies</h2>
+
+<ul>
+<li>&gt;= Rails 3.1</li>
+<li>ActiveRecord or Mongoid ORMs</li>
+</ul><h2>Installation</h2>
+
+<p>In Rails 3, add this to your Gemfile and run the bundle command:</p>
+
+<div class="highlight">
+<pre>   <span class="n">gem</span> <span class="s1">'rolify'</span>
+</pre>
+</div>
+
+
+<p>Alternatively, you can install it as a plugin:</p>
+
+<pre><code>$ rails plugin install git://github.com/EppO/rolify.git
+</code></pre>
+
+<h2>Authors and contributors</h2>
+
+<p>Author: Florent Monbillard (<a href="/EppO" class="user-mention">@EppO</a>)</p>
+
+<p>Contributors: Scott Tesoriere (<a href="/scottkf" class="user-mention">@scottkf</a>)</p>
+
+<h2>License</h2>
+
+<p>MIT-License</p>
+
+<h2>Support</h2>
+
+<p>Having trouble with rolify ? Check out the <a href="https://github.com/EppO/rolify/wiki">documentation</a> and/or submit an <a href="https://github.com/EppO/rolify/issues">issue</a>.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">rolify maintained by <a href="https://github.com/EppO">EppO</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
