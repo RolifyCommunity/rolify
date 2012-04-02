@@ -1,4 +1,4 @@
-= 3.0 (unreleased)
+= 3.0 (Apr 2, 2012)
 * support for Mongoid
 * roles search on resources on instance level (e.g. <tt>Forum.first.roles</tt>) and class level (e.g. <tt>Forum.with_role("admin", user)</tt>)
 * heavy lifting and redesign of the library, code and specs refactoring
