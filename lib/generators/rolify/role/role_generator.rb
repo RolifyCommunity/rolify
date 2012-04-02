@@ -14,9 +14,9 @@ module Rolify
       desc "Generates a model with the given NAME and a migration file."
 
       def generate_role
-        template "role-#{orm_adapter}.rb", "app/models/#{role_cname.downcase}.rb"
+        template "role-#{orm_adapter}.rb", "app/models/#{role_cname.underscore}.rb"
         inject_into_class(model_path, user_cname.camelize) do
-          "\trolify\n"
+          "\trolify" + (role_cname == "Role" ? "" : ":role_cname => '#{role_cname.camelize}'") + "\n"
         end
       end
 
