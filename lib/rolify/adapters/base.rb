@@ -9,10 +9,6 @@ module Rolify
         @role_cname.constantize
       end
       
-      def find(relation, role_name, resource)
-        raise NotImplementedError.new("You must implement find")
-      end
-      
       def where(relation, args)
         raise NotImplementedError.new("You must implement where")
       end
@@ -39,14 +35,6 @@ module Rolify
       
       def exists?(relation, column)
         raise NotImplementedError.new("You must implement exists?")
-      end
-      
-      def build_conditions(relation, args)
-        raise NotImplementedError.new("You must implement build_conditions")
-      end
-      
-      def build_query(role, resource = nil)
-        raise NotImplementedError.new("You must implement build_query")
       end
     end
   end

@@ -3,16 +3,7 @@ require 'rolify/adapters/base'
 module Rolify
   module Adapter  
     class Mongoid < Adapter::Base
-      def find(relation, role_name, resource)
-        query = build_query(role_name, resource)
-        query.each do |condition|
-          criteria = relation.where(condition)
-          return criteria.all if !criteria.empty?
-        end
-        []
-      end
-
-      def where(relation, args)
+      def where(relation, *args)
         conditions = build_conditions(relation, args)
         relation.any_of(*conditions)
       end

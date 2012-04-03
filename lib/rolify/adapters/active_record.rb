@@ -2,13 +2,8 @@ require 'rolify/adapters/base'
 
 module Rolify
   module Adapter   
-    class ActiveRecord < Adapter::Base    
-      def find(relation, role_name, resource)
-        query, values = build_query(role_name, resource)
-        relation.where(query, *values)
-      end
-
-      def where(relation, args)
+    class ActiveRecord < Adapter::Base
+      def where(relation, *args)
         conditions, values = build_conditions(relation, args)
         relation.where(conditions, *values)
       end

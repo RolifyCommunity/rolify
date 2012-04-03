@@ -14,7 +14,7 @@ module Rolify
     alias_method :grant, :has_role
 
     def has_role?(role_name, resource = nil)
-      self.class.adapter.find(self.roles, role_name, resource).size > 0
+      self.class.adapter.where(self.roles, :name => role_name, :resource => resource).size > 0
     end
 
     def has_all_roles?(*args)
@@ -31,7 +31,7 @@ module Rolify
     end
 
     def has_any_role?(*args)
-      self.class.adapter.where(self.roles, args).size > 0
+      self.class.adapter.where(self.roles, *args).size > 0
     end
 
     def has_no_role(role_name, resource = nil)
