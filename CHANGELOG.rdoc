@@ -1,3 +1,9 @@
+= 3.1 (unrealeased yet)
+* Mongoid adapter optimization
+* adapter code refactoring
+* generator now adds the role class name to the rolify method injected in the user class
+* fix a bug on the generator when using a 2 words Camel case for the Role class name
+
 = 3.0 (Apr 2, 2012)
 * support for Mongoid
 * roles search on resources on instance level (e.g. <tt>Forum.first.roles</tt>) and class level (e.g. <tt>Forum.with_role("admin", user)</tt>)
