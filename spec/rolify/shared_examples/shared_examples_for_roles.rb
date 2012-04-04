@@ -1,9 +1,9 @@
 require "rolify/shared_contexts"
-require "rolify/shared_examples/shared_examples_for_has_role_setter"
-require "rolify/shared_examples/shared_examples_for_has_role_getter"
+require "rolify/shared_examples/shared_examples_for_add_role"
+require "rolify/shared_examples/shared_examples_for_has_role"
 require "rolify/shared_examples/shared_examples_for_has_all_roles"
 require "rolify/shared_examples/shared_examples_for_has_any_role"
-require "rolify/shared_examples/shared_examples_for_has_no_role"
+require "rolify/shared_examples/shared_examples_for_remove_role"
 
 
 shared_examples_for Rolify::Role do
@@ -19,8 +19,8 @@ shared_examples_for Rolify::Role do
   context "in a Instance level" do 
     before(:all) do
       admin = user_class.first
-      admin.add_role "admin"
-      admin.add_role "moderator", Forum.first
+      admin.add_role :admin
+      admin.add_role :moderator, Forum.first
       admin
     end
 
@@ -52,8 +52,8 @@ shared_examples_for Rolify::Role do
   end
 
   describe "#has_role" do 
-    it_should_behave_like "#has_role_examples", "String", :to_s
-    it_should_behave_like "#has_role_examples", "Symbol", :to_sym
+    it_should_behave_like "#add_role_examples", "String", :to_s
+    it_should_behave_like "#add_role_examples", "Symbol", :to_sym
   end
 
   describe "#has_role?" do    
@@ -72,7 +72,7 @@ shared_examples_for Rolify::Role do
   end
   
   describe "#has_no_role" do
-    it_should_behave_like "#has_no_role_examples", "String", :to_s
-    it_should_behave_like "#has_no_role_examples", "Symbol", :to_sym
+    it_should_behave_like "#remove_role_examples", "String", :to_s
+    it_should_behave_like "#remove_role_examples", "Symbol", :to_sym
   end
 end

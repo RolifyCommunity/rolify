@@ -1,4 +1,4 @@
-shared_examples_for "#has_role_examples" do |param_name, param_method|
+shared_examples_for "#add_role_examples" do |param_name, param_method|
   context "using #{param_name} as parameter" do
     context "with a global role", :scope => :global do
       it "should add the role to the user" do

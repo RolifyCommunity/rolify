@@ -6,7 +6,7 @@ require 'generators/rolify/role/role_generator'
 describe Rolify::Generators::RoleGenerator do
   # Tell the generator where to put its output (what it thinks of as Rails.root)
   destination File.expand_path("../../../../../tmp", __FILE__)
-  teardown :cleanup_destination_root
+  #teardown :cleanup_destination_root
   
   before { 
     prepare_destination
@@ -48,20 +48,20 @@ describe Rolify::Generators::RoleGenerator do
     end
     
     describe 'migration file' do
-      subject { file('db/migrate/rolify_create_roles.rb') }
+      subject { migration_file('db/migrate/rolify_create_roles.rb') }
       
-      # should be_a_migration - verifies the file exists with a migration timestamp as part of the filename 
-      it { should be_a_migration }
+      it { should contain "create_table(:roles) do" }
+      it { should contain "create_table(:users_roles, :id => false) do" }
     end
   end
 
   describe 'specifying user and role names' do
-    before(:all) { arguments %w(Rank Client) }
+    before(:all) { arguments %w(AdminRole AdminUser) }
     
     before { 
       capture(:stdout) {
-        generator.create_file "app/models/client.rb" do
-          "class Client < ActiveRecord::Base\nend"
+        generator.create_file "app/models/admin_user.rb" do
+          "class AdminUser < ActiveRecord::Base\nend"
         end
       }
       run_generator
@@ -69,29 +69,31 @@ describe Rolify::Generators::RoleGenerator do
     
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
+      
       it { should exist }
       it { should contain "# c.use_dynamic_shortcuts" }
     end
     
     describe 'app/models/rank.rb' do
-      subject { file('app/models/rank.rb') }
+      subject { file('app/models/admin_role.rb') }
+      
       it { should exist }
-      it { should contain "class Rank < ActiveRecord::Base" }
-      it { should contain "has_and_belongs_to_many :clients, :join_table => :clients_ranks" }
+      it { should contain "class AdminRole < ActiveRecord::Base" }
+      it { should contain "has_and_belongs_to_many :admin_users, :join_table => :admin_users_admin_roles" }
       it { should contain "belongs_to :resource, :polymorphic => true" }
     end
     
     describe 'app/models/client.rb' do
-      subject { file('app/models/client.rb') }
+      subject { file('app/models/admin_user.rb') }
+      
       it { should contain "rolify" }
     end
     
     describe 'migration file' do
-      subject { file('db/migrate/rolify_create_ranks.rb') }
+      subject { migration_file('db/migrate/rolify_create_admin_roles.rb') }
       
-      # should be_a_migration - verifies the file exists with a migration timestamp as part of the filename 
-      it { should be_a_migration }
-      #it { should contain "create_table(:ranks)" }
+      it { should contain "create_table(:admin_roles)" }
+      it { should contain "create_table(:admin_users_admin_roles, :id => false) do" }
     end
   end
   
@@ -127,10 +129,10 @@ describe Rolify::Generators::RoleGenerator do
     end
     
     describe 'migration file' do
-      subject { file('db/migrate/rolify_create_roles.rb') }
+      subject { migration_file('db/migrate/rolify_create_roles.rb') }
       
-      # should be_a_migration - verifies the file exists with a migration timestamp as part of the filename 
-      it { should be_a_migration }
+      it { should contain "create_table(:roles) do" }
+      it { should contain "create_table(:users_roles, :id => false) do" }
     end
   end
   

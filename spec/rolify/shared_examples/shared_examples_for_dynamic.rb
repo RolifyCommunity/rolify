@@ -10,8 +10,8 @@ shared_examples_for Rolify::Dynamic do
   context "using a global role" do
     subject do 
       admin = user_class.first
-      admin.add_role "admin"
-      admin.add_role "moderator", Forum.first
+      admin.add_role :admin
+      admin.add_role :moderator, Forum.first
       admin
     end
 
@@ -27,7 +27,7 @@ shared_examples_for Rolify::Dynamic do
   context "using a resource scoped role" do
     subject do 
       moderator = user_class.where(:login => "moderator").first
-      moderator.add_role "moderator", Forum.first
+      moderator.add_role :moderator, Forum.first
       moderator
     end
     
@@ -49,7 +49,7 @@ shared_examples_for Rolify::Dynamic do
   context "using a class scoped role" do
     subject do 
       manager = user_class.where(:login => "god").first
-      manager.add_role "manager", Forum
+      manager.add_role :manager, Forum
       manager
     end
     
@@ -77,7 +77,7 @@ shared_examples_for Rolify::Dynamic do
     context "using a global role" do
       before(:all) do
         other_guy = user_class.last
-        other_guy.add_role "superman"
+        other_guy.add_role :superman
       end
   
       it { should respond_to(:is_superman?).with(0).arguments }
@@ -90,7 +90,7 @@ shared_examples_for Rolify::Dynamic do
     context "using a resource scope role" do
       before(:all) do
         other_guy = user_class.last
-        other_guy.add_role("batman", Forum.first)
+        other_guy.add_role :batman, Forum.first
       end
       
       it { should respond_to(:is_batman?).with(0).arguments }
