@@ -6,7 +6,7 @@ require 'generators/rolify/role/role_generator'
 describe Rolify::Generators::RoleGenerator do
   # Tell the generator where to put its output (what it thinks of as Rails.root)
   destination File.expand_path("../../../../../tmp", __FILE__)
-  #teardown :cleanup_destination_root
+  teardown :cleanup_destination_root
   
   before { 
     prepare_destination
@@ -31,7 +31,7 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
-      it { should contain "# c.use_dynamic_shortcuts" }
+      it { should contain "# config.use_dynamic_shortcuts" }
     end
     
     describe 'app/models/role.rb' do
@@ -71,7 +71,7 @@ describe Rolify::Generators::RoleGenerator do
       subject { file('config/initializers/rolify.rb') }
       
       it { should exist }
-      it { should contain "# c.use_dynamic_shortcuts" }
+      it { should contain "# config.use_dynamic_shortcuts" }
     end
     
     describe 'app/models/rank.rb' do
@@ -112,7 +112,7 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
-      it { should_not contain "# c.use_dynamic_shortcuts" }
+      it { should_not contain "# config.use_dynamic_shortcuts" }
     end
     
     describe 'app/models/role.rb' do
@@ -157,8 +157,8 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
-      it { should_not contain "# c.use_mongoid" }
-      it { should contain "# c.use_dynamic_shortcuts" }
+      it { should_not contain "# config.use_mongoid" }
+      it { should contain "# config.use_dynamic_shortcuts" }
     end
     
     describe 'app/models/role.rb' do

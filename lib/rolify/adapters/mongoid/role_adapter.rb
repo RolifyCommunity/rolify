@@ -1,8 +1,8 @@
 require 'rolify/adapters/base'
 
 module Rolify
-  module Adapter  
-    class Mongoid < Adapter::Base
+  module Adapter
+    class RoleAdapter < RoleAdapterBase
       def where(relation, *args)
         conditions = build_conditions(relation, args)
         relation.any_of(*conditions)
@@ -23,22 +23,6 @@ module Rolify
         role.merge!({:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)}) if resource
         role.merge!({ :resource_id => resource.id }) if resource && !resource.is_a?(Class)
         relation.where(role).destroy_all
-      end
-
-      def resources_find(roles_table, relation, role_name)
-        roles = roles_table.classify.constantize.where(:name => role_name, :resource_type => relation.to_s)
-        resources = []
-        roles.each do |role|
-          return relation.all if role.resource_id.nil?
-          resources << role.resource
-        end
-        resources
-      end
-
-      def in(resources, roles)
-        return [] if resources.empty? || roles.empty?
-        resources.delete_if { |resource| (resource.applied_roles && roles).empty? }
-        resources
       end
 
       def exists?(relation, column)

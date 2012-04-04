@@ -2,7 +2,7 @@ require 'rolify/adapters/base'
 
 module Rolify
   module Adapter   
-    class ActiveRecord < Adapter::Base
+    class RoleAdapter < RoleAdapterBase
       def where(relation, *args)
         conditions, values = build_conditions(relation, args)
         relation.where(conditions, *values)
@@ -21,16 +21,6 @@ module Rolify
         role = role.where(:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)) if resource
         role = role.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)
         relation.delete(role) if role
-      end
-
-      def resources_find(roles_table, relation, role_name)
-        resources = relation.joins("INNER JOIN \"#{roles_table}\" ON \"#{roles_table}\".\"resource_type\" = '#{relation.to_s}'")
-        resources = resources.where("#{roles_table}.name = ? AND #{roles_table}.resource_type = ?", role_name, relation.to_s)
-        resources
-      end
-
-      def in(relation, roles)
-        relation.where("#{role_class.to_s.tableize}.id IN (?) AND ((resource_id = #{relation.table_name}.id) OR (resource_id IS NULL))", roles)
       end
 
       def exists?(relation, column)

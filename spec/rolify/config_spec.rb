@@ -45,7 +45,7 @@ describe Rolify do
         
         subject { ARUser }
         
-        its("adapter.class") { should be(Rolify::Adapter::ActiveRecord) }
+        its("adapter.class") { should be(Rolify::Adapter::RoleAdapter) }
       end
       
       context "on the Forum class" do
@@ -55,7 +55,7 @@ describe Rolify do
         
         subject { Forum }
         
-        its("adapter.class") { should be(Rolify::Adapter::ActiveRecord) }
+        its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
       end
     end
 
@@ -76,7 +76,7 @@ describe Rolify do
 
           subject { MUser }
           
-          its("adapter.class") { should be(Rolify::Adapter::Mongoid) }
+          its("adapter.class") { should be(Rolify::Adapter::RoleAdapter) }
         end
 
         context "on the Forum class" do
@@ -86,7 +86,7 @@ describe Rolify do
 
           subject { Forum }
 
-          its("adapter.class") { should be(Rolify::Adapter::Mongoid) }
+          its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
         end
       end
       
@@ -106,7 +106,7 @@ describe Rolify do
 
           subject { MUser }
           
-          its("adapter.class") { should be(Rolify::Adapter::Mongoid) }
+          its("adapter.class") { should be(Rolify::Adapter::RoleAdapter) }
         end
 
         context "on the Forum class" do
@@ -116,7 +116,7 @@ describe Rolify do
 
           subject { Forum }
 
-          its("adapter.class") { should be(Rolify::Adapter::Mongoid) }
+          its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
         end
       end
     end
@@ -172,7 +172,7 @@ describe Rolify do
       
       it { should satisfy { |u| u.include? Rolify::Role }}
       it { should satisfy { |u| u.singleton_class.include? Rolify::Dynamic } }
-      its("adapter.class") { should be(Rolify::Adapter::Mongoid) }
+      its("adapter.class") { should be(Rolify::Adapter::RoleAdapter) }
     end
 
     context "on the Forum class" do
@@ -183,7 +183,7 @@ describe Rolify do
       subject { Forum }
       
       it { should satisfy { |u| u.include? Rolify::Resource }}
-      its("adapter.class") { should be(Rolify::Adapter::Mongoid) }
+      its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
     end
   end
 end

@@ -8,7 +8,7 @@ module Rolify
     end
 
     def dynamic_shortcuts
-      @@dynamic_shortcuts || false
+      @@dynamic_shortcuts
     end
 
     def dynamic_shortcuts=(is_dynamic)
@@ -32,9 +32,10 @@ module Rolify
     end
 
     def use_defaults
-      @@dynamic_shortcuts = false
-      @@orm = "active_record"
-      @@adapter = Rolify::Adapter::ActiveRecord.new("Role")
+      configure do |config|
+        config.dynamic_shortcuts = false
+        config.orm = "active_record"
+      end
     end
   end
 end
