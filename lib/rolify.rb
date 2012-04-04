@@ -3,6 +3,7 @@ require 'active_record'
 require 'rolify/adapters/active_record' if defined?(ActiveRecord)
 require 'rolify/adapters/mongoid' if defined?(Mongoid)
 require 'rolify/railtie' if defined?(Rails)
+require 'rolify/utils'
 require 'rolify/role'
 require 'rolify/configure'
 require 'rolify/dynamic'
@@ -10,6 +11,7 @@ require 'rolify/resource'
 
 module Rolify
   extend Configure
+
   attr_accessor :role_cname, :adapter
 
   def rolify(options = { :role_cname => 'Role' })

@@ -1,6 +1,8 @@
 module Rolify
   module Role
-    def has_role(role_name, resource = nil)
+    extend Utils
+    
+    def add_role(role_name, resource = nil)
       role = self.class.adapter.find_or_create_by(role_name, 
                                                   (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
                                                   (resource.id if resource && !resource.is_a?(Class)))
@@ -11,7 +13,8 @@ module Rolify
       end
       role
     end
-    alias_method :grant, :has_role
+    alias_method :grant, :add_role
+    deprecate :has_role, :add_role
 
     def has_role?(role_name, resource = nil)
       self.class.adapter.where(self.roles, :name => role_name, :resource => resource).size > 0
@@ -34,10 +37,11 @@ module Rolify
       self.class.adapter.where(self.roles, *args).size > 0
     end
 
-    def has_no_role(role_name, resource = nil)
+    def remove_role(role_name, resource = nil)
       self.class.adapter.remove(self.roles, role_name, resource)
     end
-    alias_method :revoke, :has_no_role
+    alias_method :revoke, :remove_role
+    deprecate :has_no_role, :remove_role
 
     def roles_name
       self.roles.select(:name).map { |r| r.name }

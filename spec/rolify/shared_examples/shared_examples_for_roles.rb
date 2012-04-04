@@ -19,8 +19,8 @@ shared_examples_for Rolify::Role do
   context "in a Instance level" do 
     before(:all) do
       admin = user_class.first
-      admin.has_role "admin"
-      admin.has_role "moderator", Forum.first
+      admin.add_role "admin"
+      admin.add_role "moderator", Forum.first
       admin
     end
 
@@ -28,12 +28,11 @@ shared_examples_for Rolify::Role do
       user_class.first
     end
 
-    it { should respond_to(:has_role).with(1).arguments }
-    it { should respond_to(:has_role).with(2).arguments }
-
-    it { should respond_to(:grant).with(1).arguments }
-    it { should respond_to(:grant).with(2).arguments }
-
+    [ :has_role, :grant, :add_role ].each do |method_alias|
+      it { should respond_to(method_alias.to_sym).with(1).arguments }
+      it { should respond_to(method_alias.to_sym).with(2).arguments }
+    end
+    
     it { should respond_to(:has_role?).with(1).arguments }
     it { should respond_to(:has_role?).with(2).arguments }
 
@@ -43,11 +42,10 @@ shared_examples_for Rolify::Role do
     it { should respond_to(:has_any_role?) }
     it { should respond_to(:has_any_role?) }
 
-    it { should respond_to(:has_no_role).with(1).arguments }
-    it { should respond_to(:has_no_role).with(2).arguments }
-
-    it { should respond_to(:revoke).with(1).arguments }
-    it { should respond_to(:revoke).with(2).arguments }
+    [ :has_no_role, :revoke, :remove_role ].each do |method_alias|
+      it { should respond_to(method_alias.to_sym).with(1).arguments }
+      it { should respond_to(method_alias.to_sym).with(2).arguments }
+    end
 
     it { should_not respond_to(:is_admin?) }
     it { should_not respond_to(:is_moderator_of?) }

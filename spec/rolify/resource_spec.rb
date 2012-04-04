@@ -14,11 +14,11 @@ describe Rolify::Resource do
   let(:tourist) { User.last }
   
   # roles
-  let!(:forum_role)      { admin.has_role("forum", Forum.first) }
-  let!(:godfather_role)  { admin.has_role("godfather", Forum) }
-  let!(:group_role)      { admin.has_role("group", Group.last) }
-  let!(:tourist_role)    { tourist.has_role("forum", Forum.last) }
-  let!(:sneaky_role)     { tourist.has_role("group", Forum.first) }
+  let!(:forum_role)      { admin.add_role("forum", Forum.first) }
+  let!(:godfather_role)  { admin.add_role("godfather", Forum) }
+  let!(:group_role)      { admin.add_role("group", Group.last) }
+  let!(:tourist_role)    { tourist.add_role("forum", Forum.last) }
+  let!(:sneaky_role)     { tourist.add_role("group", Forum.first) }
 
   describe ".with_roles" do
     subject { Group }

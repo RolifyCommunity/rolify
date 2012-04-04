@@ -2,7 +2,7 @@ shared_examples_for "#has_any_role?_examples" do |param_name, param_method|
   context "using #{param_name} as parameter" do
     context "with a global role", :scope => :global do
       before(:all) do
-        subject.has_role "staff".send(param_method)
+        subject.add_role "staff".send(param_method)
       end
       
       it { subject.has_any_role?("staff".send(param_method)).should be_true }
@@ -21,8 +21,8 @@ shared_examples_for "#has_any_role?_examples" do |param_name, param_method|
     
     context "with a class scoped role", :scope => :class do
       before(:all) do
-        subject.has_role "player".send(param_method), Forum
-        subject.has_role "superhero".send(param_method)
+        subject.add_role "player".send(param_method), Forum
+        subject.add_role "superhero".send(param_method)
       end
       
       it { subject.has_any_role?({ :name => "player".send(param_method), :resource => Forum }).should be_true }
@@ -41,9 +41,9 @@ shared_examples_for "#has_any_role?_examples" do |param_name, param_method|
     
     context "with a instance scoped role", :scope => :instance do
       before(:all) do
-        subject.has_role "visitor".send(param_method), Forum.last
-        subject.has_role "leader", Group
-        subject.has_role "warrior"
+        subject.add_role "visitor".send(param_method), Forum.last
+        subject.add_role "leader", Group
+        subject.add_role "warrior"
       end
       
       it { subject.has_any_role?({ :name => "visitor", :resource => Forum.last }).should be_true }

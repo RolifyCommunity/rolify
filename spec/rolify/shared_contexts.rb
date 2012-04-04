@@ -11,13 +11,13 @@ shared_context "global role", :scope => :global do
   def load_roles
     role_class.destroy_all
     admin.roles = []
-    admin.has_role "admin"
-    admin.has_role "staff"
-    admin.has_role "manager", Group
-    admin.has_role "player", Forum
-    admin.has_role "moderator", Forum.last
-    admin.has_role "moderator", Group.last
-    admin.has_role "anonymous", Forum.first
+    admin.add_role "admin"
+    admin.add_role "staff"
+    admin.add_role "manager", Group
+    admin.add_role "player", Forum
+    admin.add_role "moderator", Forum.last
+    admin.add_role "moderator", Group.last
+    admin.add_role "anonymous", Forum.first
   end
 end
 
@@ -34,12 +34,12 @@ shared_context "class scoped role", :scope => :class do
   def load_roles
     role_class.destroy_all
     manager.roles = []
-    manager.has_role "manager", Forum
-    manager.has_role "player", Forum 
-    manager.has_role "warrior"
-    manager.has_role "moderator", Forum.last
-    manager.has_role "moderator", Group.last
-    manager.has_role "anonymous", Forum.first
+    manager.add_role "manager", Forum
+    manager.add_role "player", Forum 
+    manager.add_role "warrior"
+    manager.add_role "moderator", Forum.last
+    manager.add_role "moderator", Group.last
+    manager.add_role "anonymous", Forum.first
   end
 end
 
@@ -56,10 +56,10 @@ shared_context "instance scoped role", :scope => :instance do
   def load_roles
     role_class.destroy_all
     moderator.roles = []
-    moderator.has_role "moderator", Forum.first
-    moderator.has_role "anonymous", Forum.last
-    moderator.has_role "visitor", Forum
-    moderator.has_role "soldier"
+    moderator.add_role "moderator", Forum.first
+    moderator.add_role "anonymous", Forum.last
+    moderator.add_role "visitor", Forum
+    moderator.add_role "soldier"
   end
 end
 
