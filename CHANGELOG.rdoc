@@ -3,6 +3,7 @@
 * adapter code refactoring
 * generator now adds the role class name to the rolify method injected in the user class
 * fix a bug on the generator when using a 2 words Camel case for the Role class name
+* DEPRECATION NOTICE: <tt>has_role</tt> and <tt>has_no_role</tt> have been depecrated. They are replaced by <tt>add_role</tt> and <tt>remove_role</tt>
 
 = 3.0 (Apr 2, 2012)
 * support for Mongoid
