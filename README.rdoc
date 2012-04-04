@@ -49,17 +49,17 @@ Let's migrate !
 To define a global role:
 
   user = User.find(1)
-  user.has_role :admin
+  user.add_role :admin
 
 To define a role scoped to a resource instance
 
   user = User.find(2)
-  user.has_role :moderator, Forum.first
+  user.add_role :moderator, Forum.first
 
 To define a role scoped to a resource class
 
   user = User.find(3)
-  user.has_role :moderator, Forum
+  user.add_role :moderator, Forum
 
 That's it !
 
@@ -68,14 +68,14 @@ That's it !
 To check if a user has a global role: 
 
   user = User.find(1)
-  user.has_role :admin # sets a global role
+  user.add_role :admin # sets a global role
   user.has_role? :admin
   => true
 
 To check if a user has a role scoped to a resource instance:
 
   user = User.find(2)
-  user.has_role :moderator, Forum.first # sets a role scoped to a resource instance
+  user.add_role :moderator, Forum.first # sets a role scoped to a resource instance
   user.has_role? :moderator, Forum.first
   => true
   user.has_role? :moderator, Forum.last
@@ -84,7 +84,7 @@ To check if a user has a role scoped to a resource instance:
 To check if a user has a role scoped to a resource class:
 
   user = User.find(3)
-  user.has_role :moderator, Forum # sets a role scoped to a resource class
+  user.add_role :moderator, Forum # sets a role scoped to a resource class
   user.has_role? :moderator, Forum
   => true
   user.has_role? :moderator, Forum.first
@@ -95,7 +95,7 @@ To check if a user has a role scoped to a resource class:
 A global role overrides resource role request: 
 
   user = User.find(4)
-  user.has_role :moderator # sets a global role
+  user.add_role :moderator # sets a global role
   user.has_role? :moderator, Forum.first
   => true
   user.has_role? :moderator, Forum.last
