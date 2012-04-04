@@ -14,7 +14,7 @@ module Rolify
 
         define_method("is_#{role_name}_of?".to_sym) do |arg|
           has_role?("#{role_name}", arg)
-        end if !method_defined?("is_#{role_name}_of?".to_sym) && !!resource
+        end if !method_defined?("is_#{role_name}_of?".to_sym) && resource
       end
     end
   end
