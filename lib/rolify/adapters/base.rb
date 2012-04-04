@@ -8,6 +8,11 @@ module Rolify
       def role_class
         @role_cname.constantize
       end
+      
+      def self.create(adapter, role_cname)
+        load "rolify/adapters/#{Rolify.orm}/#{adapter}.rb"
+        Rolify::Adapter.const_get(adapter.camelize.to_sym).new(role_cname)
+      end
     end
 
     class RoleAdapterBase < Adapter::Base
