@@ -3,10 +3,12 @@
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
 
 Let's see an example: 
+
 ```ruby
-  user.has_role?(:moderator, Forum.first) 
-  => false # if user is moderator of another Forum
+user.has_role?(:moderator, Forum.first) 
+=> false # if user is moderator of another Forum
 ```
+
 This library was intended to be used with [CanCan](https://github.com/ryanb/cancan) and [devise](https://github.com/plataformatec/devise) but should be generic enough to be used by any other authentication/authorization solutions.
 
 ## Requirements
@@ -18,10 +20,13 @@ This library was intended to be used with [CanCan](https://github.com/ryanb/canc
 ## Installation
 
 In <b>Rails 3</b>, add this to your Gemfile and run the +bundle+ command.
+
 ```ruby
   gem "rolify"
 ```
+
 Alternatively, you can install it as a plugin.
+
 ```
   rails plugin install git://github.com/EppO/rolify.git
 ```
@@ -31,6 +36,7 @@ Alternatively, you can install it as a plugin.
 ### 1. Generate Role Model
 
 First, create your Role model and migration file using this generator:
+
 ```
   rails g rolify:role Role User
 ```
@@ -43,6 +49,7 @@ If you want to use Mongoid instead of ActiveRecord, follow these [instructions](
 ### 2. Run the migration (only required when using ActiveRecord)
 
 Let's migrate !
+
 ```
   rake db:migrate
 ```
@@ -50,32 +57,41 @@ Let's migrate !
 ### 3. Add a role to a user
 
 To define a global role:
+
 ```ruby
   user = User.find(1)
   user.add_role :admin
 ```
+
 To define a role scoped to a resource instance
+
 ```ruby
   user = User.find(2)
   user.add_role :moderator, Forum.first
 ```
+
 To define a role scoped to a resource class
+
 ```ruby
   user = User.find(3)
   user.add_role :moderator, Forum
 ```
+
 That's it !
 
 ### 4. Check roles
 
 To check if a user has a global role: 
+
 ```ruby
   user = User.find(1)
   user.add_role :admin # sets a global role
   user.has_role? :admin
   => true
 ```
+
 To check if a user has a role scoped to a resource instance:
+
 ```ruby
   user = User.find(2)
   user.add_role :moderator, Forum.first # sets a role scoped to a resource instance
@@ -84,7 +100,9 @@ To check if a user has a role scoped to a resource instance:
   user.has_role? :moderator, Forum.last
   => false
 ```
+
 To check if a user has a role scoped to a resource class:
+
 ```ruby
   user = User.find(3)
   user.add_role :moderator, Forum # sets a role scoped to a resource class
@@ -95,7 +113,9 @@ To check if a user has a role scoped to a resource class:
   user.has_role? :moderator, Forum.last
   => true
 ```
+
 A global role overrides resource role request: 
+
 ```ruby
   user = User.find(4)
   user.add_role :moderator # sets a global role
