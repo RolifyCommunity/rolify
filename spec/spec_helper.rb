@@ -1,8 +1,4 @@
 require 'rubygems'
-require 'bundler/setup'
-
-require 'mongoid'
-Bundler.require(:default, :development, :test)
 require 'rolify'
 require 'ammeter/init'
 

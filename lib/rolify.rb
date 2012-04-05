@@ -1,5 +1,3 @@
-require 'active_record'
-
 require 'rolify/railtie' if defined?(Rails)
 require 'rolify/utils'
 require 'rolify/role'
