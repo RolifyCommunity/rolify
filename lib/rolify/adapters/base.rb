@@ -1,17 +1,22 @@
 module Rolify
   module Adapter
     class Base
-      def initialize(role_cname)
+      def initialize(role_cname, user_cname)
         @role_cname = role_cname
+        @user_cname = user_cname
       end
 
       def role_class
         @role_cname.constantize
       end
       
-      def self.create(adapter, role_cname)
+      def user_class
+        @user_cname.constantize
+      end
+      
+      def self.create(adapter, role_cname, user_cname)
         load "rolify/adapters/#{Rolify.orm}/#{adapter}.rb"
-        Rolify::Adapter.const_get(adapter.camelize.to_sym).new(role_cname)
+        Rolify::Adapter.const_get(adapter.camelize.to_sym).new(role_cname, user_cname)
       end
     end
 

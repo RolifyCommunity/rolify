@@ -21,7 +21,7 @@ module Rolify
     rolify_options.merge!({ :join_table => "#{self.to_s.tableize}_#{options[:role_cname].tableize}" }) if Rolify.orm == "active_record"
     has_and_belongs_to_many :roles, rolify_options
 
-    self.adapter = Rolify::Adapter::Base.create("role_adapter", options[:role_cname])
+    self.adapter = Rolify::Adapter::Base.create("role_adapter", options[:role_cname], self.name)
     self.role_cname = options[:role_cname]
     
     load_dynamic_methods if Rolify.dynamic_shortcuts
@@ -34,7 +34,7 @@ module Rolify
     resourcify_options.merge!({ :as => :resource })
     has_many :roles, resourcify_options
     
-    self.adapter = Rolify::Adapter::Base.create("resource_adapter", options[:role_cname])
+    self.adapter = Rolify::Adapter::Base.create("resource_adapter", options[:role_cname], self.name)
     self.role_cname = options[:role_cname]
   end
   

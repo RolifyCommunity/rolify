@@ -19,10 +19,15 @@ module Rolify
       end
 
       def remove(relation, role_name, resource = nil)
-        role = { :name => role_name }
-        role.merge!({:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)}) if resource
-        role.merge!({ :resource_id => resource.id }) if resource && !resource.is_a?(Class)
-        relation.where(role).destroy_all
+        roles = { :name => role_name }
+        roles.merge!({:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)}) if resource
+        roles.merge!({ :resource_id => resource.id }) if resource && !resource.is_a?(Class)
+        roles_to_remove = relation.roles.where(roles)
+        roles_to_remove.each do |role|
+          relation.roles.delete(role)
+          role.reload
+          role.destroy if role.send(user_class.to_s.tableize.to_sym).empty?
+        end
       end
 
       def exists?(relation, column)

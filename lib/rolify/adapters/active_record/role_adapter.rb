@@ -17,10 +17,16 @@ module Rolify
       end
 
       def remove(relation, role_name, resource = nil)
-        role = relation.where(:name => role_name)
-        role = role.where(:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)) if resource
-        role = role.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)
-        relation.delete(role) if role
+        roles = relation.roles.where(:name => role_name)
+        roles = roles.where(:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)) if resource
+        roles = roles.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)
+        if roles
+          relation.roles.delete(roles)
+          roles.each do |role| 
+            role.destroy if role.send(user_class.table_name.to_sym).empty? 
+          end
+        end
+        roles
       end
 
       def exists?(relation, column)
