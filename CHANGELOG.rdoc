@@ -2,9 +2,11 @@
 * Mongoid adapter optimization
 * adapter code refactoring
 * generator now adds the role class name to the rolify method injected in the user class
-* fix a bug on the generator when using a 2 words Camel case for the Role class name
-* DEPRECATION NOTICE: <tt>has_role</tt> and <tt>has_no_role</tt> have been depecrated. They are replaced by <tt>add_role</tt> and <tt>remove_role</tt>
+* fixed a bug on the generator when using a 2 words Camel case for the Role class name
+* <b>DEPRECATION NOTICE:</b> <tt>has_role</tt> and <tt>has_no_role</tt> have been depecrated. They are replaced by <tt>add_role</tt> and <tt>remove_role</tt>
 * some internals cleanup (backward compatible)
+* stop requiring <tt>active_record</tt> in <tt>rolify.rb</tt> to prevent other gems ORM detection issue
+* fixed a bug when removing a role to the user using Mongoid adapter
 
 = 3.0 (Apr 2, 2012)
 * support for Mongoid
