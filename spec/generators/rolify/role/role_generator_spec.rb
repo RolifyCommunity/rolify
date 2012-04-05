@@ -31,7 +31,9 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
+      it { should contain "Rolify.configure do |config|"}
       it { should contain "# config.use_dynamic_shortcuts" }
+      it { should contain "# config.use_mongoid" }
     end
     
     describe 'app/models/role.rb' do
@@ -71,7 +73,9 @@ describe Rolify::Generators::RoleGenerator do
       subject { file('config/initializers/rolify.rb') }
       
       it { should exist }
+      it { should contain "Rolify.configure do |config|"}
       it { should contain "# config.use_dynamic_shortcuts" }
+      it { should contain "# config.use_mongoid" }
     end
     
     describe 'app/models/rank.rb' do
@@ -112,7 +116,9 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
+      it { should contain "Rolify.configure do |config|"}
       it { should_not contain "# config.use_dynamic_shortcuts" }
+      it { should contain "# config.use_mongoid" }
     end
     
     describe 'app/models/role.rb' do
@@ -157,6 +163,7 @@ describe Rolify::Generators::RoleGenerator do
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
+      it { should contain "Rolify.configure do |config|"}
       it { should_not contain "# config.use_mongoid" }
       it { should contain "# config.use_dynamic_shortcuts" }
     end

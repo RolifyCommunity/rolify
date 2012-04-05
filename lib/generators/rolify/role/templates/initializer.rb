@@ -1,4 +1,4 @@
-Rolify.configure do |c|
+Rolify.configure do |config|
   # By default ORM adapter is ActiveRecord. uncomment to use mongoid
   <%= "# " if orm_adapter == "active_record" %>config.use_mongoid
   

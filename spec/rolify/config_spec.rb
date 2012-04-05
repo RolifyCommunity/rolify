@@ -1,4 +1,6 @@
 require "spec_helper"
+require "active_record"
+require "mongoid"
 
 class ARUser < ActiveRecord::Base
   extend Rolify
@@ -154,9 +156,9 @@ describe Rolify do
   
   describe :configure do
     before do
-      Rolify.configure do |r|
-        r.dynamic_shortcuts = true
-        r.orm = "mongoid"
+      Rolify.configure do |config|
+        config.dynamic_shortcuts = true
+        config.orm = "mongoid"
       end
     end
     
