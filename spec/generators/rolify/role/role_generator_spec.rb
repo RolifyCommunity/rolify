@@ -174,6 +174,16 @@ describe Rolify::Generators::RoleGenerator do
       it { should contain "class Role\n" }
       it { should contain "has_and_belongs_to_many :users\n" }
       it { should contain "belongs_to :resource, :polymorphic => true" }
+      it { should contain "field :name, :type => String" }
+      it { should contain "index :name, unique: true" }
+      it { should contain "  index(\n"
+                          "    [\n"
+                          "      [:name, Mongo::ASCENDING],\n"
+                          "      [:resource_type, Mongo::ASCENDING],\n"
+                          "      [:resource_id, Mongo::ASCENDING]\n"
+                          "    ],\n"
+                          "    unique: true\n"
+                          "  )\n" }
     end
     
     describe 'app/models/user.rb' do
