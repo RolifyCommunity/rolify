@@ -8,6 +8,7 @@
 * stop requiring <tt>active_record</tt> in <tt>rolify.rb</tt> to prevent other gems ORM detection issue
 * fixed a bug when removing a role to the user using Mongoid adapter
 * added indexes to generator for mongoid (thanks to @stigi)
+* fixed a bug regarding **with_role** method on resource classes (thanks to @nfo)
 
 = 3.0 (Apr 2, 2012)
 * support for Mongoid

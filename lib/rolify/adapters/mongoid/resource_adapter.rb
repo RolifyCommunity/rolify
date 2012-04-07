@@ -15,7 +15,7 @@ module Rolify
 
       def in(resources, roles)
         return [] if resources.empty? || roles.empty?
-        resources.delete_if { |resource| (resource.applied_roles && roles).empty? }
+        resources.delete_if { |resource| (resource.applied_roles & roles).empty? }
         resources
       end
     end
