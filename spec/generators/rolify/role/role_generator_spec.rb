@@ -52,6 +52,7 @@ describe Rolify::Generators::RoleGenerator do
     describe 'migration file' do
       subject { migration_file('db/migrate/rolify_create_roles.rb') }
       
+      it { should be_a_migration }
       it { should contain "create_table(:roles) do" }
       it { should contain "create_table(:users_roles, :id => false) do" }
     end
@@ -96,6 +97,7 @@ describe Rolify::Generators::RoleGenerator do
     describe 'migration file' do
       subject { migration_file('db/migrate/rolify_create_admin_roles.rb') }
       
+      it { should be_a_migration }
       it { should contain "create_table(:admin_roles)" }
       it { should contain "create_table(:admin_users_admin_roles, :id => false) do" }
     end
@@ -137,6 +139,7 @@ describe Rolify::Generators::RoleGenerator do
     describe 'migration file' do
       subject { migration_file('db/migrate/rolify_create_roles.rb') }
       
+      it { should be_a_migration }
       it { should contain "create_table(:roles) do" }
       it { should contain "create_table(:users_roles, :id => false) do" }
     end
