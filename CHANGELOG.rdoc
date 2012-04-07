@@ -1,4 +1,4 @@
-= 3.1 (unrealeased yet)
+= 3.1 (Apr 6, 2012)
 * Mongoid adapter optimization
 * adapter code refactoring
 * generator now adds the role class name to the rolify method injected in the user class
