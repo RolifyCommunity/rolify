@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ["f.monbillard@gmail.com"]
   s.homepage    = "https://github.com/EppO/rolify"
   s.summary     = %q{Roles library with resource scoping}
-  s.description = %q{Very simple Roles library without any authorization enforcement supporting scope on resource objects (instance or class)}
+  s.description = %q{Very simple Roles library without any authorization enforcement supporting scope on resource objects (instance or class). Supports ActiveRecord and Mongoid ORMs.}
 
   s.rubyforge_project = s.name
 
