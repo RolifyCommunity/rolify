@@ -5,3 +5,4 @@ pkg/*
 tmp/*
 logs/*
 .rbx/*
+.rspec
