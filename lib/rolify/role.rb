@@ -1,7 +1,13 @@
+require "rolify/finders"
+
 module Rolify
   module Role
     extend Utils
     
+    def self.included(base)
+      base.extend Finders
+    end
+          
     def add_role(role_name, resource = nil)
       role = self.class.adapter.find_or_create_by(role_name, 
                                                   (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 

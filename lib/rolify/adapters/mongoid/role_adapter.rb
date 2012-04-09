@@ -33,6 +33,13 @@ module Rolify
       def exists?(relation, column)
         relation.where(column.to_sym.ne => nil)
       end
+      
+      def scope(relation, conditions)
+        roles = where(role_class, conditions).map { |role| role.id }
+        return [] if roles.size.zero?
+        query = relation.where(:role_ids => roles)
+        query
+      end
 
       private
 

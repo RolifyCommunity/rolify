@@ -32,6 +32,13 @@ module Rolify
       def exists?(relation, column)
         relation.where("#{column} IS NOT NULL")
       end
+      
+      def scope(relation, conditions)
+        query = relation.scoped
+        query = query.joins(role_table.to_sym)
+        query = where(query, conditions)
+        query
+      end
 
       private
 
@@ -54,15 +61,15 @@ module Rolify
       end
 
       def build_query(role, resource = nil)
-        return [ "name = ?", [ role ] ] if resource == :any
-        query = "((name = ?) AND (resource_type IS NULL) AND (resource_id IS NULL))"
+        return [ "#{role_table}.name = ?", [ role ] ] if resource == :any
+        query = "((#{role_table}.name = ?) AND (#{role_table}.resource_type IS NULL) AND (#{role_table}.resource_id IS NULL))"
         values = [ role ]
         if resource
           query.insert(0, "(")
-          query += " OR ((name = ?) AND (resource_type = ?) AND (resource_id IS NULL))" 
+          query += " OR ((#{role_table}.name = ?) AND (#{role_table}.resource_type = ?) AND (#{role_table}.resource_id IS NULL))" 
           values << role << (resource.is_a?(Class) ? resource.to_s : resource.class.name)
           if !resource.is_a? Class
-            query += " OR ((name = ?) AND (resource_type = ?) AND (resource_id = ?))" 
+            query += " OR ((#{role_table}.name = ?) AND (#{role_table}.resource_type = ?) AND (#{role_table}.resource_id = ?))" 
             values << role << resource.class.name << resource.id
           end
           query += ")"

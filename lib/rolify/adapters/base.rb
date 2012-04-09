@@ -14,6 +14,10 @@ module Rolify
         @user_cname.constantize
       end
       
+      def role_table
+        @role_cname.tableize
+      end
+      
       def self.create(adapter, role_cname, user_cname)
         load "rolify/adapters/#{Rolify.orm}/#{adapter}.rb"
         Rolify::Adapter.const_get(adapter.camelize.to_sym).new(role_cname, user_cname)
