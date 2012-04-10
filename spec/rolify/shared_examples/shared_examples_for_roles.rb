@@ -118,15 +118,25 @@ shared_examples_for Rolify::Role do
         end
       end
     end
-
+    
     describe ".with_all_roles" do
       it { should respond_to(:with_all_roles) }
 
+      it { subject.with_all_roles(:admin, :staff).should eq([ root ]) }
+      it { subject.with_all_roles(:admin, :staff, { :name => :moderator, :resource => Group }).should eq([ root ]) }
+      it { subject.with_all_roles(:admin, :moderator).should be_empty }
+      it { subject.with_all_roles(:admin, :staff, { :name => :moderator, :resource => Forum }).should be_empty }
+      it { subject.with_all_roles({ :name => :moderator, :resource => Forum }, { :name => :manager, :resource => Group }).should eq([ modo ]) }
+      it { subject.with_all_roles(:moderator, :manager).should be_empty }
+      it { subject.with_all_roles({ :name => :visitor, :resource => Forum.last }, { :name => :moderator, :resource => Group }).should eq([ root ]) }
+      it { subject.with_all_roles({ :name => :visitor, :resource => Group.first }, { :name => :moderator, :resource => Forum }).should eq([ modo ]) }
+      it { subject.with_all_roles({ :name => :visitor, :resource => :any }, { :name => :moderator, :resource => :any }).should include(root, modo) }   
     end
 
     describe ".with_any_role" do
       it { should respond_to(:with_any_role) }
 
     end
+    
   end
 end
