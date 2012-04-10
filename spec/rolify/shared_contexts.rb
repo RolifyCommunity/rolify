@@ -63,6 +63,18 @@ shared_context "instance scoped role", :scope => :instance do
   end
 end
 
+shared_context "mixed scoped roles", :scope => :mixed do
+  subject { user_class }
+  
+  before(:all) do
+    role_class.destroy_all
+  end
+    
+  let!(:root) { provision_user(user_class.first, [ :admin, :staff, [ :moderator, Group ], [ :visitor, Forum.last ] ]) }
+  let!(:modo) { provision_user(user_class.where(:login => "moderator").first, [[ :moderator, Forum ], [ :manager, Group ], [ :visitor, Group.first ]])}
+  let!(:visitor) { provision_user(user_class.last, [[ :visitor, Forum.last ]]) }
+end
+
 def create_other_roles
   role_class.create :name => "superhero"
   role_class.create :name => "admin", :resource_type => "Group"

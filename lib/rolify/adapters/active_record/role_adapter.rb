@@ -35,7 +35,7 @@ module Rolify
       
       def scope(relation, conditions)
         query = relation.scoped
-        query = query.joins(role_table.to_sym)
+        query = query.joins(:roles)
         query = where(query, conditions)
         query
       end
