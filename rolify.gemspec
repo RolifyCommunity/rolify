@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Florent Monbillard"]
   s.email       = ["f.monbillard@gmail.com"]
-  s.homepage    = "https://github.com/EppO/rolify"
+  s.homepage    = "http://eppo.github.com/rolify/"
   s.summary     = %q{Roles library with resource scoping}
   s.description = %q{Very simple Roles library without any authorization enforcement supporting scope on resource objects (instance or class). Supports ActiveRecord and Mongoid ORMs.}
 
