@@ -4,7 +4,7 @@ require "rolify/shared_examples/shared_examples_for_has_role"
 require "rolify/shared_examples/shared_examples_for_has_all_roles"
 require "rolify/shared_examples/shared_examples_for_has_any_role"
 require "rolify/shared_examples/shared_examples_for_remove_role"
-
+require "rolify/shared_examples/shared_examples_for_finders"
 
 shared_examples_for Rolify::Role do
   before(:all) do
@@ -74,69 +74,7 @@ shared_examples_for Rolify::Role do
   end
 
   context "on the Class level ", :scope => :mixed do  
-    describe ".with_role" do
-      it { should respond_to(:with_role).with(1).argument }
-      it { should respond_to(:with_role).with(2).arguments }
-
-      context "with a global role" do
-        it { subject.with_role(:admin).should eq([ root ]) }
-        it { subject.with_role(:moderator).should be_empty }
-        it { subject.with_role(:visitor).should be_empty }
-      end
-      
-      context "with a class scoped role" do
-        context "on Forum class" do
-          it { subject.with_role(:admin, Forum).should eq([ root ]) }
-          it { subject.with_role(:moderator, Forum).should eq([ modo ]) }
-          it { subject.with_role(:visitor, Forum).should be_empty }
-        end
-        
-        context "on Group class" do
-          it { subject.with_role(:admin, Group).should eq([ root ]) }
-          it { subject.with_role(:moderator, Group).should eq([ root ]) }
-          it { subject.with_role(:visitor, Group).should be_empty }
-        end
-      end
-      
-      context "with an instance scoped role" do
-        context "on Forum.first instance" do
-          it { subject.with_role(:admin, Forum.first).should eq([ root ]) }
-          it { subject.with_role(:moderator, Forum.first).should eq([ modo ]) }
-          it { subject.with_role(:visitor, Forum.first).should be_empty }
-        end
-        
-        context "on Forum.last instance" do
-          it { subject.with_role(:admin, Forum.last).should eq([ root ]) }
-          it { subject.with_role(:moderator, Forum.last).should eq([ modo ]) }
-          it { subject.with_role(:visitor, Forum.last).should include(root, visitor) }
-        end
-        
-        context "on Group.first instance" do
-          it { subject.with_role(:admin, Group.first).should eq([ root ]) }
-          it { subject.with_role(:moderator, Group.first).should eq([ root ]) }
-          it { subject.with_role(:visitor, Group.first).should eq([ modo ]) }
-        end
-      end
-    end
-    
-    describe ".with_all_roles" do
-      it { should respond_to(:with_all_roles) }
-
-      it { subject.with_all_roles(:admin, :staff).should eq([ root ]) }
-      it { subject.with_all_roles(:admin, :staff, { :name => :moderator, :resource => Group }).should eq([ root ]) }
-      it { subject.with_all_roles(:admin, :moderator).should be_empty }
-      it { subject.with_all_roles(:admin, :staff, { :name => :moderator, :resource => Forum }).should be_empty }
-      it { subject.with_all_roles({ :name => :moderator, :resource => Forum }, { :name => :manager, :resource => Group }).should eq([ modo ]) }
-      it { subject.with_all_roles(:moderator, :manager).should be_empty }
-      it { subject.with_all_roles({ :name => :visitor, :resource => Forum.last }, { :name => :moderator, :resource => Group }).should eq([ root ]) }
-      it { subject.with_all_roles({ :name => :visitor, :resource => Group.first }, { :name => :moderator, :resource => Forum }).should eq([ modo ]) }
-      it { subject.with_all_roles({ :name => :visitor, :resource => :any }, { :name => :moderator, :resource => :any }).should include(root, modo) }   
-    end
-
-    describe ".with_any_role" do
-      it { should respond_to(:with_any_role) }
-
-    end
-    
+    it_should_behave_like :finders, "String", :to_s
+    it_should_behave_like :finders, "Symbol", :to_sym
   end
 end
