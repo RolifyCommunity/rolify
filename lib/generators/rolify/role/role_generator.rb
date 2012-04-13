@@ -16,7 +16,7 @@ module Rolify
       def generate_role
         template "role-#{orm_adapter}.rb", "app/models/#{role_cname.underscore}.rb"
         inject_into_class(model_path, user_cname.camelize) do
-          "\trolify" + (role_cname == "Role" ? "" : ":role_cname => '#{role_cname.camelize}'") + "\n"
+          "  rolify" + (role_cname == "Role" ? "" : ":role_cname => '#{role_cname.camelize}'") + "\n"
         end
       end
 
