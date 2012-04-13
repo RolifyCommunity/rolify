@@ -1,0 +1,8 @@
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
+tmp/*
+logs/*
+.rbx/*
+.rspec
