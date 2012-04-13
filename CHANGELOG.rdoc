@@ -1,6 +1,7 @@
 = 3.2 (unreleased yet)
 * new class methods on the User class to find users depending on roles they have
 * better edge cases covering in the specs
+* deletions of n-n relation are unreliable with Mongoid. Removing ids instead
 
 = 3.1 (Apr 6, 2012)
 * Mongoid adapter optimization
