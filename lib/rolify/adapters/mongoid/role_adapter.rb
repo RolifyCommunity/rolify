@@ -24,8 +24,13 @@ module Rolify
         roles.merge!({ :resource_id => resource.id }) if resource && !resource.is_a?(Class)
         roles_to_remove = relation.roles.where(roles)
         roles_to_remove.each do |role|
-          relation.roles.delete(role)
-          role.reload
+          # Deletion in n-n relations is unreliable. Sometimes it works, sometimes not. 
+          # So, this does not work all the time: `relation.roles.delete(role)`
+          # @see http://stackoverflow.com/questions/9132596/rails3-mongoid-many-to-many-relation-and-delete-operation
+          # We instead remove ids from the Role object and the relation object.
+          relation.role_ids.delete(role.id)
+          role.send((user_class.to_s.underscore + '_ids').to_sym).delete(relation.id)
+
           role.destroy if role.send(user_class.to_s.tableize.to_sym).empty?
         end
       end
