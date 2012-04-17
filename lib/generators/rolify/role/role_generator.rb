@@ -15,8 +15,8 @@ module Rolify
 
       def generate_role
         template "role-#{orm_adapter}.rb", "app/models/#{role_cname.underscore}.rb"
-        inject_into_class(model_path, user_cname.camelize) do
-          "  rolify" + (role_cname == "Role" ? "" : ":role_cname => '#{role_cname.camelize}'") + "\n"
+        inject_into_file(model_path, :after => inject_rolify_method) do
+          "  rolify" + (role_cname == "Role" ? "" : " :role_cname => '#{role_cname.camelize}'") + "\n"
         end
       end
 
@@ -35,6 +35,14 @@ module Rolify
       
       def show_readme
         readme "README-#{orm_adapter}" if behavior == :invoke
+      end
+      
+      def inject_rolify_method
+        if orm_adapter == "active_record"
+          /class #{user_cname.camelize}\n|class #{user_cname.camelize} .*\n/
+        else
+          /include Mongoid::Document\n|include Mongoid::Document .*\n/
+        end
       end
     end
   end
