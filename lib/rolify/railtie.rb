@@ -8,7 +8,7 @@ module Rolify
         ActiveRecord::Base.send :extend, Rolify
       end
       
-      config.after_initialize do
+      config.before_initialize do
         ::Mongoid::Document.module_eval do
           def self.included(base)
             base.extend Rolify
