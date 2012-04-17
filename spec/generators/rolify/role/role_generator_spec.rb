@@ -46,7 +46,7 @@ describe Rolify::Generators::RoleGenerator do
     
     describe 'app/models/user.rb' do
       subject { file('app/models/user.rb') }
-      it { should contain "rolify" }
+      it { should contain /class User < ActiveRecord::Base\n  rolify\n/ }
     end
     
     describe 'migration file' do
@@ -88,10 +88,10 @@ describe Rolify::Generators::RoleGenerator do
       it { should contain "belongs_to :resource, :polymorphic => true" }
     end
     
-    describe 'app/models/client.rb' do
+    describe 'app/models/admin_user.rb' do
       subject { file('app/models/admin_user.rb') }
       
-      it { should contain "rolify" }
+      it { should contain /class AdminUser < ActiveRecord::Base\n  rolify :role_cname => 'AdminRole'\n/ }
     end
     
     describe 'migration file' do
@@ -151,13 +151,13 @@ describe Rolify::Generators::RoleGenerator do
     before { 
       capture(:stdout) {
         generator.create_file "app/models/user.rb" do
-          <<-CLASS 
-          class User
-            include Mongoid::Document
+<<-CLASS 
+class User
+  include Mongoid::Document
 
-            field :login, :type => String
-          end
-          CLASS
+  field :login, :type => String
+end
+CLASS
         end
       }
       run_generator
@@ -191,7 +191,7 @@ describe Rolify::Generators::RoleGenerator do
     
     describe 'app/models/user.rb' do
       subject { file('app/models/user.rb') }
-      it { should contain "rolify" }
+      it { should contain /class User\n  include Mongoid::Document\n  rolify\n/ }
     end
   end
 end
