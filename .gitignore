@@ -3,6 +3,6 @@
 Gemfile.lock
 pkg/*
 tmp/*
-logs/*
+log*/*
 .rbx/*
 .rspec
