@@ -160,6 +160,7 @@ Starting from rolify 3.0, you can search roles on instance level or class level 
 * [Wiki](https://github.com/EppO/rolify/wiki)
 * [Usage](https://github.com/EppO/rolify/wiki/Usage): all the available commands
 * [Tutorial](https://github.com/EppO/rolify/wiki/Tutorial): how to use [rolify](http://eppo.github.com/rolify) with [Devise](https://github.com/plataformatec/devise) and [CanCan](https://github.com/ryanb/cancan).
+* [Amazing tutorial](http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html) provided by [RailsApps](http://railsapps.github.com/)
 
 ## Questions or Problems?
 
