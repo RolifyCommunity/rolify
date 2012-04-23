@@ -57,7 +57,7 @@ module Rolify
       if method.to_s.match(/^is_(\w+)_of[?]$/) || method.to_s.match(/^is_(\w+)[?]$/)
         if self.class.role_class.where(:name => $1).count > 0
           resource = args.first
-          self.class.define_dynamic_method $1, resource
+          self.class.define_dynamic_method($1, resource) if Rolify.dynamic_shortcuts
           return has_role?("#{$1}", resource)
         end
       end unless !Rolify.dynamic_shortcuts
