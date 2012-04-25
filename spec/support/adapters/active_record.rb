@@ -13,6 +13,10 @@ end
 class Role < ActiveRecord::Base
   has_and_belongs_to_many :users, :join_table => :users_roles
   belongs_to :resource, :polymorphic => true
+  
+  scope :global, where(:resource_type => nil, :resource_id => nil)
+  scope :class_scoped, where("resource_type IS NOT NULL AND resource_id IS NULL")
+  scope :instance_scoped, where("resource_type IS NOT NULL AND resource_id IS NOT NULL")
 end
 
 class Forum < ActiveRecord::Base
@@ -30,4 +34,8 @@ end
 class Privilege < ActiveRecord::Base
   has_and_belongs_to_many :customers, :join_table => :customers_privileges
   belongs_to :resource, :polymorphic => true
+  
+  scope :global, where(:resource_type => nil, :resource_id => nil)
+  scope :class_scoped, where("resource_type IS NOT NULL AND resource_id IS NULL")
+  scope :instance_scoped, where("resource_type IS NOT NULL AND resource_id IS NOT NULL")
 end

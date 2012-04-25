@@ -26,6 +26,19 @@ class Role
   belongs_to :resource, :polymorphic => true
   
   field :name, :type => String
+  index :name, unique: true
+  index(
+    [
+      [:name, Mongo::ASCENDING],
+      [:resource_type, Mongo::ASCENDING],
+      [:resource_id, Mongo::ASCENDING]
+    ],
+    unique: true
+  )
+  
+  scope :global, where(:resource_type => nil, :resource_id => nil)
+  scope :class_scoped, where(:resource_type.ne => nil, :resource_id => nil)
+  scope :instance_scoped, where(:resource_type.ne => nil, :resource_id.ne => nil)
 end
 
 class Forum
@@ -55,4 +68,17 @@ class Privilege
   belongs_to :resource, :polymorphic => true
   
   field :name, :type => String
+  index :name, unique: true
+  index(
+    [
+      [:name, Mongo::ASCENDING],
+      [:resource_type, Mongo::ASCENDING],
+      [:resource_id, Mongo::ASCENDING]
+    ],
+    unique: true
+  )
+  
+  scope :global, where(:resource_type => nil, :resource_id => nil)
+  scope :class_scoped, where(:resource_type.ne => nil, :resource_id => nil)
+  scope :instance_scoped, where(:resource_type.ne => nil, :resource_id.ne => nil)
 end
