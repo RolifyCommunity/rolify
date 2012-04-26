@@ -4,7 +4,7 @@ module Rolify
   module Adapter   
     class ResourceAdapter < ResourceAdapterBase
       def resources_find(roles_table, relation, role_name)
-        resources = relation.joins("INNER JOIN `#{roles_table}` ON `#{roles_table}`.`resource_type` = '#{relation.to_s}'")
+        resources = relation.joins("INNER JOIN #{roles_table} ON #{roles_table}.resource_type = '#{relation.to_s}'")
         resources = resources.where("#{roles_table}.name = ? AND #{roles_table}.resource_type = ?", role_name, relation.to_s)
         resources
       end
