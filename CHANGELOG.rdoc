@@ -3,6 +3,9 @@
 * better edge cases covering in the specs
 * deletions of n-n relation are unreliable with Mongoid. Removing ids instead (thanks to @nfo)
 * fixed a bug regarding the loading order of the railtie when using Mongoid ORM and other gems using initializer files (thanks to @stigi)
+* fixed double quote syntax when using MySQL
+* added scopes to Role class to be able to fetch global, class scoped and instance scoped roles for a specific user
+* documentation improvement
 
 = 3.1 (Apr 6, 2012)
 * Mongoid adapter optimization
