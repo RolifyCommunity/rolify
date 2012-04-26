@@ -19,12 +19,20 @@ shared_examples_for "Role.scopes" do |param_name, param_method|
     let!(:moderator_role) { subject.add_role :moderator, Forum }
     
     it { subject.roles.class_scoped.should == [ manager_role, moderator_role ] }
+    it { subject.roles.class_scoped(Group).should == [ manager_role ] }
+    it { subject.roles.class_scoped(Forum).should == [ moderator_role ] }
   end
   
   describe ".instance_scoped" do
     let!(:visitor_role) { subject.add_role :visitor, Forum.first }
+    let!(:zombie_role) { subject.add_role :visitor, Forum.last }
     let!(:anonymous_role) { subject.add_role :anonymous, Group.last }
     
-    it { subject.roles.instance_scoped.should == [ visitor_role, anonymous_role ]}
+    it { subject.roles.instance_scoped.should == [ visitor_role, zombie_role, anonymous_role ] }
+    it { subject.roles.instance_scoped(Forum).should == [ visitor_role, zombie_role ] }
+    it { subject.roles.instance_scoped(Forum.first).should == [ visitor_role ] }
+    it { subject.roles.instance_scoped(Forum.last).should == [ zombie_role ] }
+    it { subject.roles.instance_scoped(Group.last).should == [ anonymous_role ] }
+    it { subject.roles.instance_scoped(Group.first).should be_empty }
   end
 end

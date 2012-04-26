@@ -36,9 +36,7 @@ class Role
     :unique => true
   )
   
-  scope :global, where(:resource_type => nil, :resource_id => nil)
-  scope :class_scoped, where(:resource_type.ne => nil, :resource_id => nil)
-  scope :instance_scoped, where(:resource_type.ne => nil, :resource_id.ne => nil)
+  extend Rolify::Adapter::Scopes
 end
 
 class Forum
@@ -78,7 +76,5 @@ class Privilege
     :unique => true
   )
   
-  scope :global, where(:resource_type => nil, :resource_id => nil)
-  scope :class_scoped, where(:resource_type.ne => nil, :resource_id => nil)
-  scope :instance_scoped, where(:resource_type.ne => nil, :resource_id.ne => nil)
+  extend Rolify::Adapter::Scopes
 end
