@@ -1,7 +1,7 @@
 module Rolify
   module Configure
-    @@dynamic_shortcuts = false
-    @@orm = "active_record"
+    @@dynamic_shortcuts = true
+    @@orm = "mongoid"
      
     def configure
       yield self if block_given?
@@ -33,8 +33,10 @@ module Rolify
 
     def use_defaults
       configure do |config|
-        config.dynamic_shortcuts = false
-        config.orm = "active_record"
+        #config.dynamic_shortcuts = false
+        #config.orm = "active_record"
+        config.dynamic_shortcuts = true
+        config.orm = "mongoid"
       end
     end
   end

@@ -16,7 +16,7 @@ module Rolify
     extend Dynamic if Rolify.dynamic_shortcuts
     
     rolify_options = { :class_name => options[:role_cname].camelize }
-    rolify_options.merge!({ :join_table => "#{self.to_s.tableize}_#{options[:role_cname].tableize}" }) if Rolify.orm == "active_record"
+    rolify_options.merge!({ :join_table => "#{self.to_s.tableize}_#{options[:role_cname].tableize}" }) unless defined?(Mongoid)
     has_and_belongs_to_many :roles, rolify_options
 
     self.adapter = Rolify::Adapter::Base.create("role_adapter", options[:role_cname], self.name)
