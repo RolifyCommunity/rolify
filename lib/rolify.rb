@@ -35,6 +35,10 @@ module Rolify
     self.role_cname = options[:role_cname]
   end
   
+  def scopify
+    require "rolify/adapters/#{Rolify.orm}/scopes.rb"
+  end
+  
   def role_class
     self.role_cname.constantize
   end

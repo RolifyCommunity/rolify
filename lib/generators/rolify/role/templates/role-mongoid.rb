@@ -15,5 +15,5 @@ class <%= role_cname.camelize %>
     :unique => true
   )
   
-  extend Rolify::Adapter::Scopes
+  scopify
 end
