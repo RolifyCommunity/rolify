@@ -54,7 +54,18 @@ Let's migrate !
   rake db:migrate
 ```
 
-### 3. Add a role to a user
+### 3. Configure your resource models
+
+In the resource models you want to apply roles on, just add ``resourcify`` method.
+For example, on this ActiveRecord class:
+
+```ruby
+class Forum < ActiveRecord::Base
+  resourcify
+end
+```
+
+### 4. Add a role to a user
 
 To define a global role:
 
@@ -79,7 +90,7 @@ To define a role scoped to a resource class
 
 That's it !
 
-### 4. Check roles
+### 5. Role queries
 
 To check if a user has a global role: 
 
@@ -125,7 +136,7 @@ A global role overrides resource role request:
   => true
 ```
 
-### 5. Resource roles querying 
+### 6. Resource roles querying 
 
 Starting from rolify 3.0, you can search roles on instance level or class level resources.
 
