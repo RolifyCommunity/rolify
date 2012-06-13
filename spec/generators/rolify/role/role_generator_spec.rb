@@ -103,48 +103,6 @@ describe Rolify::Generators::RoleGenerator do
     end
   end
   
-  describe 'specifying dynamic shortcuts' do
-    before(:all) { arguments [ "Role", "User", "--dynamic_shortcuts" ] }
-    
-    before { 
-      capture(:stdout) {
-        generator.create_file "app/models/user.rb" do
-          "class User < ActiveRecord::Base\nend"
-        end
-      }
-      run_generator
-    }
-      
-    describe 'config/initializers/rolify.rb' do
-      subject { file('config/initializers/rolify.rb') }
-      it { should exist }
-      it { should contain "Rolify.configure do |config|"}
-      it { should_not contain "# config.use_dynamic_shortcuts" }
-      it { should contain "# config.use_mongoid" }
-    end
-    
-    describe 'app/models/role.rb' do
-      subject { file('app/models/role.rb') }
-      it { should exist }
-      it { should contain "class Role < ActiveRecord::Base" }
-      it { should contain "has_and_belongs_to_many :users, :join_table => :users_roles" }
-      it { should contain "belongs_to :resource, :polymorphic => true" }
-    end
-    
-    describe 'app/models/user.rb' do
-      subject { file('app/models/user.rb') }
-      it { should contain "rolify" }
-    end
-    
-    describe 'migration file' do
-      subject { migration_file('db/migrate/rolify_create_roles.rb') }
-      
-      it { should be_a_migration }
-      it { should contain "create_table(:roles) do" }
-      it { should contain "create_table(:users_roles, :id => false) do" }
-    end
-  end
-  
   describe 'specifying orm adapter' do 
     before(:all) { arguments [ "Role", "User", "mongoid" ] }
     
