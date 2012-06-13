@@ -16,6 +16,7 @@ describe Rolify::Resource do
   let!(:forum_role)      { admin.add_role(:forum, Forum.first) }
   let!(:godfather_role)  { admin.add_role(:godfather, Forum) }
   let!(:group_role)      { admin.add_role(:group, Group.last) }
+  let!(:grouper_role)    { admin.add_role(:grouper, Group.first) }
   let!(:tourist_role)    { tourist.add_role(:forum, Forum.last) }
   let!(:sneaky_role)     { tourist.add_role(:group, Forum.first) }
 
@@ -45,6 +46,15 @@ describe Rolify::Resource do
         end
       end
 
+    end
+
+    context "with an array of role names as argument" do 
+      context "on the Group class" do 
+        subject { Group }
+        it "should include Group instances with both group and grouper roles" do 
+          subject.with_roles([:group, :grouper]).should include(Group.first, Group.last)
+        end
+      end
     end
 
     context "with a role name and a user as arguments" do
@@ -88,6 +98,27 @@ describe Rolify::Resource do
         end
       end
     end
+
+    context "with an array of role names and a user as arguments" do
+      context "on the Forum class" do 
+        subject { Forum }
+
+        it "should get Forum instances binded to the forum and group roles and the tourist user" do
+          subject.with_roles([:forum, :group], tourist).should include(Forum.first, Forum.last)
+        end
+
+      end
+
+      context "on the Group class" do 
+        subject { Group }
+
+        it "should get Group instances binded to the group and grouper roles and the admin user" do
+          subject.with_roles([:group, :grouper], admin).should include(Group.first, Group.last)
+        end
+
+      end
+    end
+
   end
 
   describe ".find_role" do
