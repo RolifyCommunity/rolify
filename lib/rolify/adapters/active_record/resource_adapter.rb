@@ -9,7 +9,8 @@ module Rolify
         resources
       end
 
-      def in(relation, roles)
+      def in(relation, user, role_names)
+        roles = user.roles.where(:name => role_names)
         relation.where("#{quote(role_class.to_s.tableize)}.id IN (?) AND ((resource_id = #{quote(relation.table_name)}.id) OR (resource_id IS NULL))", roles)
       end
       

@@ -14,7 +14,7 @@ module Rolify
 
       def with_role(role_name, user = nil)
         resources = self.adapter.resources_find(self.role_class.to_s.tableize, self, role_name)
-        user ? self.adapter.in(resources, user.roles.where(:name => role_name)) : resources
+        user ? self.adapter.in(resources, user, role_name) : resources
       end
       alias :with_roles :with_role
     end
