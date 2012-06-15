@@ -28,7 +28,7 @@ module Rolify
   def resourcify(options = { :role_cname => 'Role' })
     include Resource
     
-    resourcify_options = { :class_name => options[:role_cname].camelize, :as => :resource }
+    resourcify_options = { :class_name => options[:role_cname].camelize, :dependent => :destroy, :as => :resource }
     has_many :roles, resourcify_options
     
     self.adapter = Rolify::Adapter::Base.create("resource_adapter", options[:role_cname], self.name)
