@@ -1,8 +1,6 @@
 require 'mongoid'
 
-Mongoid.configure do |config|
-  config.master = Mongo::Connection.new.db("godfather")
-end
+Mongoid.load!("spec/support/adapters/mongoid.yml", :test)
 
 ::Mongoid::Document.module_eval do
   def self.included(base)
@@ -26,14 +24,14 @@ class Role
   belongs_to :resource, :polymorphic => true
   
   field :name, :type => String
-  index :name, :unique => true
+  index({ :name => 1 }, { :unique => true })
   index(
-    [
-      [:name, Mongo::ASCENDING],
-      [:resource_type, Mongo::ASCENDING],
-      [:resource_id, Mongo::ASCENDING]
-    ],
-    :unique => true
+    {
+      :name => 1,
+      :resource_type => 1,
+      :resource_id => 1
+    },
+    { :unique => true }
   )
   
   extend Rolify::Adapter::Scopes
@@ -66,14 +64,14 @@ class Privilege
   belongs_to :resource, :polymorphic => true
   
   field :name, :type => String
-  index :name, :unique => true
+  index({ :name => 1 }, { :unique => true })
   index(
-    [
-      [:name, Mongo::ASCENDING],
-      [:resource_type, Mongo::ASCENDING],
-      [:resource_id, Mongo::ASCENDING]
-    ],
-    :unique => true
+    {
+      :name => 1,
+      :resource_type => 1,
+      :resource_id => 1
+    },
+    { :unique => true }
   )
   
   extend Rolify::Adapter::Scopes

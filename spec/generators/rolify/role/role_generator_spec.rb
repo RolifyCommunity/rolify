@@ -136,15 +136,13 @@ CLASS
       it { should contain "has_and_belongs_to_many :users\n" }
       it { should contain "belongs_to :resource, :polymorphic => true" }
       it { should contain "field :name, :type => String" }
-      it { should contain "index :name, :unique => true" }
-      it { should contain "  index(\n"
-                          "    [\n"
-                          "      [:name, Mongo::ASCENDING],\n"
-                          "      [:resource_type, Mongo::ASCENDING],\n"
-                          "      [:resource_id, Mongo::ASCENDING]\n"
-                          "    ],\n"
-                          "    unique => true\n"
-                          "  )\n" }
+      it { should contain "index({ :name => 1 }, { :unique => true })" }
+      it { should contain "  index({\n"
+                          "      { :name => 1 },\n"
+                          "      { :resource_type => 1 },\n"
+                          "      { :resource_id => 1 }\n"
+                          "    },\n"
+                          "    { unique => true })"}
     end
     
     describe 'app/models/user.rb' do
