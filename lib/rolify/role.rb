@@ -43,7 +43,7 @@ module Rolify
       self.class.adapter.where(self.roles, *args).size > 0
     end
     
-    def has_only_role(role_name, resource = nie)
+    def only_has_role?(role_name, resource = nil)
       return self.has_role?(role_name,resource) && self.roles.count == 1
     end
 
