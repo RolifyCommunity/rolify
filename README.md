@@ -54,7 +54,28 @@ Let's migrate !
   rake db:migrate
 ```
 
-### 3. Configure your resource models
+### 3.1 Configure your user model
+
+This gem adds the `rolify` method to your User class. You can also specify optional callbacks on the user for when roles are added or removed:
+
+```ruby
+  class User < ActiveRecord::Base
+    rolify :before_add => :before_add_method
+
+    def :before_add_method(role)
+      # do something before it gets added
+    end
+  end
+```
+
+The `rolify` method accepts the following callback options:
+
+- `before_add`
+- `after_add`
+- `before_remove`
+- `after_remove`
+
+### 3.2 Configure your resource models
 
 In the resource models you want to apply roles on, just add ``resourcify`` method.
 For example, on this ActiveRecord class:
