@@ -11,12 +11,16 @@ module Rolify
 
   attr_accessor :role_cname, :adapter
 
-  def rolify(options = { :role_cname => 'Role' })
+  def rolify(options = {})
     include Role
     extend Dynamic if Rolify.dynamic_shortcuts
     
+    options.reverse_merge!({:role_cname => 'Role'})
+
     rolify_options = { :class_name => options[:role_cname].camelize }
     rolify_options.merge!({ :join_table => "#{self.to_s.tableize}_#{options[:role_cname].tableize}" }) if Rolify.orm == "active_record"
+    rolify_options.merge!(options.select{ |k,v| [:before_add, :after_add, :before_remove, :after_remove].include? k.to_sym })
+
     has_and_belongs_to_many :roles, rolify_options
 
     self.adapter = Rolify::Adapter::Base.create("role_adapter", options[:role_cname], self.name)
