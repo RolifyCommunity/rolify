@@ -25,10 +25,10 @@ module Rolify
     load_dynamic_methods if Rolify.dynamic_shortcuts
   end
 
-  def resourcify(options = { :role_cname => 'Role' })
+  def resourcify(options = { :role_cname => 'Role', :dependent => :destroy })
     include Resource
     
-    resourcify_options = { :class_name => options[:role_cname].camelize, :as => :resource }
+    resourcify_options = { :class_name => options[:role_cname].camelize, :as => :resource, :dependent => options[:dependent] }
     has_many :roles, resourcify_options
     
     self.adapter = Rolify::Adapter::Base.create("resource_adapter", options[:role_cname], self.name)
