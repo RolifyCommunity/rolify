@@ -10,6 +10,7 @@
 * added association callbacks <tt>(before|after)_add</tt>, <tt>(before|after)_remove</tt> on <tt>rolify</tt> method (thanks to @shekibobo)
 * added ability to pass an array of roles to <tt>Resource.with_role()</tt>, aliased by <tt>Resource.with_roles()</tt> (thanks to @lukes)
 * added option to have roles be destroyed by default if parent resource is destroyed (thanks to @treydock)
+* added new method <tt>only_has_role?</tt> to check if user has only a specific role (thanks to @jalcine)
 * better edge cases covering in the specs
 * fixed a bug regarding the loading order of the railtie when using Mongoid ORM and other gems using initializer files (thanks to @stigi)
 * fixed double quote syntax when using MySQL
