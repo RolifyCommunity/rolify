@@ -75,7 +75,7 @@ The `rolify` method accepts the following callback* options:
 - `before_remove`
 - `after_remove`
 
-*PLEASE NOTE: callbacks are currently only supported using ActiveRecord ORM. Mongoid will support association callbacks on 3.1 release (current version is 3.0.x)
+*PLEASE NOTE: callbacks are currently only supported using ActiveRecord ORM. Mongoid will support association callbacks in its 3.1 release (Mongoid current version is 3.0.x)
 
 ### 3.2 Configure your resource models
 
