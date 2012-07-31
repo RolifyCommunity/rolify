@@ -48,31 +48,41 @@ shared_examples_for Rolify::Role do
     it { should_not respond_to(:is_moderator_of?) }
     
     describe "#has_role" do 
-       it_should_behave_like "#add_role_examples", "String", :to_s
-       it_should_behave_like "#add_role_examples", "Symbol", :to_sym
-     end
+      it_should_behave_like "#add_role_examples", "String", :to_s
+      it_should_behave_like "#add_role_examples", "Symbol", :to_sym
+    end
 
-     describe "#has_role?" do    
-       it_should_behave_like "#has_role?_examples", "String", :to_s
-       it_should_behave_like "#has_role?_examples", "Symbol", :to_sym
-     end
+    describe "#has_role?" do    
+      it_should_behave_like "#has_role?_examples", "String", :to_s
+      it_should_behave_like "#has_role?_examples", "Symbol", :to_sym
+    end
 
-     describe "#has_all_roles?" do
-       it_should_behave_like "#has_all_roles?_examples", "String", :to_s
-       it_should_behave_like "#has_all_roles?_examples", "Symbol", :to_sym
-     end
+    describe "#has_all_roles?" do
+      it_should_behave_like "#has_all_roles?_examples", "String", :to_s
+      it_should_behave_like "#has_all_roles?_examples", "Symbol", :to_sym
+    end
 
-     describe "#has_any_role?" do
-       it_should_behave_like "#has_any_role?_examples", "String", :to_s
-       it_should_behave_like "#has_any_role?_examples", "Symbol", :to_sym
-     end
+    describe "#has_any_role?" do
+      it_should_behave_like "#has_any_role?_examples", "String", :to_s
+      it_should_behave_like "#has_any_role?_examples", "Symbol", :to_sym
+    end
 
-     describe "#has_no_role" do
-       it_should_behave_like "#remove_role_examples", "String", :to_s
-       it_should_behave_like "#remove_role_examples", "Symbol", :to_sym
-     end
+    describe "#has_no_role" do
+      it_should_behave_like "#remove_role_examples", "String", :to_s
+      it_should_behave_like "#remove_role_examples", "Symbol", :to_sym
+    end
   end
-
+  context "with new instance" do
+    let(:user) { user_class.new }
+    before do
+      user.add_role :admin
+      user.add_role :moderator, Forum.first
+    end
+    subject { user }
+    it { should have_role :admin }
+    it { should have_role :moderator, Forum.first }    
+    
+  end  
   context "on the Class level ", :scope => :mixed do  
     it_should_behave_like :finders, "String", :to_s
     it_should_behave_like :finders, "Symbol", :to_sym
