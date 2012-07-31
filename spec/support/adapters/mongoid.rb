@@ -34,7 +34,7 @@ class Role
     { :unique => true }
   )
   
-  extend Rolify::Adapter::Scopes
+  scopify
 end
 
 class Forum
@@ -74,5 +74,5 @@ class Privilege
     { :unique => true }
   )
   
-  extend Rolify::Adapter::Scopes
+  scopify
 end

@@ -41,6 +41,7 @@ module Rolify
   
   def scopify
     require "rolify/adapters/#{Rolify.orm}/scopes.rb"
+    extend Rolify::Adapter::Scopes 
   end
   
   def role_class
