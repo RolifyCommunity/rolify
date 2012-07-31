@@ -13,9 +13,10 @@ This library was intended to be used with [CanCan](https://github.com/ryanb/canc
 
 ## Requirements
 
-* >= Rails 3.1
-* ActiveRecord ORM <b>or</b> Mongoid
-* supports ruby 1.8/1.9, REE, JRuby and Rubinius
+* Rails >= 3.1
+* ActiveRecord >= 3.1 <b>or</b> Mongoid >= 3.0
+* supports ruby 1.9, JRuby 1.6.0+ (in 1.9 mode) and Rubinius 2.0.0dev (in 1.9 mode)
+* support of ruby 1.8 has been dropped due to Mongoid 3.0 that only supports 1.9 new hash syntax
 
 ## Installation
 

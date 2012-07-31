@@ -1,10 +1,18 @@
 = 3.2 (unreleased yet)
+* <b>DEPRECATION NOTICE:</b>Ruby 1.8 support dropped ! Mongoid 3.0 only supports MRI 1.9.3, and HEAD, and JRuby 1.6.0+ in 1.9 mode
+* removed <tt>dynamic_shortcuts</tt> arguments from the generator
+  * to use dynamic shortcuts feature when you're using ActiveRecord, you have to enable it _after_ running rake db:migrate as it relies on the roles table
+* support for Mongoid 3.x (thanks to @Leonas)
 * new class methods on the User class to find users depending on roles they have
-* better edge cases covering in the specs
+* added scopes to Role class to be able to fetch global, class scoped and instance scoped roles for a specific user
 * deletions of n-n relation are unreliable with Mongoid. Removing ids instead (thanks to @nfo)
+* <tt>has_role?</tt> method now supports new instance (i.e. record not saved in the database yet) (thanks to @demental)
+* added association callbacks <tt>(before|after)_add</tt>, <tt>(before|after)_remove</tt> on <tt>rolify</tt> method (thanks to @shekibobo)
+* added ability to pass an array of roles to <tt>Resource.with_role()</tt>, aliased by <tt>Resource.with_roles()</tt> (thanks to @lukes)
+* added option to have roles be destroyed by default if parent resource is destroyed (thanks to @treydock)
+* better edge cases covering in the specs
 * fixed a bug regarding the loading order of the railtie when using Mongoid ORM and other gems using initializer files (thanks to @stigi)
 * fixed double quote syntax when using MySQL
-* added scopes to Role class to be able to fetch global, class scoped and instance scoped roles for a specific user
 * documentation improvement
 
 = 3.1 (Apr 6, 2012)
