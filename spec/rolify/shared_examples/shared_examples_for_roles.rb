@@ -1,6 +1,7 @@
 require "rolify/shared_contexts"
 require "rolify/shared_examples/shared_examples_for_add_role"
 require "rolify/shared_examples/shared_examples_for_has_role"
+require "rolify/shared_examples/shared_examples_for_only_has_role"
 require "rolify/shared_examples/shared_examples_for_has_all_roles"
 require "rolify/shared_examples/shared_examples_for_has_any_role"
 require "rolify/shared_examples/shared_examples_for_remove_role"
@@ -56,6 +57,11 @@ shared_examples_for Rolify::Role do
       it_should_behave_like "#has_role?_examples", "String", :to_s
       it_should_behave_like "#has_role?_examples", "Symbol", :to_sym
     end
+    
+    describe "#only_has_role?" do    
+      it_should_behave_like "#only_has_role?_examples", "String", :to_s
+      it_should_behave_like "#only_has_role?_examples", "Symbol", :to_sym
+    end
 
     describe "#has_all_roles?" do
       it_should_behave_like "#has_all_roles?_examples", "String", :to_s
@@ -72,17 +78,21 @@ shared_examples_for Rolify::Role do
       it_should_behave_like "#remove_role_examples", "Symbol", :to_sym
     end
   end
-  context "with new instance" do
+  
+  context "with a new instance" do
     let(:user) { user_class.new }
-    before do
+
+    before(:all) do
       user.add_role :admin
       user.add_role :moderator, Forum.first
     end
+
     subject { user }
+    
     it { should have_role :admin }
     it { should have_role :moderator, Forum.first }    
-    
   end  
+  
   context "on the Class level ", :scope => :mixed do  
     it_should_behave_like :finders, "String", :to_s
     it_should_behave_like :finders, "Symbol", :to_sym
