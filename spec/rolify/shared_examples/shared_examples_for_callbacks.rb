@@ -9,7 +9,7 @@ shared_examples_for "Rolify.callbacks" do
     @user.roles.destroy_all
   end
 
-  describe "rolify association callbacks" do
+  describe "rolify association callbacks", :if => (Rolify.orm == "active_record") do
     describe "before_add" do
       it "should receive callback" do
         user_class.rolify :before_add => :role_callback, :role_cname => role_class.to_s
