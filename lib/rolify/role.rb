@@ -23,7 +23,11 @@ module Rolify
     deprecate :has_role, :add_role
 
     def has_role?(role_name, resource = nil)
-      self.class.adapter.where(self.roles, :name => role_name, :resource => resource).size > 0
+      if new_record?
+        self.roles.detect { |r| r.name == role_name.to_s && (r.resource == resource || resource.nil?) }.present?
+      else
+        self.class.adapter.where(self.roles, :name => role_name, :resource => resource).size > 0
+      end
     end
 
     def has_all_roles?(*args)
