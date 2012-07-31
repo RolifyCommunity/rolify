@@ -56,7 +56,7 @@ Let's migrate !
 
 ### 3.1 Configure your user model
 
-This gem adds the `rolify` method to your User class. You can also specify optional callbacks on the user for when roles are added or removed:
+This gem adds the `rolify` method to your User class. You can also specify optional callbacks* on the user for when roles are added or removed:
 
 ```ruby
   class User < ActiveRecord::Base
@@ -68,12 +68,14 @@ This gem adds the `rolify` method to your User class. You can also specify optio
   end
 ```
 
-The `rolify` method accepts the following callback options:
+The `rolify` method accepts the following callback* options:
 
 - `before_add`
 - `after_add`
 - `before_remove`
 - `after_remove`
+
+*PLEASE NOTE: callbacks are currently only supported using ActiveRecord ORM. Mongoid will support association callbacks on 3.1 release (current version is 3.0.x)
 
 ### 3.2 Configure your resource models
 
