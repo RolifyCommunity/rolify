@@ -46,10 +46,15 @@ module Rolify
     def has_any_role?(*args)
       self.class.adapter.where(self.roles, *args).size > 0
     end
+    
+    def only_has_role?(role_name, resource = nil)
+      return self.has_role?(role_name,resource) && self.roles.count == 1
+    end
 
     def remove_role(role_name, resource = nil)
       self.class.adapter.remove(self, role_name, resource)
     end
+    
     alias_method :revoke, :remove_role
     deprecate :has_no_role, :remove_role
 
