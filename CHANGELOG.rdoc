@@ -1,4 +1,4 @@
-= 3.2 (unreleased yet)
+= 3.2 (Aug 7, 2012)
 * <b>DEPRECATION NOTICE:</b> Ruby 1.8 support dropped ! Mongoid 3.0 only supports MRI 1.9.3, and HEAD, and JRuby 1.6.0+ in 1.9 mode
 * removed <tt>dynamic_shortcuts</tt> arguments from the generator
   * to use dynamic shortcuts feature when you're using ActiveRecord, you have to enable it _after_ running rake db:migrate as it relies on the roles table
@@ -14,6 +14,8 @@
 * better edge cases covering in the specs
 * fixed a bug regarding the loading order of the railtie when using Mongoid ORM and other gems using initializer files (thanks to @stigi)
 * fixed double quote syntax when using MySQL
+* fixed a nasty bug regarding class level queries (thanks to @kamrulhassan)
+* fixed uninitialized constant error in scopify method
 * documentation improvement
 
 = 3.1 (Apr 6, 2012)
