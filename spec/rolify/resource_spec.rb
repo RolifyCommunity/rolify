@@ -328,6 +328,21 @@ describe Rolify::Resource do
 
       its(:roles) { should eq([ group_role ]) } 
       its(:roles) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role) }
+      
+      context "when deleting a Group instance" do
+        subject do 
+          Group.create(:name => "to delete")
+        end
+        
+        before do
+          subject.roles.create :name => "group_role1"
+          subject.roles.create :name => "group_role2"
+        end
+        
+        it "should remove the roles binded to this instance" do
+          expect { subject.destroy }.to change { Role.count }.by(-2)
+        end
+      end
     end
   end
 
