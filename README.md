@@ -9,7 +9,9 @@ user.has_role?(:moderator, Forum.first)
 => false # if user is moderator of another Forum
 ```
 
-This library was intended to be used with [CanCan](https://github.com/ryanb/cancan) and [devise](https://github.com/plataformatec/devise) but should be generic enough to be used by any other authentication/authorization solutions.
+This library can be easily integrated with any authentication gem ([devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), [Clearance](https://github.com/thoughtbot/clearance)) and authorization gem<span style="color: red"><strong>*</strong></span> ([CanCan](https://github.com/ryanb/cancan), [authority](https://github.com/nathanl/authority))
+
+<span style="color: red"><strong>*</strong></span>: authorization gem that doesn't provide a role class
 
 ## Requirements
 
@@ -194,8 +196,10 @@ Starting from rolify 3.0, you can search roles on instance level or class level 
 
 * [Wiki](https://github.com/EppO/rolify/wiki)
 * [Usage](https://github.com/EppO/rolify/wiki/Usage): all the available commands
-* [Tutorial](https://github.com/EppO/rolify/wiki/Tutorial): how to use [rolify](http://eppo.github.com/rolify) with [Devise](https://github.com/plataformatec/devise) and [CanCan](https://github.com/ryanb/cancan).
-* [Amazing tutorial](http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html) provided by [RailsApps](http://railsapps.github.com/)
+* [Tutorials](https://github.com/EppO/rolify/wiki#wiki-tutorials):  
+  * [How-To use rolify with Devise and CanCan](https://github.com/EppO/rolify/wiki/Tutorial)
+  * [Using rolify with Devise and Authority](https://github.com/EppO/rolify/wiki/Using-rolify-with-Devise-and-Authority)
+  * [Step-by-step tutorial](http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html) provided by [RailsApps](http://railsapps.github.com/)
 
 ## Questions or Problems?
 
