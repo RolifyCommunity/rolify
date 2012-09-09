@@ -34,7 +34,10 @@ module Rolify
       end
       
       def show_readme
-        readme "README-#{orm_adapter}" if behavior == :invoke
+        if behavior == :invoke
+          readme "README"
+          readme "README-#{orm_adapter}"
+        end
       end
       
       def inject_rolify_method
