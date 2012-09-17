@@ -2,6 +2,7 @@ require 'rubygems'
 require "bundler/setup"
 
 require 'rolify'
+require 'rolify/matchers'
 require 'ammeter/init'
 
 ENV['ADAPTER'] ||= 'active_record'
