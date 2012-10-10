@@ -17,9 +17,10 @@ module Rolify
       end
 
       def remove(relation, role_name, resource = nil)
-        roles = relation.roles.where(:name => role_name)
-        roles = roles.where(:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)) if resource
-        roles = roles.where(:resource_id => resource.id) if resource && !resource.is_a?(Class)
+        cond = { :name => role_name }
+        cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
+        cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
+        roles = relation.roles.where(cond)
         if roles
           relation.roles.delete(roles)
           roles.each do |role| 
