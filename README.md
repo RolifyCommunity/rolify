@@ -1,4 +1,4 @@
-# rolify [![build status](https://secure.travis-ci.org/EppO/rolify.png?branch=master)](http://travis-ci.org/EppO/rolify) [![dependency status](https://gemnasium.com/EppO/rolify.png)](https://gemnasium.com/EppO/rolify)
+# rolify [![build status](https://secure.travis-ci.org/EppO/rolify.png?branch=master)](http://travis-ci.org/EppO/rolify) [![dependency status](https://gemnasium.com/EppO/rolify.png)](https://gemnasium.com/EppO/rolify) [![Code smell](https://codeclimate.com/badge.png)](https://codeclimate.com/github/EppO/rolify)
 
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
 
