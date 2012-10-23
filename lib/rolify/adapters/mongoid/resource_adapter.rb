@@ -13,7 +13,7 @@ module Rolify
             resources << role.resource
           end
         end
-        resources.uniq
+        resources.uniq.reject {|r| r.nil? }
       end
 
       def in(resources, user, role_names)
