@@ -1,7 +1,7 @@
 require 'rolify/adapters/base'
 
 module Rolify
-  module Adapter  
+  module Adapter
     class ResourceAdapter < ResourceAdapterBase
       def resources_find(roles_table, relation, role_name)
         roles = roles_table.classify.constantize.where(:name.in => Array(role_name), :resource_type => relation.to_s)
@@ -13,7 +13,7 @@ module Rolify
             resources << role.resource
           end
         end
-        resources.uniq
+        resources.compact.uniq
       end
 
       def in(resources, user, role_names)

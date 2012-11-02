@@ -7,7 +7,7 @@ ActiveRecord::Schema.define do
 
     t.timestamps
   end
-  
+
   create_table(:users) do |t|
     t.string :login
   end
@@ -16,12 +16,13 @@ ActiveRecord::Schema.define do
     t.references :user
     t.references :role
   end
-  
+
   create_table(:forums) do |t|
     t.string :name
   end
-  
+
   create_table(:groups) do |t|
+    t.integer :parent_id
     t.string :name
   end
 
