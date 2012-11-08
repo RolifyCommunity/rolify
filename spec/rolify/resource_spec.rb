@@ -12,7 +12,7 @@ describe Rolify::Resource do
   # Users
   let(:admin)   { User.first }
   let(:tourist) { User.last }
-  
+
   # roles
   let!(:forum_role)      { admin.add_role(:forum, Forum.first) }
   let!(:godfather_role)  { admin.add_role(:godfather, Forum) }
@@ -27,19 +27,19 @@ describe Rolify::Resource do
     it { should respond_to(:find_roles).with(1).arguments }
     it { should respond_to(:find_roles).with(2).arguments }
 
-    context "with a role name as argument" do 
-      context "on the Forum class" do 
+    context "with a role name as argument" do
+      context "on the Forum class" do
         subject { Forum }
 
-        it "should include Forum instances with forum role" do 
+        it "should include Forum instances with forum role" do
           subject.with_role(:forum).should =~ [ Forum.first, Forum.last ]
         end
-        it "should include Forum instances with godfather role" do 
+        it "should include Forum instances with godfather role" do
           subject.with_role(:godfather).should =~ Forum.all.to_a
         end
       end
 
-      context "on the Group class" do 
+      context "on the Group class" do
         subject { Group }
 
         it "should include Group instances with group role" do
@@ -47,20 +47,27 @@ describe Rolify::Resource do
         end
       end
 
+      context "on a Group instance" do
+        subject { Group.last }
+
+        it "should ignore nil entries" do
+          subject.subgroups.with_role(:group).should =~ [ ]
+        end
+      end
     end
 
-    context "with an array of role names as argument" do 
-      context "on the Group class" do 
+    context "with an array of role names as argument" do
+      context "on the Group class" do
         subject { Group }
-        
-        it "should include Group instances with both group and grouper roles" do 
+
+        it "should include Group instances with both group and grouper roles" do
           subject.with_roles([:group, :grouper]).should =~ [ Group.first, Group.last ]
         end
       end
     end
 
     context "with a role name and a user as arguments" do
-      context "on the Forum class" do 
+      context "on the Forum class" do
         subject { Forum }
 
         it "should get all Forum instances binded to the forum role and the admin user" do
@@ -88,7 +95,7 @@ describe Rolify::Resource do
         end
       end
 
-      context "on the Group class" do 
+      context "on the Group class" do
         subject { Group }
 
         it "should get all resources binded to the group role and the admin user" do
@@ -102,7 +109,7 @@ describe Rolify::Resource do
     end
 
     context "with an array of role names and a user as arguments" do
-      context "on the Forum class" do 
+      context "on the Forum class" do
         subject { Forum }
 
         it "should get Forum instances binded to the forum and group roles and the tourist user" do
@@ -111,7 +118,7 @@ describe Rolify::Resource do
 
       end
 
-      context "on the Group class" do 
+      context "on the Group class" do
         subject { Group }
 
         it "should get Group instances binded to the group and grouper roles and the admin user" do
@@ -125,8 +132,8 @@ describe Rolify::Resource do
 
   describe ".find_role" do
 
-    context "without using a role name parameter" do 
-      
+    context "without using a role name parameter" do
+
       context "on the Forum class" do
         subject { Forum }
 
@@ -151,7 +158,7 @@ describe Rolify::Resource do
 
       context "on the Group class" do
         subject { Group }
-        
+
         it "should get all roles binded to a Group class or instance" do
           subject.find_roles.to_a.should =~ [ group_role, grouper_role ]
         end
@@ -172,7 +179,7 @@ describe Rolify::Resource do
       end
     end
 
-    context "using a role name parameter" do 
+    context "using a role name parameter" do
       context "on the Forum class" do
         subject { Forum }
 
@@ -209,7 +216,7 @@ describe Rolify::Resource do
 
       context "on the Group class" do
         subject { Group }
-        
+
         context "without using a user parameter" do
           it "should get all roles binded to a Group class or instance and group role name" do
             subject.find_roles(:group).should include(group_role)
@@ -242,7 +249,7 @@ describe Rolify::Resource do
       end
     end
 
-    context "using :any as role name parameter" do 
+    context "using :any as role name parameter" do
       context "on the Forum class" do
         subject { Forum }
 
@@ -318,7 +325,7 @@ describe Rolify::Resource do
 
     it { should respond_to :roles }
 
-    context "on a Forum instance" do 
+    context "on a Forum instance" do
       its(:roles) { should eq([ forum_role, sneaky_role ]) }
       its(:roles) { subject.should_not include(group_role, godfather_role, tourist_role) }
     end
@@ -326,19 +333,19 @@ describe Rolify::Resource do
     context "on a Group instance" do
       subject { Group.last }
 
-      its(:roles) { should eq([ group_role ]) } 
+      its(:roles) { should eq([ group_role ]) }
       its(:roles) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role) }
-      
+
       context "when deleting a Group instance" do
-        subject do 
+        subject do
           Group.create(:name => "to delete")
         end
-        
+
         before do
           subject.roles.create :name => "group_role1"
           subject.roles.create :name => "group_role2"
         end
-        
+
         it "should remove the roles binded to this instance" do
           expect { subject.destroy }.to change { Role.count }.by(-2)
         end

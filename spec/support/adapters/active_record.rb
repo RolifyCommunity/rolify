@@ -14,7 +14,7 @@ end
 class Role < ActiveRecord::Base
   has_and_belongs_to_many :users, :join_table => :users_roles
   belongs_to :resource, :polymorphic => true
-  
+
   extend Rolify::Adapter::Scopes
 end
 
@@ -24,6 +24,10 @@ end
 
 class Group < ActiveRecord::Base
   #resourcify done during specs setup to be able to use custom user classes
+
+  def subgroups
+    Group.where(:parent_id => id)
+  end
 end
 
 class Customer < ActiveRecord::Base
@@ -33,6 +37,6 @@ end
 class Privilege < ActiveRecord::Base
   has_and_belongs_to_many :customers, :join_table => :customers_privileges
   belongs_to :resource, :polymorphic => true
-  
+
   extend Rolify::Adapter::Scopes
 end

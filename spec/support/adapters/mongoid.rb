@@ -18,7 +18,7 @@ Rolify.use_mongoid
 class User
   include Mongoid::Document
   rolify
-  
+
   field :login, :type => String
 end
 
@@ -26,7 +26,7 @@ class Role
   include Mongoid::Document
   has_and_belongs_to_many :users
   belongs_to :resource, :polymorphic => true
-  
+
   field :name, :type => String
   index({ :name => 1 }, { :unique => true })
   index(
@@ -37,28 +37,33 @@ class Role
     },
     { :unique => true }
   )
-  
+
   scopify
 end
 
 class Forum
   include Mongoid::Document
   #resourcify done during specs setup to be able to use custom user classes
-  
+
   field :name, :type => String
 end
 
 class Group
   include Mongoid::Document
   #resourcify done during specs setup to be able to use custom user classes
-  
+
   field :name, :type => String
+  field :parent_id, :type => Integer
+
+  def subgroups
+    Group.in(:parent_id => _id)
+  end
 end
 
 class Customer
   include Mongoid::Document
   rolify :role_cname => "Privilege"
-  
+
   field :login, :type => String
 end
 
@@ -66,7 +71,7 @@ class Privilege
   include Mongoid::Document
   has_and_belongs_to_many :customers
   belongs_to :resource, :polymorphic => true
-  
+
   field :name, :type => String
   index({ :name => 1 }, { :unique => true })
   index(
@@ -77,6 +82,6 @@ class Privilege
     },
     { :unique => true }
   )
-  
+
   scopify
 end
