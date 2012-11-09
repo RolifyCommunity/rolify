@@ -5,8 +5,6 @@ class <%= role_cname.camelize %>
   belongs_to :resource, :polymorphic => true
   
   field :name, :type => String
-  index({ :name => 1 }, { :unique => true })
-
 
   index({
     :name => 1,
