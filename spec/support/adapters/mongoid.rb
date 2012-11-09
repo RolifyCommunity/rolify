@@ -22,6 +22,15 @@ class User
   field :login, :type => String
 end
 
+# Resourcifed and rolifed at the sametime
+class SUser
+  include Mongoid::Document
+  resourcify
+  rolify
+
+  field :login, :type => String
+end
+
 class Role
   include Mongoid::Document
   has_and_belongs_to_many :users
