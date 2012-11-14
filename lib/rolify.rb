@@ -9,7 +9,7 @@ require 'rolify/adapters/base'
 module Rolify
   extend Configure
 
-  attr_accessor :role_cname, :adapter
+  attr_accessor :role_cname, :adapter, :role_table_name
 
   def rolify(options = {})
     include Role
@@ -17,8 +17,9 @@ module Rolify
     
     options.reverse_merge!({:role_cname => 'Role'})
     self.role_cname = options[:role_cname]
+    self.role_table_name = self.role_cname.tableize.gsub(/\//, "_")
 
-    join_table = "#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_cname.tableize.gsub(/\//, "_")}"
+    join_table = "#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_table_name}"
     rolify_options = { :class_name => options[:role_cname].camelize }
     rolify_options.merge!({ :join_table => join_table }) if Rolify.orm == "active_record"
     rolify_options.merge!(options.reject{ |k,v| ![:before_add, :after_add, :before_remove, :after_remove].include? k.to_sym }) if Rolify.orm == "active_record"
@@ -35,6 +36,8 @@ module Rolify
     options.reverse_merge!({ :role_cname => 'Role', :dependent => :destroy })
     resourcify_options = { :class_name => options[:role_cname].camelize, :as => :resource, :dependent => options[:dependent] }
     self.role_cname = options[:role_cname]
+    self.role_table_name = self.role_cname.tableize.gsub(/\//, "_")
+
     has_many :roles, resourcify_options
     
     self.adapter = Rolify::Adapter::Base.create("resource_adapter", self.role_cname, self.name)
