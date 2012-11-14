@@ -16,16 +16,15 @@ module Rolify
     extend Dynamic if Rolify.dynamic_shortcuts
     
     options.reverse_merge!({:role_cname => 'Role'})
+    self.role_cname = options[:role_cname]
 
     rolify_options = { :class_name => options[:role_cname].camelize }
-    rolify_options.merge!({ :join_table => "#{self.to_s.tableize}_#{options[:role_cname].tableize}" }) if Rolify.orm == "active_record"
+    rolify_options.merge!({ :join_table => "#{self.table_name}_#{self.role_class.table_name}" }) if Rolify.orm == "active_record"
     rolify_options.merge!(options.reject{ |k,v| ![:before_add, :after_add, :before_remove, :after_remove].include? k.to_sym }) if Rolify.orm == "active_record"
 
     has_and_belongs_to_many :roles, rolify_options
 
-    self.adapter = Rolify::Adapter::Base.create("role_adapter", options[:role_cname], self.name)
-    self.role_cname = options[:role_cname]
-    
+    self.adapter = Rolify::Adapter::Base.create("role_adapter", self.role_cname, self.name)
     load_dynamic_methods if Rolify.dynamic_shortcuts
   end
 
@@ -34,10 +33,10 @@ module Rolify
     
     options.reverse_merge!({ :role_cname => 'Role', :dependent => :destroy })
     resourcify_options = { :class_name => options[:role_cname].camelize, :as => :resource, :dependent => options[:dependent] }
+    self.role_cname = options[:role_cname]
     has_many :roles, resourcify_options
     
-    self.adapter = Rolify::Adapter::Base.create("resource_adapter", options[:role_cname], self.name)
-    self.role_cname = options[:role_cname]
+    self.adapter = Rolify::Adapter::Base.create("resource_adapter", self.role_cname, self.name)
   end
   
   def scopify
