@@ -13,7 +13,8 @@ module Rolify
       end
 
       def add(relation, role)
-        relation.role_ids |= [role.id]
+        relation.send(  "#{role_class.name.underscore}_ids=",
+          relation.send("#{role_class.name.underscore}_ids") | [role.id]  )
       end
 
       def remove(relation, role_name, resource = nil)
