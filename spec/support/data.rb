@@ -1,20 +1,17 @@
-User.destroy_all
-Role.destroy_all
-Forum.destroy_all
-Group.destroy_all
-Privilege.destroy_all
-Customer.destroy_all
-
 # Users
-User.create(:login => "admin")
-User.create(:login => "moderator")
-User.create(:login => "god")
-User.create(:login => "zombie")
+[ User, Admin::User, Customer, Admin::Customer ].each do |user|
+  user.destroy_all
+  
+  user.create(:login => "admin")
+  user.create(:login => "moderator")
+  user.create(:login => "god")
+  user.create(:login => "zombie")
+end
 
-Customer.create(:login => "admin")
-Customer.create(:login => "moderator")
-Customer.create(:login => "god")
-Customer.create(:login => "zombie")
+# Roles
+[ Role, Admin::Role, Privilege, Admin::Privilege ].each do |role|
+  role.destroy_all
+end
 
 # Resources
 Forum.create(:name => "forum 1")

@@ -18,6 +18,43 @@ class Role < ActiveRecord::Base
   extend Rolify::Adapter::Scopes
 end
 
+class Customer < ActiveRecord::Base
+  rolify :role_cname => "Privilege"
+end
+
+class Privilege < ActiveRecord::Base
+  has_and_belongs_to_many :customers, :join_table => :customers_privileges
+  belongs_to :resource, :polymorphic => true
+
+  extend Rolify::Adapter::Scopes
+end
+
+module Admin
+  # ActiveRecord models
+  class User < ActiveRecord::Base
+    rolify :role_cname => "Admin::Role"
+  end
+
+  class Role < ActiveRecord::Base
+    has_and_belongs_to_many :users, :class_name => "Admin::User",:join_table => :admin_users_admin_roles
+    belongs_to :resource, :polymorphic => true
+
+    extend Rolify::Adapter::Scopes
+  end
+
+  class Customer < ActiveRecord::Base
+    rolify :role_cname => "Admin::Privilege"
+  end
+
+  class Privilege < ActiveRecord::Base
+    has_and_belongs_to_many :customers, :class_name => "Admin::Customer", :join_table => :admin_customers_admin_privileges
+    belongs_to :resource, :polymorphic => true
+
+    extend Rolify::Adapter::Scopes
+  end
+  
+end
+
 class Forum < ActiveRecord::Base
   #resourcify done during specs setup to be able to use custom user classes
 end
@@ -28,15 +65,4 @@ class Group < ActiveRecord::Base
   def subgroups
     Group.where(:parent_id => id)
   end
-end
-
-class Customer < ActiveRecord::Base
-  rolify :role_cname => "Privilege"
-end
-
-class Privilege < ActiveRecord::Base
-  has_and_belongs_to_many :customers, :join_table => :customers_privileges
-  belongs_to :resource, :polymorphic => true
-
-  extend Rolify::Adapter::Scopes
 end
