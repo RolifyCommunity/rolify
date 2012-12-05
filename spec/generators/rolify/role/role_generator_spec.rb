@@ -136,7 +136,6 @@ CLASS
       it { should contain "has_and_belongs_to_many :users\n" }
       it { should contain "belongs_to :resource, :polymorphic => true" }
       it { should contain "field :name, :type => String" }
-      it { should contain "index({ :name => 1 }, { :unique => true })" }
       it { should contain "  index({\n"
                           "      { :name => 1 },\n"
                           "      { :resource_type => 1 },\n"

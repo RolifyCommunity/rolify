@@ -28,7 +28,6 @@ class Role
   belongs_to :resource, :polymorphic => true
 
   field :name, :type => String
-  index({ :name => 1 }, { :unique => true })
   index(
     {
       :name => 1,
@@ -73,7 +72,6 @@ class Privilege
   belongs_to :resource, :polymorphic => true
 
   field :name, :type => String
-  index({ :name => 1 }, { :unique => true })
   index(
     {
       :name => 1,
