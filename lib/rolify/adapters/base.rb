@@ -15,7 +15,7 @@ module Rolify
       end
       
       def role_table
-        @role_cname.tableize
+        role_class.table_name
       end
       
       def self.create(adapter, role_cname, user_cname)
