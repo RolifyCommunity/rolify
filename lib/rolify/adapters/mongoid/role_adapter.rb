@@ -19,20 +19,30 @@ module Rolify
       end
 
       def remove(relation, role_name, resource = nil)
-        roles = { :name => role_name }
-        roles.merge!({:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)}) if resource
-        roles.merge!({ :resource_id => resource.id }) if resource && !resource.is_a?(Class)
-        roles_to_remove = relation.roles.where(roles)
-        roles_to_remove.each do |role|
-          # Deletion in n-n relations is unreliable. Sometimes it works, sometimes not. 
-          # So, this does not work all the time: `relation.roles.delete(role)`
-          # @see http://stackoverflow.com/questions/9132596/rails3-mongoid-many-to-many-relation-and-delete-operation
-          # We instead remove ids from the Role object and the relation object.
-          relation.role_ids.delete(role.id)
-          role.send((user_class.to_s.underscore + '_ids').to_sym).delete(relation.id)
-
-          role.destroy if role.send(user_class.to_s.tableize.to_sym).empty?
-        end
+        #roles = { :name => role_name }
+        #roles.merge!({:resource_type => (resource.is_a?(Class) ? resource.to_s : resource.class.name)}) if resource
+        #roles.merge!({ :resource_id => resource.id }) if resource && !resource.is_a?(Class)
+        #roles_to_remove = relation.roles.where(roles)
+        #roles_to_remove.each do |role|
+        #  # Deletion in n-n relations is unreliable. Sometimes it works, sometimes not. 
+        #  # So, this does not work all the time: `relation.roles.delete(role)`
+        #  # @see http://stackoverflow.com/questions/9132596/rails3-mongoid-many-to-many-relation-and-delete-operation
+        #  # We instead remove ids from the Role object and the relation object.
+        #  relation.role_ids.delete(role.id)
+        #  role.send((user_class.to_s.underscore + '_ids').to_sym).delete(relation.id)
+        #
+        #  role.destroy if role.send(user_class.to_s.tableize.to_sym).empty?
+        #end
+        cond = { :name => role_name }
+        cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
+        cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
+        roles = relation.roles.where(cond)
+        roles.each do |role| 
+          relation.roles.delete(role)
+          role.send(user_class.to_s.tableize.to_sym).delete(relation)
+          role.destroy if role.send(user_class.to_s.tableize.to_sym).empty? 
+        end if roles
+        roles
       end
 
       def exists?(relation, column)
