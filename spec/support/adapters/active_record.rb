@@ -30,29 +30,20 @@ class Privilege < ActiveRecord::Base
 end
 
 module Admin
-  # ActiveRecord models
-  class User < ActiveRecord::Base
-    rolify :role_cname => "Admin::Role"
-  end
-
-  class Role < ActiveRecord::Base
-    has_and_belongs_to_many :users, :class_name => "Admin::User",:join_table => :admin_users_admin_roles
-    belongs_to :resource, :polymorphic => true
-
-    extend Rolify::Adapter::Scopes
-  end
-
-  class Customer < ActiveRecord::Base
-    rolify :role_cname => "Admin::Privilege"
-  end
-
-  class Privilege < ActiveRecord::Base
-    has_and_belongs_to_many :customers, :class_name => "Admin::Customer", :join_table => :admin_customers_admin_privileges
-    belongs_to :resource, :polymorphic => true
-
-    extend Rolify::Adapter::Scopes
+  def self.table_name_prefix
+    'admin_'
   end
   
+  class Moderator < ActiveRecord::Base
+    rolify :role_cname => "Admin::Right"
+  end
+
+  class Right < ActiveRecord::Base
+    has_and_belongs_to_many :moderators, :class_name => "Admin::Moderator",:join_table => :admin_moderators_admin_rights
+    belongs_to :resource, :polymorphic => true
+
+    extend Rolify::Adapter::Scopes
+  end  
 end
 
 class Forum < ActiveRecord::Base

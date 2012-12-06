@@ -39,8 +39,8 @@ module Rolify
         roles = relation.roles.where(cond)
         roles.each do |role| 
           relation.roles.delete(role)
-          role.send(user_class.to_s.tableize.to_sym).delete(relation)
-          role.destroy if role.send(user_class.to_s.tableize.to_sym).empty? 
+          role.send(ActiveSupport::Inflector.demodulize(user_class).tableize.to_sym).delete(relation)
+          role.destroy if role.send(ActiveSupport::Inflector.demodulize(user_class).tableize.to_sym).empty? 
         end if roles
         roles
       end
