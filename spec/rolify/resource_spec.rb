@@ -3,9 +3,9 @@ require "spec_helper"
 describe Rolify::Resource do
   before(:all) do
     reset_defaults
-    User.rolify :role_cname => "Role"
-    Forum.resourcify :role_cname => "Role"
-    Group.resourcify :role_cname => "Role"
+    User.rolify
+    Forum.resourcify
+    Group.resourcify
     Role.destroy_all
   end
 

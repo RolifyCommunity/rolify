@@ -3,8 +3,8 @@ shared_examples_for Rolify::Dynamic do
     Rolify.dynamic_shortcuts = true
     role_class.destroy_all
     user_class.rolify :role_cname => role_class.to_s
-    Forum.resourcify :role_cname => role_class.to_s
-    Group.resourcify :role_cname => role_class.to_s
+    Forum.resourcify :roles, :role_cname => role_class.to_s
+    Group.resourcify :roles, :role_cname => role_class.to_s
   end
   
   context "using a global role" do

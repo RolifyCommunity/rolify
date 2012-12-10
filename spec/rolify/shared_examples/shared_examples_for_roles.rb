@@ -13,8 +13,8 @@ shared_examples_for Rolify::Role do
     Rolify.dynamic_shortcuts = false
     user_class.rolify :role_cname => role_class.to_s
     role_class.destroy_all
-    Forum.resourcify :role_cname => role_class.to_s
-    Group.resourcify :role_cname => role_class.to_s
+    Forum.resourcify :roles, :role_cname => role_class.to_s
+    Group.resourcify :roles, :role_cname => role_class.to_s
   end
 
   context "in the Instance level " do 

@@ -14,18 +14,9 @@ end
 
 Rolify.use_mongoid
 
-# Mongoid models
+# Standard user and role classes
 class User
   include Mongoid::Document
-  rolify
-
-  field :login, :type => String
-end
-
-# Resourcifed and rolifed at the sametime
-class SUser
-  include Mongoid::Document
-  resourcify
   rolify
 
   field :login, :type => String
@@ -49,6 +40,33 @@ class Role
   scopify
 end
 
+# Resourcifed and rolifed at the same time
+class HumanResource
+  include Mongoid::Document
+  resourcify :resources
+  rolify
+
+  field :login, :type => String
+end
+
+#class Power
+#  include Mongoid::Document
+#  has_and_belongs_to_many :human_resources
+#  belongs_to :resource, :polymorphic => true
+#  scopify
+#
+#  field :name, :type => String
+#  index(
+#    {
+#      :name => 1,
+#      :resource_type => 1,
+#      :resource_id => 1
+#    },
+#    { :unique => true }
+#  )
+#end
+
+# Custom role and class names
 class Customer
   include Mongoid::Document
   rolify :role_cname => "Privilege"
@@ -60,6 +78,7 @@ class Privilege
   include Mongoid::Document
   has_and_belongs_to_many :customers
   belongs_to :resource, :polymorphic => true
+  scopify
 
   field :name, :type => String
   index(
@@ -70,10 +89,9 @@ class Privilege
     },
     { :unique => true }
   )
-
-  scopify
 end
 
+# Namespaced models
 module Admin
   class Moderator
     include Mongoid::Document
@@ -86,6 +104,7 @@ module Admin
     include Mongoid::Document
     has_and_belongs_to_many :moderators, :class_name => 'Admin::Moderator'
     belongs_to :resource, :polymorphic => true
+    scopify
 
     field :name, :type => String
     index(
@@ -96,11 +115,10 @@ module Admin
       },
       { :unique => true }
     )
-
-    scopify
   end
 end
 
+# Resources classes
 class Forum
   include Mongoid::Document
   #resourcify done during specs setup to be able to use custom user classes

@@ -10,7 +10,7 @@ ActiveRecord::Schema.define do
     end
   end
 
-  [ :users, :customers, :admin_moderators ].each do |table|
+  [ :users, :human_resources, :customers, :admin_moderators ].each do |table|
     create_table(table) do |t|
       t.string :login
     end
@@ -18,6 +18,11 @@ ActiveRecord::Schema.define do
 
   create_table(:users_roles, :id => false) do |t|
     t.references :user
+    t.references :role
+  end
+  
+  create_table(:human_resources_roles, :id => false) do |t|
+    t.references :human_resource
     t.references :role
   end
   

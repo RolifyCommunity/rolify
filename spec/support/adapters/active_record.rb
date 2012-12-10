@@ -6,7 +6,7 @@ ActiveRecord::Base.extend Rolify
 
 load File.dirname(__FILE__) + '/../schema.rb'
 
-# ActiveRecord models
+# Standard user and role classes
 class User < ActiveRecord::Base
   rolify
 end
@@ -18,6 +18,13 @@ class Role < ActiveRecord::Base
   extend Rolify::Adapter::Scopes
 end
 
+# Resourcifed and rolifed at the same time
+class HumanResource < ActiveRecord::Base
+  resourcify :resources
+  rolify
+end
+
+# Custom role and class names
 class Customer < ActiveRecord::Base
   rolify :role_cname => "Privilege"
 end
@@ -29,6 +36,7 @@ class Privilege < ActiveRecord::Base
   extend Rolify::Adapter::Scopes
 end
 
+# Namespaced models
 module Admin
   def self.table_name_prefix
     'admin_'
@@ -46,6 +54,8 @@ module Admin
   end  
 end
 
+
+# Resources classes
 class Forum < ActiveRecord::Base
   #resourcify done during specs setup to be able to use custom user classes
 end
