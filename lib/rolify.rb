@@ -30,7 +30,7 @@ module Rolify
     load_dynamic_methods if Rolify.dynamic_shortcuts
   end
 
-  def resourcify(options = {})
+  def resourcify(association_name = :roles, options = {})
     include Resource
     
     options.reverse_merge!({ :role_cname => 'Role', :dependent => :destroy })
@@ -38,7 +38,7 @@ module Rolify
     self.role_cname = options[:role_cname]
     self.role_table_name = self.role_cname.tableize.gsub(/\//, "_")
 
-    has_many :roles, resourcify_options
+    has_many association_name, resourcify_options
     
     self.adapter = Rolify::Adapter::Base.create("resource_adapter", self.role_cname, self.name)
   end
