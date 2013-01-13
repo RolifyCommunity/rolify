@@ -1,4 +1,4 @@
-# rolify [![build status](https://secure.travis-ci.org/EppO/rolify.png?branch=master)](http://travis-ci.org/EppO/rolify) [![dependency status](https://gemnasium.com/EppO/rolify.png)](https://gemnasium.com/EppO/rolify) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/EppO/rolify)
+# rolify [![Gem Version](https://badge.fury.io/rb/rolify.png)](http://badge.fury.io/rb/rolify) [![build status](https://secure.travis-ci.org/EppO/rolify.png?branch=master)](http://travis-ci.org/EppO/rolify) [![dependency status](https://gemnasium.com/EppO/rolify.png)](https://gemnasium.com/EppO/rolify) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/EppO/rolify)
 
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
 
@@ -20,7 +20,7 @@ This library can be easily integrated with any authentication gem ([devise](http
 * supports ruby 1.9, JRuby 1.6.0+ (in 1.9 mode) and Rubinius 2.0.0dev (in 1.9 mode)
 * support of ruby 1.8 has been dropped due to Mongoid 3.0 that only supports 1.9 new hash syntax
 
-## Installation [![Gem Version](https://badge.fury.io/rb/rolify.png)](http://badge.fury.io/rb/rolify)
+## Installation
 
 In <b>Rails 3</b>, add this to your Gemfile and run the +bundle+ command.
 
