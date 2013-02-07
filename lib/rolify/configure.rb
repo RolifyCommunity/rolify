@@ -44,7 +44,8 @@ module Rolify
     def sanity_check(role_cnames)
       role_cnames = [ "Role" ] if role_cnames.empty?
       role_cnames.each do |role_cname|
-        if !role_cname.constantize.table_exists? 
+        role_class = role_cname.constantize
+        if role_class.superclass == ActiveRecord && !role_class.table_exists?
           warn "[WARN] table '#{role_cname}' doesn't exist. Did you run the migration ? Ignoring rolify config."
           return false
         end
