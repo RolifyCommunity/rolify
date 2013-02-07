@@ -1,4 +1,4 @@
-Rolify.configure do |config|
+Rolify.configure<%= "(\"#{role_cname.camelize.to_s}\")" if role_cname != "Role" %> do |config|
   # By default ORM adapter is ActiveRecord. uncomment to use mongoid
   <%= "# " if orm_adapter == "active_record" %>config.use_mongoid
   

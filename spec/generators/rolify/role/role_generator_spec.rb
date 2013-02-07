@@ -74,7 +74,7 @@ describe Rolify::Generators::RoleGenerator do
       subject { file('config/initializers/rolify.rb') }
       
       it { should exist }
-      it { should contain "Rolify.configure do |config|"}
+      it { should contain "Rolify.configure(\"AdminRole\") do |config|"}
       it { should contain "# config.use_dynamic_shortcuts" }
       it { should contain "# config.use_mongoid" }
     end
