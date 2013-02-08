@@ -33,4 +33,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-rails", ">= 2.0"
   s.add_development_dependency "mongoid-rspec", ">= 1.5"
   s.add_development_dependency "bundler" 
+  s.add_development_dependency "fuubar"
 end
