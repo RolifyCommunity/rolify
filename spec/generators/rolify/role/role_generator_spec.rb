@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 # Generators are not automatically loaded by Rails
-require 'generators/rolify/role/role_generator'
+require 'generators/rolify/rolify_generator'
 
-describe Rolify::Generators::RoleGenerator do
+describe Rolify::Generators::RolifyGenerator do
   # Tell the generator where to put its output (what it thinks of as Rails.root)
   destination File.expand_path("../../../../../tmp", __FILE__)
   teardown :cleanup_destination_root
@@ -13,11 +13,11 @@ describe Rolify::Generators::RoleGenerator do
   }
   
   def cleanup_destination_root
-    FileUtils.rm_rf destination_root
+    #FileUtils.rm_rf destination_root
   end
 
-  describe 'no arguments' do
-    before(:all) { arguments [] }
+  describe 'specifying only Role argument' do
+    before(:all) { arguments %w(Role) }
 
     before { 
       capture(:stdout) {
