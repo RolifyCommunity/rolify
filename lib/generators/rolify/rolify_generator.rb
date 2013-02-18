@@ -12,7 +12,6 @@ module Rolify
       desc "Generates a model with the given NAME and a migration file."
 
       def self.start(args, config)
-        puts options.inspect
         user_cname = args.size > 1 ? args[1] : "User"
         args.insert(1, user_cname) # 0 being the view name
         super
@@ -23,8 +22,6 @@ module Rolify
       end
         
       def copy_initializer_file
-        puts options.inspect
-        puts "sadasdasdasd"
         template "initializer.rb", "config/initializers/rolify.rb"
       end
       
