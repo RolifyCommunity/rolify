@@ -10,6 +10,8 @@ describe Rolify::Generators::RolifyGenerator do
   
   before { 
     prepare_destination
+    ::Rails::Generators.options[:rails][:orm] = :active_record
+    puts generator.options.inspect
   }
   
   def cleanup_destination_root
