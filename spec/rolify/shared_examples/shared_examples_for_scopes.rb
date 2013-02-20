@@ -1,7 +1,7 @@
 require "rolify/shared_contexts"
 
 shared_examples_for "Role.scopes" do |param_name, param_method|
-  before(:all) do
+  before(:each) do
     role_class.destroy_all
   end
   
@@ -29,10 +29,10 @@ shared_examples_for "Role.scopes" do |param_name, param_method|
     let!(:anonymous_role) { subject.add_role :anonymous, Group.last }
     
     it { subject.roles.instance_scoped.all.entries.should == [ visitor_role, zombie_role, anonymous_role ] }
-    it { subject.roles.instance_scoped(Forum).all.entries.should == [ visitor_role, zombie_role ] }
-    it { subject.roles.instance_scoped(Forum.first).all.entries.should == [ visitor_role ] }
-    it { subject.roles.instance_scoped(Forum.last).all.entries.should == [ zombie_role ] }
-    it { subject.roles.instance_scoped(Group.last).all.entries.should == [ anonymous_role ] }
-    it { subject.roles.instance_scoped(Group.first).all.entries.should be_empty }
+    it { subject.roles.instance_scoped(Forum).should == [ visitor_role, zombie_role ] }
+    it { subject.roles.instance_scoped(Forum.first).should == [ visitor_role ] }
+    it { subject.roles.instance_scoped(Forum.last).should == [ zombie_role ] }
+    it { subject.roles.instance_scoped(Group.last).should == [ anonymous_role ] }
+    it { subject.roles.instance_scoped(Group.first).should be_empty }
   end
 end
