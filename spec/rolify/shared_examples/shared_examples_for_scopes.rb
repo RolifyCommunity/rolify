@@ -28,11 +28,11 @@ shared_examples_for "Role.scopes" do |param_name, param_method|
     let!(:zombie_role) { subject.add_role :visitor, Forum.last }
     let!(:anonymous_role) { subject.add_role :anonymous, Group.last }
     
-    it { subject.roles.instance_scoped.all.should == [ visitor_role, zombie_role, anonymous_role ] }
-    it { subject.roles.instance_scoped(Forum).all.should == [ visitor_role, zombie_role ] }
-    it { subject.roles.instance_scoped(Forum.first).all.should == [ visitor_role ] }
-    it { subject.roles.instance_scoped(Forum.last).all.should == [ zombie_role ] }
-    it { subject.roles.instance_scoped(Group.last).all.should == [ anonymous_role ] }
-    it { subject.roles.instance_scoped(Group.first).all.should be_empty }
+    it { subject.roles.instance_scoped.all.entries.should == [ visitor_role, zombie_role, anonymous_role ] }
+    it { subject.roles.instance_scoped(Forum).all.entries.should == [ visitor_role, zombie_role ] }
+    it { subject.roles.instance_scoped(Forum.first).all.entries.should == [ visitor_role ] }
+    it { subject.roles.instance_scoped(Forum.last).all.entries.should == [ zombie_role ] }
+    it { subject.roles.instance_scoped(Group.last).all.entries.should == [ anonymous_role ] }
+    it { subject.roles.instance_scoped(Group.first).all.entries.should be_empty }
   end
 end
