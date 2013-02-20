@@ -13,9 +13,7 @@ module ActiveRecord
       end
       
       def inject_role_class
-        inject_into_class(model_path, class_name) do
-          "has_and_belongs_to_many :#{user_cname.constantize.table_name}, :join_table => :#{user_cname.constantize.table_name}_#{table_name}\nscopify\n"
-        end
+        inject_into_class(model_path, class_name, model_content)
       end
       
       def copy_rolify_migration
@@ -36,6 +34,16 @@ module ActiveRecord
       
       def model_path
         File.join("app", "models", "#{file_path}.rb")
+      end
+      
+      def model_content
+        content = <<RUBY
+  has_and_belongs_to_many :%{user_cname}, :join_table => :%{join_table}
+  belongs_to :resource, :polymorphic => true
+  
+  scopify
+RUBY
+        content % { :user_cname => user_cname.constantize.table_name, :join_table => "#{user_cname.constantize.table_name}_#{table_name}"}
       end
     end
   end

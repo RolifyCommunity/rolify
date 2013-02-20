@@ -3,7 +3,7 @@ require "bundler/setup"
 
 require 'rolify'
 require 'rolify/matchers'
-require 'ammeter/init'
+require 'rails/all'
 
 ENV['ADAPTER'] ||= 'active_record'
 
