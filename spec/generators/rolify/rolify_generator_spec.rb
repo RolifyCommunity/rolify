@@ -13,7 +13,7 @@ describe Rolify::Generators::RolifyGenerator do
   }
   
   def cleanup_destination_root
-    #FileUtils.rm_rf destination_root
+    FileUtils.rm_rf destination_root
   end
 
   describe 'specifying only Role class name' do
