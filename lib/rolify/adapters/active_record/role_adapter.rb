@@ -1,7 +1,7 @@
 require 'rolify/adapters/base'
 
 module Rolify
-  module Adapter   
+  module Adapter
     class RoleAdapter < RoleAdapterBase
       def where(relation, *args)
         conditions, values = build_conditions(relation, args)
@@ -9,7 +9,7 @@ module Rolify
       end
 
       def find_or_create_by(role_name, resource_type = nil, resource_id = nil)
-        role_class.find_or_create_by_name_and_resource_type_and_resource_id(role_name, resource_type, resource_id)
+        role_class.where(name: role_name, resource_type: resource_type, resource_id: resource_id).first_or_create
       end
 
       def add(relation, role)
@@ -23,8 +23,8 @@ module Rolify
         roles = relation.roles.where(cond)
         if roles
           relation.roles.delete(roles)
-          roles.each do |role| 
-            role.destroy if role.send(ActiveSupport::Inflector.demodulize(user_class).tableize.to_sym).empty? 
+          roles.each do |role|
+            role.destroy if role.send(ActiveSupport::Inflector.demodulize(user_class).tableize.to_sym).empty?
           end
         end
         roles
@@ -33,7 +33,7 @@ module Rolify
       def exists?(relation, column)
         relation.where("#{column} IS NOT NULL")
       end
-      
+
       def scope(relation, conditions)
         query = relation.scoped
         query = query.joins(:roles)
@@ -67,10 +67,10 @@ module Rolify
         values = [ role ]
         if resource
           query.insert(0, "(")
-          query += " OR ((#{role_table}.name = ?) AND (#{role_table}.resource_type = ?) AND (#{role_table}.resource_id IS NULL))" 
+          query += " OR ((#{role_table}.name = ?) AND (#{role_table}.resource_type = ?) AND (#{role_table}.resource_id IS NULL))"
           values << role << (resource.is_a?(Class) ? resource.to_s : resource.class.name)
           if !resource.is_a? Class
-            query += " OR ((#{role_table}.name = ?) AND (#{role_table}.resource_type = ?) AND (#{role_table}.resource_id = ?))" 
+            query += " OR ((#{role_table}.name = ?) AND (#{role_table}.resource_type = ?) AND (#{role_table}.resource_id = ?))"
             values << role << resource.class.name << resource.id
           end
           query += ")"
