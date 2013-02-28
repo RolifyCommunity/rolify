@@ -1,7 +1,6 @@
 rvm:
   - 1.9.3
   - 2.0.0
-  - ruby-head
   - rbx-19mode
   - jruby-19mode
 
@@ -10,7 +9,6 @@ env:
   - ADAPTER=mongoid
 
 before_install:
-  - gem update --system
   - gem --version
   - ruby -v
   - gem list
