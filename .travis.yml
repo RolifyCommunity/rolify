@@ -8,11 +8,6 @@ env:
   - ADAPTER=active_record
   - ADAPTER=mongoid
 
-before_install:
-  - gem --version
-  - ruby -v
-  - gem list
-  
 services: mongodb
 
 matrix:
