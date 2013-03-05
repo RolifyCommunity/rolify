@@ -18,9 +18,9 @@ shared_examples_for "Role.scopes" do
     let!(:manager_role) { subject.add_role :manager, Group }
     let!(:moderator_role) { subject.add_role :moderator, Forum }
     
-    it { subject.roles.class_scoped.should == [ manager_role, moderator_role ] }
-    it { subject.roles.class_scoped(Group).should == [ manager_role ] }
-    it { subject.roles.class_scoped(Forum).should == [ moderator_role ] }
+    it { subject.roles.class_scoped.should =~ [ manager_role, moderator_role ] }
+    it { subject.roles.class_scoped(Group).should =~ [ manager_role ] }
+    it { subject.roles.class_scoped(Forum).should =~ [ moderator_role ] }
   end
   
   describe ".instance_scoped" do
@@ -28,11 +28,11 @@ shared_examples_for "Role.scopes" do
     let!(:zombie_role) { subject.add_role :visitor, Forum.last }
     let!(:anonymous_role) { subject.add_role :anonymous, Group.last }
     
-    it { subject.roles.instance_scoped.all.entries.should == [ visitor_role, zombie_role, anonymous_role ] }
-    it { subject.roles.instance_scoped(Forum).should == [ visitor_role, zombie_role ] }
-    it { subject.roles.instance_scoped(Forum.first).should == [ visitor_role ] }
-    it { subject.roles.instance_scoped(Forum.last).should == [ zombie_role ] }
-    it { subject.roles.instance_scoped(Group.last).should == [ anonymous_role ] }
+    it { subject.roles.instance_scoped.all.entries.should =~ [ visitor_role, zombie_role, anonymous_role ] }
+    it { subject.roles.instance_scoped(Forum).should =~ [ visitor_role, zombie_role ] }
+    it { subject.roles.instance_scoped(Forum.first).should =~ [ visitor_role ] }
+    it { subject.roles.instance_scoped(Forum.last).should =~ [ zombie_role ] }
+    it { subject.roles.instance_scoped(Group.last).should =~ [ anonymous_role ] }
     it { subject.roles.instance_scoped(Group.first).should be_empty }
   end
 end

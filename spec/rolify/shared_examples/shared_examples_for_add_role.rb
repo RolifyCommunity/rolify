@@ -50,7 +50,7 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
       context "should not create another role" do
         it "if the role was already assigned to the user" do
           subject.add_role "warrior".send(param_method), Forum
-          expect { subject.add_role "warrior".send(param_method), Forum }.not_to change { subject.roles.size }
+          expect { subject.add_role "warrior".send(param_method), Forum }.not_to change { subject.roles.count }
         end
 
         it "if already existing in the database" do
@@ -62,7 +62,7 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
 
     context "with an instance scoped role", :scope => :instance do
       it "should add the role to the user" do
-        expect { subject.add_role "visitor".send(param_method), Forum.last }.to change { subject.roles.size }.by(1)
+        expect { subject.add_role "visitor".send(param_method), Forum.last }.to change { subject.roles.count }.by(1)
       end
 
       it "should create a role in the roles table" do
