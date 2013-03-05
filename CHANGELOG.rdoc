@@ -1,3 +1,17 @@
+= 3.3 (not released yet)
+* code cleanup in finders methods
+* generators rewritten entirely. now using ActiveRecord/Mongoid model generator to create Role model
+* added rspec matchers for detailed spec error messages (thanks to @delwyn)
+* clean up specs (thanks to @delwyn), removed subject and let declarations in before(:all) block
+* roles query needs 1 DB hit instead of 1 up to 3 (thanks to @terraplane)
+* remove nil entries from ResourceAdapter#resources_find when using Mongoid adapter (thanks to @daviscabral)
+* fixed a bug regarding redundant index for Mongoid Role model (thanks to  @rschultheis)
+* added support for rolify and resourcify methods on the same model class (specs by @amer)
+* added support for namespaced models (thanks to @intrica)
+* fixed compatibility issue with squeel when using symbols as role parameters (hint by @f3ndot)
+* now raises a warning in the initializer if migration has not been run
+* added code climate to check for code smell
+
 = 3.2 (Aug 7, 2012)
 * <b>DEPRECATION NOTICE:</b> Ruby 1.8 support dropped ! Mongoid 3.0 only supports MRI 1.9.3, and HEAD, and JRuby 1.6.0+ in 1.9 mode
 * removed <tt>dynamic_shortcuts</tt> arguments from the generator
