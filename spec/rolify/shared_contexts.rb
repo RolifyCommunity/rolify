@@ -1,7 +1,9 @@
 shared_context "global role", :scope => :global do
   subject { admin }
   
-  let(:admin) { user_class.first }
+  def admin
+    user_class.first
+  end
   
   before(:all) do
     load_roles
@@ -29,7 +31,9 @@ shared_context "class scoped role", :scope => :class do
     create_other_roles
   end
   
-  let(:manager) { user_class.where(:login => "moderator").first }
+  def manager
+    user_class.where(:login => "moderator").first
+  end
   
   def load_roles
     role_class.destroy_all
@@ -51,7 +55,9 @@ shared_context "instance scoped role", :scope => :instance do
     create_other_roles
   end
   
-  let(:moderator) { user_class.where(:login => "god").first }
+  def moderator
+    user_class.where(:login => "god").first
+  end
   
   def load_roles
     role_class.destroy_all

@@ -82,7 +82,7 @@ shared_examples_for Rolify::Role do
   context "with a new instance" do
     let(:user) { user_class.new }
 
-    before(:all) do
+    before do
       user.add_role :admin
       user.add_role :moderator, Forum.first
     end

@@ -327,7 +327,7 @@ describe Rolify::Resource do
 
     context "on a Forum instance" do
       its(:roles) { should eq([ forum_role, sneaky_role ]) }
-      its(:roles) { subject.should_not include(group_role, godfather_role, tourist_role) }
+      its(:roles) { should_not include(group_role, godfather_role, tourist_role) }
     end
 
     context "on a Group instance" do

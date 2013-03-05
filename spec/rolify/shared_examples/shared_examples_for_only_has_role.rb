@@ -36,7 +36,7 @@ shared_examples_for "#only_has_role?_examples" do |param_name, param_method|
       end
       
       context "with multiple roles" do
-        before(:all) { subject.add_role "multiple_global_roles".send(param_method) }
+        before { subject.add_role "multiple_global_roles".send(param_method) }
         
         it { subject.only_has_role?("global_role".send(param_method)).should be_false }
       end
@@ -93,7 +93,7 @@ shared_examples_for "#only_has_role?_examples" do |param_name, param_method|
       end
       
       context "with multiple roles" do
-        before(:all) { subject.add_role "multiple_class_roles".send(param_method) }
+        before { subject.add_role "multiple_class_roles".send(param_method) }
         
         it { subject.only_has_role?("class_role".send(param_method), Forum).should be_false }
         it { subject.only_has_role?("class_role".send(param_method), Forum.first).should be_false }
@@ -164,7 +164,7 @@ shared_examples_for "#only_has_role?_examples" do |param_name, param_method|
       end
     
       context "with multiple roles" do
-        before(:all) { subject.add_role "multiple_instance_roles".send(param_method), Forum.first }
+        before { subject.add_role "multiple_instance_roles".send(param_method), Forum.first }
         
         it { subject.only_has_role?("instance_role".send(param_method), Forum.first).should be_false }
         it { subject.only_has_role?("instance_role".send(param_method), :any).should be_false }

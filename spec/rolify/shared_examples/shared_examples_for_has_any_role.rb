@@ -1,7 +1,7 @@
 shared_examples_for "#has_any_role?_examples" do |param_name, param_method|
   context "using #{param_name} as parameter" do
     context "with a global role", :scope => :global do
-      before(:all) do
+      before do
         subject.add_role "staff".send(param_method)
       end
       
@@ -20,7 +20,7 @@ shared_examples_for "#has_any_role?_examples" do |param_name, param_method|
     end
     
     context "with a class scoped role", :scope => :class do
-      before(:all) do
+      before do
         subject.add_role "player".send(param_method), Forum
         subject.add_role "superhero".send(param_method)
       end
@@ -40,7 +40,7 @@ shared_examples_for "#has_any_role?_examples" do |param_name, param_method|
     end
     
     context "with a instance scoped role", :scope => :instance do
-      before(:all) do
+      before do
         subject.add_role "visitor".send(param_method), Forum.last
         subject.add_role "leader", Group
         subject.add_role "warrior"

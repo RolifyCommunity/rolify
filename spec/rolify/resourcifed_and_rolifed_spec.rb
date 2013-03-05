@@ -8,7 +8,11 @@ describe "Resourcify and rolify on the same model" do
     HumanResource.delete_all
   end
   
-  let!(:user) { user = HumanResource.new login: 'Samer'; user.save; user }
+  let!(:user) do
+    user = HumanResource.new login: 'Samer' 
+    user.save
+    user
+  end
   
   it "should add the role to the user" do
     expect { user.add_role :admin }.to change { user.roles.count }.by(1)

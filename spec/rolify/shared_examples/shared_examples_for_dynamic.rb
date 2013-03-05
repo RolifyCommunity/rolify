@@ -1,4 +1,4 @@
-shared_examples_for Rolify::Dynamic do 
+shared_examples_for Rolify::Dynamic do
   before(:all) do
     Rolify.dynamic_shortcuts = true
     role_class.destroy_all

@@ -1,7 +1,7 @@
 require "rolify/shared_contexts"
 
-shared_examples_for "Role.scopes" do |param_name, param_method|
-  before(:each) do
+shared_examples_for "Role.scopes" do
+  before do
     role_class.destroy_all
   end
   
