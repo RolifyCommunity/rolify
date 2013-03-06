@@ -1,5 +1,15 @@
 require 'bundler'
+require 'rspec/core/rake_task'
+
 Bundler::GemHelper.install_tasks
+
+RSpec::Core::RakeTask.new(:generators) do |task|
+  task.pattern = "spec/generators/**/*_spec.rb"
+end
+
+RSpec::Core::RakeTask.new(:rolify) do |task|
+  task.pattern = "spec/rolify/**/*_spec.rb"
+end
 
 task :default => :spec
 
@@ -12,10 +22,10 @@ task "spec" do
   fail if return_code1 != 0 || return_code2 != 0
 end
 
-task "generators" do
-  system "bundle exec rspec spec/generators"
-end
-
-task "rolify" do
-  system "bundle exec rspec spec/rolify"
+desc "Run specs for all adapters"
+task :spec_all do
+  %w[active_record mongoid].each do |model_adapter|
+    puts "ADAPTER = #{model_adapter}"
+    system "ADAPTER=#{model_adapter} rake"
+  end
 end
