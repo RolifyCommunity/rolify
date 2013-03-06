@@ -17,7 +17,7 @@ This library can be easily integrated with any authentication gem ([devise](http
 
 * Rails >= 3.1
 * ActiveRecord >= 3.1 <b>or</b> Mongoid >= 3.1
-* supports ruby 1.9, JRuby 1.6.0+ (in 1.9 mode) and Rubinius 2.0.0dev (in 1.9 mode)
+* supports ruby 2.0/1.9.3, JRuby 1.6.0+ (in 1.9 mode) and Rubinius 2.0.0dev (in 1.9 mode)
 * support of ruby 1.8 has been dropped due to Mongoid 3.0 that only supports 1.9 new hash syntax
 
 ## Installation
