@@ -22,7 +22,7 @@ module Rolify
     join_table = "#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_table_name}"
     rolify_options = { :class_name => options[:role_cname].camelize }
     rolify_options.merge!({ :join_table => join_table }) if Rolify.orm == "active_record"
-    rolify_options.merge!(options.reject{ |k,v| ![:before_add, :after_add, :before_remove, :after_remove].include? k.to_sym }) if Rolify.orm == "active_record"
+    rolify_options.merge!(options.reject{ |k,v| ![ :before_add, :after_add, :before_remove, :after_remove ].include? k.to_sym })
 
     has_and_belongs_to_many :roles, rolify_options
 
