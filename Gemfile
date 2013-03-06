@@ -9,7 +9,6 @@ when nil, "active_record"
   end
   gem "activerecord", ">= 3.1.0", :require => "active_record"
 when "mongoid"
-  gem "bson_ext" if RUBY_VERSION < "2.0.0"
   gem "mongoid", ">= 3.1"
 else
   raise "Unknown model adapter: #{ENV["ADAPTER"]}"
