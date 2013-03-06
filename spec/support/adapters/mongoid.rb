@@ -2,10 +2,6 @@ require 'mongoid'
 
 Mongoid.load!("spec/support/adapters/mongoid.yml", :test)
 
-RSpec.configure do |config|
-  config.include Mongoid::Matchers
-end
-
 ::Mongoid::Document.module_eval do
   def self.included(base)
     base.extend Rolify
