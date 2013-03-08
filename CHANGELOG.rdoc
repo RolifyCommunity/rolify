@@ -10,6 +10,9 @@
 * added support for namespaced models (thanks to @intrica)
 * fixed compatibility issue with squeel when using symbols as role parameters (hint by @f3ndot)
 * now raises a warning in the initializer if migration has not been run
+* add support for primary key different than 'id' for resource Model (thanks to @rafaeldl)
+* Rails 4 (thanks to @adammathys) and ruby 2.0 compliant
+* configured travis-ci to run the specs on Rails 3.1/3.2/4.0 and Rubies 1.9.3/2.0/rbx/jruby
 * added code climate to check for code smell
 
 = 3.2 (Aug 7, 2012)
