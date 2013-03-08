@@ -20,3 +20,6 @@ Forum.create(:name => "forum 3")
 
 Group.create(:name => "group 1")
 Group.create(:name => "group 2")
+
+Team.create(:team_code => "1", :name => "PSG")
+Team.create(:team_code => "2", :name => "MU")

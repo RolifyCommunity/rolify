@@ -67,3 +67,10 @@ class Group < ActiveRecord::Base
     Group.where(:parent_id => id)
   end
 end
+
+class Team < ActiveRecord::Base
+  #resourcify done during specs setup to be able to use custom user classes
+  self.primary_key = "team_code"
+  
+  default_scope order(:team_code)
+end

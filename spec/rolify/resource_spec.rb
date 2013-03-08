@@ -6,12 +6,14 @@ describe Rolify::Resource do
     User.rolify
     Forum.resourcify
     Group.resourcify
+    Team.resourcify
     Role.destroy_all
   end
 
   # Users
   let(:admin)   { User.first }
   let(:tourist) { User.last }
+  let(:captain) { User.where(:login => "god").first }
 
   # roles
   let!(:forum_role)      { admin.add_role(:forum, Forum.first) }
@@ -20,6 +22,8 @@ describe Rolify::Resource do
   let!(:grouper_role)    { admin.add_role(:grouper, Group.first) }
   let!(:tourist_role)    { tourist.add_role(:forum, Forum.last) }
   let!(:sneaky_role)     { tourist.add_role(:group, Forum.first) }
+  let!(:captain_role)    { captain.add_role(:captain, Team.first) }
+  let!(:player_role)     { captain.add_role(:player, Team.last) }
 
   describe ".with_roles" do
     subject { Group }
@@ -127,7 +131,14 @@ describe Rolify::Resource do
 
       end
     end
-
+    
+    context "with a model not having ID column" do
+      subject { Team }
+      
+      it "should find Team instance using team_code column" do
+        subject.with_roles([:captain, :player], captain).should =~ [ Team.first, Team.last ]
+      end
+    end
   end
 
   describe ".find_role" do

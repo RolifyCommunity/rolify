@@ -133,3 +133,11 @@ class Group
     Group.in(:parent_id => _id)
   end
 end
+
+class Team
+  include Mongoid::Document
+  #resourcify done during specs setup to be able to use custom user classes
+
+  field :team_code, :type => Integer
+  field :name, :type => String
+end
