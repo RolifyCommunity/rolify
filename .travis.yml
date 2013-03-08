@@ -4,12 +4,15 @@ rvm:
   - rbx-19mode
   - jruby-19mode
 
+gemfile:
+	- gemfiles/Gemfile.rails-3.1
+    - gemfiles/Gemfile.rails-3.2
+	- gemfiles/Gemfile.rails-4.0
+
 env:
-  - ADAPTER=active_record
+  - ADAPTER=active_record  
   - ADAPTER=mongoid
 
 services: mongodb
 
-matrix:
-  allow_failures:
-    - rvm: 2.0.0
+before_script: rails --version
