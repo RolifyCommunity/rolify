@@ -1,17 +1,17 @@
 rvm:
-	- 1.9.3
-	- 2.0.0
-	- rbx-19mode
-	- jruby-19mode
+  - 1.9.3
+  - 2.0.0 
+  - rbx-19mode
+  - jruby-19mode
 
 gemfile:
-	- gemfiles/Gemfile.rails-3.1
-	- gemfiles/Gemfile.rails-3.2
-	- gemfiles/Gemfile.rails-4.0
+  - gemfiles/Gemfile.rails-3.1
+  - gemfiles/Gemfile.rails-3.2
+  - gemfiles/Gemfile.rails-4.0
 
 env:
-	- ADAPTER=active_record  
-	- ADAPTER=mongoid
+  - ADAPTER=active_record
+  - ADAPTER=mongoid
 
 services: mongodb
 
