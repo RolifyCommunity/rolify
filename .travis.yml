@@ -15,3 +15,9 @@ env:
 services: mongodb
 
 before_script: rails --version
+
+matrix:
+  allow_failures:
+    - rvm: rbx-19mode
+	- rvm: jruby-19mode
+	- gemfile: gemfiles/Gemfile.rails-4.0

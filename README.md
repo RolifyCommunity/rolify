@@ -15,10 +15,10 @@ This library can be easily integrated with any authentication gem ([devise](http
 
 ## Requirements
 
-* Rails >= 3.1
-* ActiveRecord >= 3.1 <b>or</b> Mongoid >= 3.1
+* Rails >= 3.2
+* ActiveRecord >= 3.2 <b>or</b> Mongoid >= 3.1
 * supports ruby 2.0/1.9.3, JRuby 1.6.0+ (in 1.9 mode) and Rubinius 2.0.0dev (in 1.9 mode)
-* support of ruby 1.8 has been dropped due to Mongoid 3.0 that only supports 1.9 new hash syntax
+* support of ruby 1.8 has been dropped due to Mongoid >=3.0 that only supports 1.9 new hash syntax
 
 ## Installation
 
@@ -26,12 +26,6 @@ In <b>Rails 3</b>, add this to your Gemfile and run the +bundle+ command.
 
 ```ruby
   gem "rolify"
-```
-
-Alternatively, you can install it as a plugin.
-
-```
-  rails plugin install git://github.com/EppO/rolify.git
 ```
 
 ## Getting Started

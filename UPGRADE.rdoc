@@ -20,3 +20,25 @@ If you use <i>dynamic methods</i> (<tt>user.is_admin?</tt> like methods), you sh
       c.use_dynamic_shortcuts
    end
 The old fashion way still works though, but won't work anymore if the setter method name is changed in a possible future. You've been warned :-)
+
+== From a rolify installation 3.x
+
+=== Dependencies: 
+
+Starting from 3.3 release, rolify supports Rails 3.2 and newer.
+
+Mongoid callbacks are supported if Mongoid 3.1 and newer is installed.
+
+=== Rails Generators
+
+Role model template when using Mongoid has been changed, you should re-run the generator.
+
+Rails generator has been renamed to: <tt>rails g rolify</tt> and arguments have been changed: 
+* Role class name is now mandatory, User class name remains optional and its default is still <tt>User</tt>
+* ORM optional argument is now <tt>-o</tt> or <tt>--orm=</tt>
+For instance, here is a new rolify generator command example: <tt>rails g rolify Role</tt>
+You can use <tt>rails g rolify --help</tt> to see all available options.
+
+=== Testing
+
+Starting from rolify 3.3, to run the specs you should run: <tt>rake spec</tt> or simply <tt>rake</tt>.
