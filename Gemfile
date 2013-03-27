@@ -14,4 +14,8 @@ else
   raise "Unknown model adapter: #{ENV["ADAPTER"]}"
 end
 
+group :test do
+  gem 'coveralls', :require => false
+end
+
 gemspec

@@ -5,6 +5,9 @@ require 'rolify'
 require 'rolify/matchers'
 require 'rails/all'
 
+require 'coveralls'
+Coveralls.wear!
+
 module TestApp
   class Application < ::Rails::Application
     config.root = File.dirname(__FILE__)

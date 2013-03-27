@@ -5,6 +5,9 @@ require 'rolify'
 require 'rolify/matchers'
 require 'rails/all'
 
+require 'coveralls'
+Coveralls.wear!
+
 ENV['ADAPTER'] ||= 'active_record'
 
 load File.dirname(__FILE__) + "/support/adapters/#{ENV['ADAPTER']}.rb"
