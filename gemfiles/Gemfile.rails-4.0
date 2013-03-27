@@ -23,4 +23,5 @@ group :test do
   gem "sqlite3", :platform => "ruby"
   gem "activerecord", "~> 4.0.0.beta1", :require => "active_record"
   gem "mongoid", :git => "git://github.com/mongoid/mongoid.git"
+  gem 'coveralls', :require => false
 end
