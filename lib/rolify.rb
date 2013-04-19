@@ -19,7 +19,7 @@ module Rolify
     self.role_cname = options[:role_cname]
     self.role_table_name = self.role_cname.tableize.gsub(/\//, "_")
 
-    join_table = "#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_table_name}"
+    join_table = option[:join_table] || "#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_table_name}"
     rolify_options = { :class_name => options[:role_cname].camelize }
     rolify_options.merge!({ :join_table => join_table }) if Rolify.orm == "active_record"
     rolify_options.merge!(options.reject{ |k,v| ![ :before_add, :after_add, :before_remove, :after_remove ].include? k.to_sym })
