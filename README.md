@@ -36,7 +36,7 @@ In <b>Rails 3</b>, add this to your Gemfile and run the +bundle+ command.
 First, create your Role model and migration file using this generator:
 
 ```
-  rails g rolify Role User      OR   rails g rolify:role Role User (if the first command didn't work
+  rails g rolify Role User      OR   rails g rolify:role Role User (if the first command didn't work)
 ```
 
 Role and User classes are the default. You can specify any Role class name you want. This is completly a new file so any name can do the job.
