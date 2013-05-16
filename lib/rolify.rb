@@ -15,11 +15,12 @@ module Rolify
     include Role
     extend Dynamic if Rolify.dynamic_shortcuts
 
+    options.reverse_merge!({:role_cname => 'Role'})
     self.role_cname = options[:role_cname]
     self.role_table_name = self.role_cname.tableize.gsub(/\//, "_")
 
     join_table = "#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_table_name}"
-    options.reverse_merge!({:role_cname => 'Role', :role_join_table_name => join_table})
+    options.reverse_merge!({:role_join_table_name => join_table})
     self.role_join_table_name = options[:role_join_table_name]
 
 
