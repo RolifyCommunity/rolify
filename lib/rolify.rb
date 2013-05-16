@@ -9,7 +9,7 @@ require 'rolify/adapters/base'
 module Rolify
   extend Configure
 
-  attr_accessor :role_cname, :adapter, :role_join_table_name, :role_join_table
+  attr_accessor :role_cname, :adapter, :role_join_table_name, :role_table_name
 
   def rolify(options = {})
     include Role
