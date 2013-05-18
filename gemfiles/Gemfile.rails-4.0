@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 case ENV["ADAPTER"]
 when nil, "active_record"
-  gem "activerecord", "~> 4.0.0.beta1", :require => "active_record"
+  gem "activerecord", "~> 4.0.0.rc", :require => "active_record"
 when "mongoid"
   gem "mongoid", :git => "git://github.com/mongoid/mongoid.git"
   gem "bson_ext", :platform => "ruby"
@@ -11,7 +11,7 @@ else
 end
 
 group :test do
-  gem "rails", :git => 'git://github.com/rails/rails.git'
+  gem "rails", "~> 4.0.0.rc"
   gem "ammeter"
   gem "rake"
   gem "rspec"
@@ -21,7 +21,7 @@ group :test do
   
   gem "activerecord-jdbcsqlite3-adapter", :platform => "jruby"
   gem "sqlite3", :platform => "ruby"
-  gem "activerecord", "~> 4.0.0.beta1", :require => "active_record"
+  gem "activerecord", "~> 4.0.0.rc", :require => "active_record"
   gem "mongoid", :git => "git://github.com/mongoid/mongoid.git"
   gem 'coveralls', :require => false
 end
