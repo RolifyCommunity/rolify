@@ -9,7 +9,7 @@ describe "Resourcify and rolify on the same model" do
   end
   
   let!(:user) do
-    user = HumanResource.new login: 'Samer' 
+    user = HumanResource.new :login => 'Samer' 
     user.save
     user
   end
