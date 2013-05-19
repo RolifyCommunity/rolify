@@ -1,13 +1,7 @@
 require "spec_helper"
 require "active_record"
-require "mongoid"
 
 class ARUser < ActiveRecord::Base
-  extend Rolify
-end
-
-class MUser
-  include Mongoid::Document
   extend Rolify
 end
 
@@ -63,53 +57,8 @@ describe Rolify do
 
     context "using custom values" do
       context "using :orm setter method" do
-        before do
-          Rolify.orm = "mongoid"
-        end
 
         subject { Rolify.orm }
-
-        it { should eq("mongoid") }
-        
-        context "on the User class" do
-          before do
-            MUser.rolify
-          end
-
-          subject { MUser }
-          
-          its("adapter.class") { should be(Rolify::Adapter::RoleAdapter) }
-        end
-
-        context "on the Forum class" do
-          before do
-            Forum.resourcify
-          end
-
-          subject { Forum }
-
-          its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
-        end
-      end
-      
-      context "using :use_mongoid method" do
-        before do
-          Rolify.use_mongoid
-        end
-
-        subject { Rolify.orm }
-
-        it { should eq("mongoid") }
-        
-        context "on the User class" do
-          before do
-            MUser.rolify
-          end
-
-          subject { MUser }
-          
-          its("adapter.class") { should be(Rolify::Adapter::RoleAdapter) }
-        end
 
         context "on the Forum class" do
           before do
@@ -158,25 +107,11 @@ describe Rolify do
     before do
       Rolify.configure do |config|
         config.dynamic_shortcuts = true
-        config.orm = "mongoid"
       end
     end
     
     its(:dynamic_shortcuts) { should be_true }
-    its(:orm) { should eq("mongoid") }
     
-    context "on the User class" do
-      before do
-        MUser.rolify
-      end
-
-      subject { MUser }
-      
-      it { should satisfy { |u| u.include? Rolify::Role }}
-      it { should satisfy { |u| u.singleton_class.include? Rolify::Dynamic } }
-      its("adapter.class") { should be(Rolify::Adapter::RoleAdapter) }
-    end
-
     context "on the Forum class" do
       before do
         Forum.resourcify

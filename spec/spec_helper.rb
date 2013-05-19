@@ -15,7 +15,6 @@ load File.dirname(__FILE__) + '/support/data.rb'
 
 def reset_defaults
   Rolify.use_defaults
-  Rolify.use_mongoid if ENV['ADAPTER'] == "mongoid"
 end
 
 def provision_user(user, roles)

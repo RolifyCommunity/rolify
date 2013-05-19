@@ -37,7 +37,6 @@ RUBY
       it { should exist }
       it { should contain "Rolify.configure do |config|"}
       it { should contain "# config.use_dynamic_shortcuts" }
-      it { should contain "# config.use_mongoid" }
     end
     
     describe 'app/models/role.rb' do
@@ -81,7 +80,6 @@ RUBY
       it { should exist }
       it { should contain "Rolify.configure(\"AdminRole\") do |config|"}
       it { should contain "# config.use_dynamic_shortcuts" }
-      it { should contain "# config.use_mongoid" }
     end
     
     describe 'app/models/admin_role.rb' do
@@ -133,7 +131,6 @@ RUBY
       it { should exist }
       it { should contain "Rolify.configure(\"Admin::Role\") do |config|"}
       it { should contain "# config.use_dynamic_shortcuts" }
-      it { should contain "# config.use_mongoid" }
     end
     
     describe 'app/models/admin/role.rb' do
@@ -161,15 +158,12 @@ RUBY
   end
   
   describe 'specifying ORM adapter' do 
-    before(:all) { arguments [ "Role", "User", "--orm=mongoid" ] }
-    
+    before(:all) { arguments [ "Role", "User" ] }
     before { 
       capture(:stdout) {
         generator.create_file "app/models/user.rb" do
 <<-RUBY
 class User
-  include Mongoid::Document
-
   field :login, :type => String
 end
 RUBY
@@ -183,33 +177,24 @@ RUBY
       subject { file('config/initializers/rolify.rb') }
       it { should exist }
       it { should contain "Rolify.configure do |config|"}
-      it { should_not contain "# config.use_mongoid" }
       it { should contain "# config.use_dynamic_shortcuts" }
     end
     
     describe 'app/models/role.rb' do
       subject { file('app/models/role.rb') }
       it { should exist }
-      it { should contain "class Role\n" }
-      it { should contain "has_and_belongs_to_many :users\n" }
+      it { should contain "class Role" }
+      it { should contain "has_and_belongs_to_many :users" }
       it { should contain "belongs_to :resource, :polymorphic => true" }
-      it { should contain "field :name, :type => String" }
-      it { should contain "  index({\n"
-                          "      { :name => 1 },\n"
-                          "      { :resource_type => 1 },\n"
-                          "      { :resource_id => 1 }\n"
-                          "    },\n"
-                          "    { unique => true })"}
     end
     
     describe 'app/models/user.rb' do
       subject { file('app/models/user.rb') }
-      it { should contain /class User\n  include Mongoid::Document\n  rolify\n/ }
     end
   end
   
   describe 'specifying namespaced User and Role class names and ORM adapter' do
-    before(:all) { arguments %w(Admin::Role Admin::User --orm=mongoid) }
+    before(:all) { arguments %w(Admin::Role Admin::User) }
     
     before { 
       capture(:stdout) {
@@ -217,7 +202,6 @@ RUBY
 <<-RUBY
 module Admin
   class User
-    include Mongoid::Document
   end
 end
 RUBY
@@ -233,7 +217,6 @@ RUBY
       it { should exist }
       it { should contain "Rolify.configure(\"Admin::Role\") do |config|"}
       it { should contain "# config.use_dynamic_shortcuts" }
-      it { should_not contain "# config.use_mongoid" }
     end
     
     describe 'app/models/admin/role.rb' do
@@ -248,7 +231,6 @@ RUBY
     describe 'app/models/admin/user.rb' do
       subject { file('app/models/admin/user.rb') }
       
-      it { should contain /class User\n    include Mongoid::Document\n  rolify :role_cname => 'Admin::Role'\n/ }
     end
   end
 end

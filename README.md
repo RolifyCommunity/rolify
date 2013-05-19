@@ -17,9 +17,9 @@ This library can be easily integrated with any authentication gem ([devise](http
 ## Requirements
 
 * Rails >= 3.2
-* ActiveRecord >= 3.2 <b>or</b> Mongoid >= 3.1
+* ActiveRecord >= 3.2
 * supports ruby 2.0/1.9.3, JRuby 1.6.0+ (in 1.9 mode) and Rubinius 2.0.0dev (in 1.9 mode)
-* support of ruby 1.8 has been dropped due to Mongoid >=3.0 that only supports 1.9 new hash syntax
+* support of Mongoid has been dropped due to the ruby 1.8 hash syntax
 
 ## Installation
 
@@ -36,13 +36,11 @@ In <b>Rails 3</b>, add this to your Gemfile and run the +bundle+ command.
 First, create your Role model and migration file using this generator:
 
 ```
-  rails g rolify Role User
+  rails g rolify:role Role User
 ```
 
 Role and User classes are the default. You can specify any Role class name you want. This is completly a new file so any name can do the job.
 For the User class name, you would probably use the one provided by your authentication solution. rolify just adds some class methods in an existing User class.
-
-If you want to use Mongoid instead of ActiveRecord, just add `--orm=mongoid` argument, and skip to step #3
 
 ### 2. Run the migration (only required when using ActiveRecord)
 
@@ -72,8 +70,6 @@ The `rolify` method accepts the following callback options:
 - `after_add`
 - `before_remove`
 - `after_remove`
-
-Mongoid callbacks are also supported and works the same way.
 
 ### 3.2 Configure your resource models
 

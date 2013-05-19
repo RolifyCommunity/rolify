@@ -3,9 +3,6 @@ source "https://rubygems.org"
 case ENV["ADAPTER"]
 when nil, "active_record"
   gem "activerecord", "~> 4.0.0.beta1", :require => "active_record"
-when "mongoid"
-  gem "mongoid", :git => "git://github.com/mongoid/mongoid.git"
-  gem "bson_ext", :platform => "ruby"
 else
   raise "Unknown model adapter: #{ENV["ADAPTER"]}"
 end
@@ -22,6 +19,5 @@ group :test do
   gem "activerecord-jdbcsqlite3-adapter", :platform => "jruby"
   gem "sqlite3", :platform => "ruby"
   gem "activerecord", "~> 4.0.0.beta1", :require => "active_record"
-  gem "mongoid", :git => "git://github.com/mongoid/mongoid.git"
   gem 'coveralls', :require => false
 end
