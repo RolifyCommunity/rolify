@@ -34,7 +34,7 @@ shared_examples_for :finders do |param_name, param_method|
         context "on Forum.last instance" do
           it { subject.with_role("admin".send(param_method), Forum.last).should eq([ root ]) }
           it { subject.with_role("moderator".send(param_method), Forum.last).should eq([ modo ]) }
-          it { subject.with_role("visitor".send(param_method), Forum.last).should include(root, visitor) } # =~ doesn't pass using mongoid, don't know why...
+          it { subject.with_role("visitor".send(param_method), Forum.last).should include(root, visitor) } 
         end
 
         context "on Group.first instance" do

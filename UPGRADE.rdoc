@@ -27,11 +27,7 @@ The old fashion way still works though, but won't work anymore if the setter met
 
 Starting from 3.3 release, rolify supports Rails 3.2 and newer.
 
-Mongoid callbacks are supported if Mongoid 3.1 and newer is installed.
-
 === Rails Generators
-
-Role model template when using Mongoid has been changed, you should re-run the generator.
 
 Rails generator has been renamed to: <tt>rails g rolify</tt> and arguments have been changed: 
 * Role class name is now mandatory, User class name remains optional and its default is still <tt>User</tt>

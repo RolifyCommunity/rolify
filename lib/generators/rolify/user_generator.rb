@@ -18,8 +18,6 @@ module Rolify
       def inject_rolify_method
         if options.orm == :active_record
           /class #{class_name.camelize}\n|class #{class_name.camelize} .*\n|class #{class_name.demodulize.camelize}\n|class #{class_name.demodulize.camelize} .*\n/
-        else
-          /include Mongoid::Document\n|include Mongoid::Document .*\n/
         end
       end
       

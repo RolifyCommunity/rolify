@@ -24,7 +24,7 @@ end
 
 desc "Run specs for all adapters"
 task :spec_all do
-  %w[active_record mongoid].each do |model_adapter|
+  %w[active_record].each do |model_adapter|
     puts "ADAPTER = #{model_adapter}"
     system "ADAPTER=#{model_adapter} rake"
   end

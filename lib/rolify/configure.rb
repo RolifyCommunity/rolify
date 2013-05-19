@@ -24,10 +24,6 @@ module Rolify
       @@orm = orm
     end
 
-    def use_mongoid
-      self.orm = "mongoid"
-    end
-    
     def use_dynamic_shortcuts
       self.dynamic_shortcuts = true #if defined?(Rails::Server) || defined?(Rails::Console)
     end

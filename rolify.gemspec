@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ["f.monbillard@gmail.com"]
   s.homepage    = "http://eppo.github.com/rolify/"
   s.summary     = %q{Roles library with resource scoping}
-  s.description = %q{Very simple Roles library without any authorization enforcement supporting scope on resource objects (instance or class). Supports ActiveRecord and Mongoid ORMs.}
+  s.description = %q{Very simple Roles library without any authorization enforcement supporting scope on resource objects (instance or class). Supports ActiveRecord ORM.}
 
   s.rubyforge_project = s.name
 
@@ -26,5 +26,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency "bundler"
   s.add_development_dependency "fuubar" 
   s.add_development_dependency "activerecord", ">= 3.2.0"
-  s.add_development_dependency "mongoid", ">= 3.1"
 end
