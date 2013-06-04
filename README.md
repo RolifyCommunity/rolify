@@ -36,13 +36,17 @@ In <b>Rails 3</b>, add this to your Gemfile and run the +bundle+ command.
 First, create your Role model and migration file using this generator:
 
 ```
-  rails g rolify Role User
+  rails g rolify:role Role User
 ```
 
 Role and User classes are the default. You can specify any Role class name you want. This is completly a new file so any name can do the job.
 For the User class name, you would probably use the one provided by your authentication solution. rolify just adds some class methods in an existing User class.
 
-If you want to use Mongoid instead of ActiveRecord, just add `--orm=mongoid` argument, and skip to step #3
+To use Mongoid instead of ActiveRecord, add `mongoid` as the third argument to the generator.
+
+```
+  rails g rolify:role Role User mongoid
+```
 
 ### 2. Run the migration (only required when using ActiveRecord)
 
