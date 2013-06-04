@@ -35,7 +35,11 @@ module Rolify
       end
 
       def scope(relation, conditions)
-        query = relation.scoped
+        if Rails.version < "4.0"
+          query = relation.scoped
+        else
+          query = relation.all
+        end
         query = query.joins(:roles)
         query = where(query, conditions)
         query

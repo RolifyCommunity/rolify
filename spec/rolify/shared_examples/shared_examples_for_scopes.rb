@@ -28,7 +28,7 @@ shared_examples_for "Role.scopes" do
     let!(:zombie_role) { subject.add_role :visitor, Forum.last }
     let!(:anonymous_role) { subject.add_role :anonymous, Group.last }
     
-    it { subject.roles.instance_scoped.all.entries.should =~ [ visitor_role, zombie_role, anonymous_role ] }
+    it { subject.roles.instance_scoped.to_a.entries.should =~ [ visitor_role, zombie_role, anonymous_role ] }
     it { subject.roles.instance_scoped(Forum).should =~ [ visitor_role, zombie_role ] }
     it { subject.roles.instance_scoped(Forum.first).should =~ [ visitor_role ] }
     it { subject.roles.instance_scoped(Forum.last).should =~ [ zombie_role ] }
