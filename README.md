@@ -178,7 +178,9 @@ Starting from rolify 3.0, you can search roles on instance level or class level 
   # => [ list of Forum instances that has role "admin" binded to it ] 
   Forum.with_role(:admin, current_user)
   # => [ list of Forum instances that has role "admin" binded to it and belongs to current_user roles ]
-  
+  Forum.with_any_role(:user, :admin)
+  # => [ list of Forum instances that has role "admin" or "user" binded to it ]
+
   Forum.find_roles
   # => [ list of roles that binded to any Forum instance or to the Forum class ]
   Forum.find_roles(:admin)
