@@ -26,7 +26,7 @@ This library can be easily integrated with any authentication gem ([devise](http
 In <b>Rails 3</b>, add this to your Gemfile and run the +bundle+ command.
 
 ```ruby
-  gem "rolify"
+gem "rolify"
 ```
 
 ## Getting Started
@@ -36,7 +36,7 @@ In <b>Rails 3</b>, add this to your Gemfile and run the +bundle+ command.
 First, create your Role model and migration file using this generator:
 
 ```
-  rails g rolify Role User
+rails g rolify Role User
 ```
 
 Role and User classes are the default. You can specify any Role class name you want. This is completly a new file so any name can do the job.
@@ -49,7 +49,7 @@ If you want to use Mongoid instead of ActiveRecord, just add `--orm=mongoid` arg
 Let's migrate !
 
 ```
-  rake db:migrate
+rake db:migrate
 ```
 
 ### 3.1 Configure your user model
@@ -57,13 +57,13 @@ Let's migrate !
 This gem adds the `rolify` method to your User class. You can also specify optional callbacks on the User class for when roles are added or removed:
 
 ```ruby
-  class User < ActiveRecord::Base
-    rolify :before_add => :before_add_method
+class User < ActiveRecord::Base
+  rolify :before_add => :before_add_method
 
-    def before_add_method(role)
-      # do something before it gets added
-    end
+  def before_add_method(role)
+    # do something before it gets added
   end
+end
 ```
 
 The `rolify` method accepts the following callback options:
@@ -91,22 +91,22 @@ end
 To define a global role:
 
 ```ruby
-  user = User.find(1)
-  user.add_role :admin
+user = User.find(1)
+user.add_role :admin
 ```
 
 To define a role scoped to a resource instance
 
 ```ruby
-  user = User.find(2)
-  user.add_role :moderator, Forum.first
+user = User.find(2)
+user.add_role :moderator, Forum.first
 ```
 
 To define a role scoped to a resource class
 
 ```ruby
-  user = User.find(3)
-  user.add_role :moderator, Forum
+user = User.find(3)
+user.add_role :moderator, Forum
 ```
 
 That's it !
@@ -116,45 +116,45 @@ That's it !
 To check if a user has a global role: 
 
 ```ruby
-  user = User.find(1)
-  user.add_role :admin # sets a global role
-  user.has_role? :admin
-  => true
+user = User.find(1)
+user.add_role :admin # sets a global role
+user.has_role? :admin
+=> true
 ```
 
 To check if a user has a role scoped to a resource instance:
 
 ```ruby
-  user = User.find(2)
-  user.add_role :moderator, Forum.first # sets a role scoped to a resource instance
-  user.has_role? :moderator, Forum.first
-  => true
-  user.has_role? :moderator, Forum.last
-  => false
+user = User.find(2)
+user.add_role :moderator, Forum.first # sets a role scoped to a resource instance
+user.has_role? :moderator, Forum.first
+=> true
+user.has_role? :moderator, Forum.last
+=> false
 ```
 
 To check if a user has a role scoped to a resource class:
 
 ```ruby
-  user = User.find(3)
-  user.add_role :moderator, Forum # sets a role scoped to a resource class
-  user.has_role? :moderator, Forum
-  => true
-  user.has_role? :moderator, Forum.first
-  => true
-  user.has_role? :moderator, Forum.last
-  => true
+user = User.find(3)
+user.add_role :moderator, Forum # sets a role scoped to a resource class
+user.has_role? :moderator, Forum
+=> true
+user.has_role? :moderator, Forum.first
+=> true
+user.has_role? :moderator, Forum.last
+=> true
 ```
 
 A global role overrides resource role request: 
 
 ```ruby
-  user = User.find(4)
-  user.add_role :moderator # sets a global role
-  user.has_role? :moderator, Forum.first
-  => true
-  user.has_role? :moderator, Forum.last
-  => true
+user = User.find(4)
+user.add_role :moderator # sets a global role
+user.has_role? :moderator, Forum.first
+=> true
+user.has_role? :moderator, Forum.last
+=> true
 ```
 
 ### 6. Resource roles querying 
@@ -164,29 +164,29 @@ Starting from rolify 3.0, you can search roles on instance level or class level 
 #### Instance level
 
 ```ruby
-  forum = Forum.first
-  forum.roles
-  # => [ list of roles that are only binded to forum instance ]
-  forum.applied_roles
-  # => [ list of roles binded to forum instance and to the Forum class ]
+forum = Forum.first
+forum.roles
+# => [ list of roles that are only binded to forum instance ]
+forum.applied_roles
+# => [ list of roles binded to forum instance and to the Forum class ]
 ```
 
 #### Class level
 
 ```ruby
-  Forum.with_role(:admin)
-  # => [ list of Forum instances that has role "admin" binded to it ] 
-  Forum.with_role(:admin, current_user)
-  # => [ list of Forum instances that has role "admin" binded to it and belongs to current_user roles ]
-  Forum.with_any_role(:user, :admin)
-  # => [ list of Forum instances that has role "admin" or "user" binded to it ]
+Forum.with_role(:admin)
+# => [ list of Forum instances that has role "admin" binded to it ] 
+Forum.with_role(:admin, current_user)
+# => [ list of Forum instances that has role "admin" binded to it and belongs to current_user roles ]
+Forum.with_any_role(:user, :admin)
+# => [ list of Forum instances that has role "admin" or "user" binded to it ]
 
-  Forum.find_roles
-  # => [ list of roles that binded to any Forum instance or to the Forum class ]
-  Forum.find_roles(:admin)
-  # => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name ]
-  Forum.find_roles(:admin, current_user)
-  # => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name and belongs to current_user roles ]
+Forum.find_roles
+# => [ list of roles that binded to any Forum instance or to the Forum class ]
+Forum.find_roles(:admin)
+# => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name ]
+Forum.find_roles(:admin, current_user)
+# => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name and belongs to current_user roles ]
 ```
 
 ## Resources
