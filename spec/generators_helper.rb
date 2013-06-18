@@ -15,3 +15,7 @@ module TestApp
 end
 
 require 'ammeter/init'
+
+ENV['ADAPTER'] ||= 'active_record'
+
+

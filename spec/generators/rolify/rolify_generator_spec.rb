@@ -3,6 +3,7 @@ require 'generators_helper'
 # Generators are not automatically loaded by Rails
 require 'generators/rolify/rolify_generator'
 
+
 describe Rolify::Generators::RolifyGenerator do
   # Tell the generator where to put its output (what it thinks of as Rails.root)
   destination File.expand_path("../../../../tmp", __FILE__)
@@ -16,6 +17,7 @@ describe Rolify::Generators::RolifyGenerator do
     FileUtils.rm_rf destination_root
   end
 
+  if ENV['ADAPTER'] == 'active_record'
   describe 'specifying only Role class name' do
     before(:all) { arguments %w(Role) }
 
@@ -159,7 +161,10 @@ RUBY
       it { should contain "create_table(:admin_users_admin_roles, :id => false) do" }
     end
   end
-  
+
+  else # Mongoid adapter 
+  require 'mongoid'
+
   describe 'specifying ORM adapter' do 
     before(:all) { arguments [ "Role", "User", "--orm=mongoid" ] }
     
@@ -251,4 +256,5 @@ RUBY
       it { should contain /class User\n    include Mongoid::Document\n  rolify :role_cname => 'Admin::Role'\n/ }
     end
   end
+  end # ORM adapter check
 end
