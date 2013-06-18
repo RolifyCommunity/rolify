@@ -44,7 +44,7 @@ module Mongoid
   
   scopify
 RUBY
-        content % { :user_cname => user_cname.constantize.table_name }
+        content % { :user_cname => user_cname.constantize.collection_name }
       end
     end
   end
