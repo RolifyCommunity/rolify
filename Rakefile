@@ -1,7 +1,10 @@
 require 'bundler'
 require 'rspec/core/rake_task'
+require 'coveralls/rake/task'
 
 Bundler::GemHelper.install_tasks
+
+Coveralls::RakeTask.new
 
 RSpec::Core::RakeTask.new(:generators) do |task|
   task.pattern = "spec/generators/**/*_spec.rb"
@@ -11,7 +14,7 @@ RSpec::Core::RakeTask.new(:rolify) do |task|
   task.pattern = "spec/rolify/**/*_spec.rb"
 end
 
-task :default => :spec
+task :default => [ :spec, 'coveralls:push' ]
 
 desc "Run all specs"
 task "spec" do

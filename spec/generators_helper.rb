@@ -6,7 +6,7 @@ require 'rolify/matchers'
 require 'rails/all'
 
 require 'coveralls'
-Coveralls.wear!
+Coveralls.wear_merged!
 
 module TestApp
   class Application < ::Rails::Application
