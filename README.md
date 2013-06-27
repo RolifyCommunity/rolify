@@ -39,6 +39,12 @@ First, create your Role model and migration file using this generator:
 rails g rolify Role User
 ```
 
+In Rails 4 you need to run this command instead:
+
+```
+rails g rolify:role Role User
+```
+
 Role and User classes are the default. You can specify any Role class name you want. This is completly a new file so any name can do the job.
 For the User class name, you would probably use the one provided by your authentication solution. rolify just adds some class methods in an existing User class.
 
