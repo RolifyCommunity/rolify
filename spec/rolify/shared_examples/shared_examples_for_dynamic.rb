@@ -12,6 +12,7 @@ shared_examples_for Rolify::Dynamic do
       admin = user_class.first
       admin.add_role :admin
       admin.add_role :moderator, Forum.first
+      admin.add_role :solo
       admin
     end
 
@@ -22,12 +23,22 @@ shared_examples_for Rolify::Dynamic do
     it { subject.is_admin?.should be(true) }
     it { subject.is_admin?.should be(true) }
     it { subject.is_admin?.should be(true) }
+    
+    context "removing the role on the last user having it" do
+      before do
+        subject.remove_role :solo
+      end
+      
+      it { should_not respond_to(:is_solo?) }
+      it { subject.is_solo?.should be(false) }
+    end
   end
   
   context "using a resource scoped role" do
     subject do 
       moderator = user_class.where(:login => "moderator").first
       moderator.add_role :moderator, Forum.first
+      moderator.add_role :sole_mio, Forum.last
       moderator
     end
     
@@ -44,12 +55,22 @@ shared_examples_for Rolify::Dynamic do
     it { subject.is_moderator_of?(Group).should be(false) }
     it { subject.is_moderator_of?(Group.first).should be(false) }
     it { subject.is_moderator_of?(Group.last).should be(false) }
+    
+    context "removing the role on the last user having it" do
+      before do
+        subject.remove_role :sole_mio, Forum.last
+      end
+      
+      it { should_not respond_to(:is_sole_mio?) }
+      it { subject.is_sole_mio?.should be(false) }
+    end
   end
   
   context "using a class scoped role" do
     subject do 
       manager = user_class.where(:login => "god").first
       manager.add_role :manager, Forum
+      manager.add_role :only_me, Forum
       manager
     end
     
@@ -68,6 +89,15 @@ shared_examples_for Rolify::Dynamic do
     it { subject.is_manager_of?(Group).should be(false) }
     it { subject.is_manager_of?(Group.first).should be(false) }
     it { subject.is_manager_of?(Group.last).should be(false) }
+    
+    context "removing the role on the last user having it" do
+      before do
+        subject.remove_role :only_me, Forum
+      end
+      
+      it { should_not respond_to(:is_only_me?) }
+      it { subject.is_only_me?.should be(false) }
+    end
   end
   
   context "if the role doesn't exist in the database" do
@@ -85,6 +115,7 @@ shared_examples_for Rolify::Dynamic do
       it { should_not respond_to(:is_god?) }
       
       it { subject.is_superman?.should be(false) }
+      it { subject.is_god?.should be(false) }
     end
     
     context "using a resource scope role" do
@@ -105,6 +136,14 @@ shared_examples_for Rolify::Dynamic do
       it { subject.is_batman_of?(Group).should be(false) }
       it { subject.is_batman_of?(Group.first).should be(false) }
       it { subject.is_batman_of?(Group.last).should be(false) }
+      
+      it { subject.is_god?.should be(false) }
+      it { subject.is_god_of?(Forum).should be(false) }
+      it { subject.is_god_of?(Forum.first).should be(false) }
+      it { subject.is_god_of?(Forum.last).should be(false) }
+      it { subject.is_god_of?(Group).should be(false) }
+      it { subject.is_god_of?(Group.first).should be(false) }
+      it { subject.is_god_of?(Group.last).should be(false) }
     end
   end
 end

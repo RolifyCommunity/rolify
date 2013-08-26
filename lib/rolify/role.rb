@@ -64,11 +64,9 @@ module Rolify
 
     def method_missing(method, *args, &block)
       if method.to_s.match(/^is_(\w+)_of[?]$/) || method.to_s.match(/^is_(\w+)[?]$/)
-        if self.class.role_class.where(:name => $1).count > 0
-          resource = args.first
-          self.class.define_dynamic_method $1, resource
-          return has_role?("#{$1}", resource)
-        end
+        resource = args.first
+        self.class.define_dynamic_method $1, resource
+        return has_role?("#{$1}", resource)
       end unless !Rolify.dynamic_shortcuts
       super
     end
