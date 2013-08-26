@@ -211,6 +211,6 @@ Please read the [upgrade instructions](UPGRADE.rdoc).
 
 ## Questions or Problems?
 
-If you have any issue or feature request with/for rolify, please add an [issue on GitHub](https://github.com/EppO/rolify/issues) or fork the project and send a pull request.
+If you have any issue or feature request with/for rolify, please add an [issue on GitHub](https://github.com/EppO/rolify/issues) **specifying the ruby runtime, rails and rolify versions you're using**, or fork the project and send a pull request.
 
 To get the specs running you should call `bundle` and then `rake`. See the spec/README for more information.
