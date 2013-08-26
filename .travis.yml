@@ -15,7 +15,3 @@ env:
 services: mongodb
 
 before_script: rails --version
-
-matrix:
-  allow_failures:
-    - gemfile: gemfiles/Gemfile.rails-4.0
