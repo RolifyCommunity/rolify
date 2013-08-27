@@ -13,6 +13,10 @@ describe "Rolify.namespace" do
     Admin::Right
   end
   
+  def join_table
+    "moderators_rights"
+  end
+  
   it_behaves_like Rolify::Role
   it_behaves_like "Role.scopes"
   it_behaves_like Rolify::Dynamic

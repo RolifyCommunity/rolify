@@ -12,7 +12,9 @@ shared_examples_for "Rolify.callbacks" do
   describe "rolify association callbacks", :if => (Rolify.orm == "active_record") do
     describe "before_add" do
       it "should receive callback" do
-        user_class.rolify :before_add => :role_callback, :role_cname => role_class.to_s
+        rolify_options = { :role_cname => role_class.to_s, :before_add => :role_callback }
+        rolify_options[:role_join_table_name] = join_table if defined? join_table
+        user_class.rolify rolify_options
         @user = user_class.first
         @user.stub(:role_callback)
         @user.should_receive(:role_callback)
@@ -22,7 +24,9 @@ shared_examples_for "Rolify.callbacks" do
 
     describe "after_add" do
       it "should receive callback" do
-        user_class.rolify :after_add => :role_callback, :role_cname => role_class.to_s
+        rolify_options = { :role_cname => role_class.to_s, :after_add => :role_callback }
+        rolify_options[:role_join_table_name] = join_table if defined? join_table
+        user_class.rolify rolify_options
         @user = user_class.first
         @user.stub(:role_callback)
         @user.should_receive(:role_callback)
@@ -32,7 +36,9 @@ shared_examples_for "Rolify.callbacks" do
 
     describe "before_remove" do
       it "should receive callback" do
-        user_class.rolify :before_remove => :role_callback, :role_cname => role_class.to_s
+        rolify_options = { :role_cname => role_class.to_s, :before_remove => :role_callback }
+        rolify_options[:role_join_table_name] = join_table if defined? join_table
+        user_class.rolify rolify_options
         @user = user_class.first
         @user.add_role :admin
         @user.stub(:role_callback)
@@ -44,7 +50,9 @@ shared_examples_for "Rolify.callbacks" do
 
     describe "after_remove" do
       it "should receive callback" do
-        user_class.rolify :after_remove => :role_callback, :role_cname => role_class.to_s
+        rolify_options = { :role_cname => role_class.to_s, :after_remove => :role_callback }
+        rolify_options[:role_join_table_name] = join_table if defined? join_table
+        user_class.rolify rolify_options
         @user = user_class.first
         @user.add_role :admin
         @user.stub(:role_callback)

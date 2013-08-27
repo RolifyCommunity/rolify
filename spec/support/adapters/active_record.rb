@@ -43,11 +43,11 @@ module Admin
   end
   
   class Moderator < ActiveRecord::Base
-    rolify :role_cname => "Admin::Right"
+    rolify :role_cname => "Admin::Right", :role_join_table_name => "moderators_rights"
   end
 
   class Right < ActiveRecord::Base
-    has_and_belongs_to_many :moderators, :class_name => "Admin::Moderator",:join_table => :admin_moderators_admin_rights
+    has_and_belongs_to_many :moderators, :class_name => "Admin::Moderator", :join_table => "moderators_rights"
     belongs_to :resource, :polymorphic => true
 
     extend Rolify::Adapter::Scopes

@@ -31,7 +31,7 @@ ActiveRecord::Schema.define do
     t.references :privilege
   end
   
-  create_table(:admin_moderators_admin_rights, :id => false) do |t|
+  create_table(:moderators_rights, :id => false) do |t|
     t.references :moderator
     t.references :right
   end
