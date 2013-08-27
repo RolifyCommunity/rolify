@@ -7,6 +7,7 @@ module Rolify
         resources = relation.joins("INNER JOIN #{quote(roles_table)} ON #{quote(roles_table)}.resource_type = '#{relation.to_s}' AND
                                     (#{quote(roles_table)}.resource_id IS NULL OR #{quote(roles_table)}.resource_id = #{quote(relation.table_name)}.#{relation.primary_key})")
         resources = resources.where("#{quote(roles_table)}.name IN (?) AND #{quote(roles_table)}.resource_type = ?", Array(role_name), relation.to_s)
+        resources = resources.select("#{quote(relation.table_name)}.*")
         resources
       end
 

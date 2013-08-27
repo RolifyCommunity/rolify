@@ -38,8 +38,15 @@ describe Rolify::Resource do
         it "should include Forum instances with forum role" do
           subject.with_role(:forum).should =~ [ Forum.first, Forum.last ]
         end
+        
         it "should include Forum instances with godfather role" do
           subject.with_role(:godfather).should =~ Forum.all.to_a
+        end
+        
+        it "should be able to modify the resource", :if => ENV['ADAPTER'] == 'active_record' do
+          forum_resource = subject.with_role(:forum).first
+          forum_resource.name = "modified name"
+          expect(forum_resource.save).not_to raise_error
         end
       end
 
