@@ -209,8 +209,12 @@ Forum.find_roles(:admin, current_user)
 
 Please read the [upgrade instructions](UPGRADE.rdoc).
 
+## Known issues
+
+If you are using Mongoid and/or less-rails gem, please read [this](https://github.com/EppO/rolify/wiki/FAQ#when-i-start-rails-using-server-console-whatever-i-get-this-error)
+
 ## Questions or Problems?
 
-If you have any issue or feature request with/for rolify, please add an [issue on GitHub](https://github.com/EppO/rolify/issues) **specifying the ruby runtime, rails and rolify versions you're using**, or fork the project and send a pull request.
+If you have any issue or feature request with/for rolify, please create an new [issue on GitHub](https://github.com/EppO/rolify/issues) **specifying the ruby runtime, rails and rolify versions you're using and the gems listed in your Gemfile**, or fork the project and send a pull request.
 
 To get the specs running you should call `bundle` and then `rake`. See the spec/README for more information.
