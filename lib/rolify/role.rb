@@ -44,7 +44,11 @@ module Rolify
     end
 
     def has_any_role?(*args)
-      self.class.adapter.where(self.roles, *args).size > 0
+      if new_record?
+        args.any? { |r| self.has_role?(r) }
+      else
+        self.class.adapter.where(self.roles, *args).size > 0
+      end
     end
     
     def only_has_role?(role_name, resource = nil)
