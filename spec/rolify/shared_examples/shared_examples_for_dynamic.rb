@@ -66,6 +66,19 @@ shared_examples_for Rolify::Dynamic do
       it { should_not respond_to(:is_sole_mio?) }
       it { subject.is_sole_mio?.should be(false) }
     end
+
+    context "when resource is an instance of a STI subclass", :if => (Rolify.orm == 'active_record'), :sti => true do
+      let(:klass) { Class.new Forum }
+      let(:resource) { klass.last }
+
+      subject do
+        moderator = user_class.where(:login => "moderator").first
+        moderator.add_role :moderator, resource
+        moderator
+      end
+
+      it { subject.is_moderator_of?(resource).should be(true) }
+    end
   end
   
   context "using a class scoped role" do
@@ -99,6 +112,49 @@ shared_examples_for Rolify::Dynamic do
       
       it { should_not respond_to(:is_only_me?) }
       it { subject.is_only_me?.should be(false) }
+    end
+
+    context "which is an STI base class", :if => (Rolify.orm == 'active_record'), :sti => true do
+      let(:klass) { Class.new Forum }
+
+      subject do
+        moderator = user_class.where(:login => "god").first
+        moderator.add_role :manager, Forum
+        moderator
+      end
+
+      it { subject.is_manager_of?(Forum).should be(true) }
+      it { subject.is_manager_of?(Forum.first).should be(true) }
+      it { subject.is_manager_of?(Forum.last).should be(true) }
+      it { subject.is_manager_of?(klass).should be(true) }
+      it { subject.is_manager_of?(klass.first).should be(true) }
+      it { subject.is_manager_of?(klass.last).should be(true) }
+    end
+
+    context "which is an STI subclass", :if => (Rolify.orm == 'active_record'), :sti => true do
+      let(:klass1) { Class.new Forum }
+      let(:klass2) { Class.new klass1 }
+
+      subject do
+        moderator = user_class.where(:login => "god").first
+        moderator.add_role :subscriber, klass1
+        moderator.add_role :diver, klass2
+        moderator
+      end
+
+      it { subject.is_subscriber_of?(Forum).should be(false) }
+      it { subject.is_subscriber_of?(Forum.first).should be(false) }
+      it { subject.is_subscriber_of?(klass1).should be(true) }
+      it { subject.is_subscriber_of?(klass1.first).should be(true) }
+      it { subject.is_subscriber_of?(klass2).should be(true) }
+      it { subject.is_subscriber_of?(klass2.first).should be(true) }
+
+      it { subject.is_diver_of?(Forum).should be(false) }
+      it { subject.is_diver_of?(Forum.first).should be(false) }
+      it { subject.is_diver_of?(klass1).should be(false) }
+      it { subject.is_diver_of?(klass1.first).should be(false) }
+      it { subject.is_diver_of?(klass2).should be(true) }
+      it { subject.is_diver_of?(klass2.first).should be(true) }
     end
   end
   

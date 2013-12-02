@@ -38,15 +38,24 @@ describe Rolify::Resource do
         it "should include Forum instances with forum role" do
           subject.with_role(:forum).should =~ [ Forum.first, Forum.last ]
         end
-        
+
         it "should include Forum instances with godfather role" do
           subject.with_role(:godfather).should =~ Forum.all.to_a
         end
-        
-        it "should be able to modify the resource", :if => ENV['ADAPTER'] == 'active_record' do
+
+        it "should be able to modify the resource", :if => (Rolify.orm == 'active_record') do
           forum_resource = subject.with_role(:forum).first
           forum_resource.name = "modified name"
           expect(forum_resource.save).not_to raise_error
+        end
+      end
+
+      context "on a STI sub class of Forum", :if => (Rolify.orm == 'active_record'), :sti => true do
+        subject { Class.new Forum }
+
+        it "should include Forum instances with forum role" do
+          pending 'real sti with a type. Forums should be filtered out by active record adding a where condition on `forums.type`'
+          subject.with_role(:forum).should =~ [ Forum.first, Forum.last ]
         end
       end
 
@@ -138,10 +147,10 @@ describe Rolify::Resource do
 
       end
     end
-    
+
     context "with a model not having ID column" do
       subject { Team }
-      
+
       it "should find Team instance using team_code column" do
         subject.with_roles([:captain, :player], captain).should =~ [ Team.first, Team.last ]
       end
