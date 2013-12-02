@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'have_role', focus: true do
+describe 'have_role' do
   let(:object) { Object.new }
 
   it 'delegates to has_role?' do
