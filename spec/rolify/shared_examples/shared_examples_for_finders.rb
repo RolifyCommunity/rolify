@@ -17,6 +17,13 @@ shared_examples_for :finders do |param_name, param_method|
           it { subject.with_role("visitor".send(param_method), Forum).should be_empty }
         end
 
+        context "on STI subclass of Forum", :if => (Rolify.orm == 'active_record'), :sti => true do
+          let(:klass) { Class.new Forum }
+          it { subject.with_role("admin".send(param_method), klass).should eq([ root ]) }
+          it { subject.with_role("moderator".send(param_method), klass).should eq([ modo ]) }
+          it { subject.with_role("visitor".send(param_method), klass).should be_empty }
+        end
+
         context "on Group class" do
           it { subject.with_role("admin".send(param_method), Group).should eq([ root ]) }
           it { subject.with_role("moderator".send(param_method), Group).should eq([ root ]) }

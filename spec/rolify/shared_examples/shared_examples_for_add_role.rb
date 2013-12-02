@@ -58,6 +58,15 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
           expect { subject.add_role "hacker".send(param_method), Forum }.not_to change { role_class.count }
         end
       end
+
+      context "and resource is a STI subclass", :if => (Rolify.orm == 'active_record') do
+        let(:klass) { Class.new(Forum) }
+
+        it "should use the resources class name instead of the base_class for resource_type" do
+          subject.add_role "supervisor".send(param_method), klass
+          role_class.last.resource_type.should eq(klass.to_s)
+        end
+      end
     end
 
     context "with an instance scoped role", :scope => :instance do
@@ -85,6 +94,15 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
         it "if already existing in the database" do
           role_class.create :name => "ghost", :resource_type => "Forum", :resource_id => Forum.first.id
           expect { subject.add_role "ghost".send(param_method), Forum.first }.not_to change { role_class.count }
+        end
+      end
+
+      context "and resource is an STI type", :if => (Rolify.orm == 'active_record'), :sti => true do
+        let(:klass) { Class.new(Forum) }
+
+        it "should use the base_class name for resource_type" do
+          subject.add_role "supervisor".send(param_method), klass.last
+          role_class.last.resource_type.should eq(Forum.to_s)
         end
       end
     end

@@ -177,6 +177,18 @@ describe Rolify do
       its("adapter.class") { should be(Rolify::Adapter::RoleAdapter) }
     end
 
+    context "on a User STI subclass" do
+      before do
+        MUser.rolify
+      end
+
+      subject { Class.new MUser }
+
+      it { should satisfy { |u| u.include? Rolify::Role }}
+      it { should satisfy { |u| u.singleton_class.include? Rolify::Dynamic } }
+      its("adapter.class") { should be(Rolify::Adapter::RoleAdapter) }
+    end
+
     context "on the Forum class" do
       before do
         Forum.resourcify

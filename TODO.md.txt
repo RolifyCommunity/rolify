@@ -1,0 +1,59 @@
+# STI problems
+
+# STI User type
+
+    class User < ActiveRecord::Base
+      self.abstract_class = true
+    end
+
+    class EmailUser < User; end
+    class OauthUser < User; end
+
+    # these should all work
+
+    e = Emailuser.new
+    e.add_role :guest
+
+    o = OauthUser.new
+    o.add_role :admin
+
+# STI Resource type
+
+    class User < ActiveRecord::Base
+    end
+
+    class Content < ActiveRecord::Base
+      self.abstract_type = true
+    end
+
+    class Article < Content; end
+    class Post < Content; end
+    class Comment < Content; end
+
+    # with a class resource, role applies to subclasses
+    u.add_role :edit, Content
+    u.has_role? :edit, Content       # => true
+    u.has_role? :edit, Post          # => true
+    u.has_role? :edit, Content.first # => true
+    u.has_role? :edit, Post.first    # => true
+
+    # but doesn't apply to parent types
+    u.add_role :read, Comment
+    u.has_role? :read, Comment # => true
+    u.has_role? :read, Content # => false
+    u.has_role? :read, Post    # => false
+
+    # with a instance resource role only applies to instance like
+    # normal. STI doesn't change any behavior here
+    post = Post.first
+    u.add_role :read, post
+    u.has_role? :read, post      # => true
+    u.has_role? :read, Post      # => false
+    u.has_role? :read, Post.last # => true
+
+    # But now the base class is recorded in the role's resource_type
+    # column, which is how polymorphic associations work
+    post = Post.first
+    u.add_role :read, post
+    u.roles.first.resource_type # => Content
+    u.roles.first.resource      # => #<Post id:1 ... >
