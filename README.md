@@ -187,6 +187,10 @@ Forum.with_role(:admin, current_user)
 
 User.with_any_role(:user, :admin)
 # => [ list of User instances that has role "admin" or "user" binded to it ]
+User.with_role(:site_admin, current_site)
+# => [ list of User instances that have a scoped role of "site_admin" to a site instance ]
+User.with_role(:site_admin, :any)
+# => [ list of User instances that have a scoped role of "site_admin" for any site instances ]
 
 Forum.find_roles
 # => [ list of roles that binded to any Forum instance or to the Forum class ]
