@@ -54,6 +54,10 @@ module Rolify
     def remove_role(role_name, resource = nil)
       self.class.adapter.remove(self, role_name.to_s, resource)
     end
+
+    def remove_role_from_user_for_resource(role_name, resource)
+      self.class.adapter.remove_from_resource(self, role_name.to_s, resource)
+    end
     
     alias_method :revoke, :remove_role
     deprecate :has_no_role, :remove_role
