@@ -22,12 +22,23 @@ module Rolify
     alias_method :grant, :add_role
     deprecate :has_role, :add_role
 
-    def has_role?(role_name, resource = nil)
-      if new_record?
-        self.roles.detect { |r| r.name == role_name.to_s && (r.resource == resource || resource.nil?) }.present?
-      else
-        self.class.adapter.where(self.roles, :name => role_name, :resource => resource).size > 0
+    def has_role?(role_name, resource = nil, refresh = false)
+      @role_cache ||= {}
+      
+      key = role_name.to_s
+      key << "|#{ActiveSupport::Cache.expand_cache_key resource}" if resource
+      
+      if ! @role_cache.has_key?(key) or refresh
+        @role_cache[key] = begin
+          if new_record?
+            self.roles.detect { |r| r.name == role_name.to_s && (r.resource == resource || resource.nil?) }.present?
+          else
+            self.class.adapter.where(self.roles, :name => role_name, :resource => resource).size > 0
+          end
+        end
       end
+      
+      @role_cache[key]
     end
 
     def has_all_roles?(*args)
