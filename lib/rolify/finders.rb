@@ -4,9 +4,15 @@ module Rolify
       self.adapter.scope(self, :name => role_name, :resource => resource)
     end
 
+    def with_roles(role_names, resource = nil)
+      role_names.map do |role_name|
+        with_role(role_name, resource)
+      end.flatten.uniq
+    end
+
     def with_all_roles(*args)
       users = []
-      parse_args(args, users) do |users_to_add|
+      parse_args(args) do |users_to_add|
         users = users_to_add if users.empty?
         users &= users_to_add
         return [] if users.empty?
@@ -16,7 +22,7 @@ module Rolify
 
     def with_any_role(*args)
       users = []
-      parse_args(args, users) do |users_to_add|
+      parse_args(args) do |users_to_add|
         users += users_to_add
       end
       users.uniq
@@ -25,7 +31,7 @@ module Rolify
   
   private
   
-  def parse_args(args, users, &block)
+  def parse_args(args, &block)
     args.each do |arg|
       if arg.is_a? Hash
         users_to_add = self.with_role(arg[:name], arg[:resource])
