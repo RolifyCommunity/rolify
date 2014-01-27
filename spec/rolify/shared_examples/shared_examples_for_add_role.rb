@@ -40,9 +40,10 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
       end
 
       context "considering a new class scoped role" do
+        before { role_class.create name: "boss".send(param_method), resource_type: "Forum" }
         subject { role_class.last }
-
-        its(:name) { should eq("moderator") }
+      
+        its(:name) { should eq("boss") }
         its(:resource_type) { should eq(Forum.to_s) }
         its(:resource_id) { should be(nil) }
       end
