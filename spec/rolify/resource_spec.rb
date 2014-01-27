@@ -339,6 +339,7 @@ describe Rolify::Resource do
   end
 
   describe "#roles" do
+    before(:all) { Role.destroy_all }
     subject { Forum.first }
 
     it { should respond_to :roles }

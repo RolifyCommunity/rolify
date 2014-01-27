@@ -1,3 +1,12 @@
+= 3.4 (not released yet)
+* fixed an initializer bug preventing the rails app to boot
+* enhanced documentation regarding <tt>with_role</tt> method (thanks to @vicomte)
+* added <tt>select(:id)</tt> in SQL subquery used by <tt>in</in> method in ActiveRecord adapter (thanks to @ryanaip and @badaboda)
+* improved speed when removing roles using <tt>LIMIT(1)</tt> instead of <tt>COUNT</tt> (thanks to @yankovski)
+* fixed travis builds for rubinius and mongoid
+* fixed sanity check running before Rolify.config to ensure roles table exists
+* fixed <tt>has_any_role?</tt> to work with unsaved records (thanks to @mhw)
+
 = 3.3 (Jan 26, 2014)
 * <b>DEPRECATION NOTICE:</b>Rails 3.1 support dropped: if you use Rails 3.1, please stick to rolify 3.2
 * code cleanup in finders methods
