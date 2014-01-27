@@ -30,6 +30,17 @@ module Rolify
         roles
       end
 
+      def remove_from_resource(relation, role_name, resource)
+        cond = { :name => role_name }
+        cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
+        cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
+        roles = relation.roles.where(cond)
+        if roles
+          relation.roles.delete(roles)
+        end
+        roles
+      end
+
       def exists?(relation, column)
         relation.where("#{column} IS NOT NULL")
       end
