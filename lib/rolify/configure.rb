@@ -29,7 +29,7 @@ module Rolify
     end
     
     def use_dynamic_shortcuts
-      self.dynamic_shortcuts = true #if defined?(Rails::Server) || defined?(Rails::Console)
+      self.dynamic_shortcuts = true
     end
 
     def use_defaults
@@ -45,7 +45,7 @@ module Rolify
       role_cnames = [ "Role" ] if role_cnames.empty?
       role_cnames.each do |role_cname|
         role_class = role_cname.constantize
-        if role_class.superclass.to_s == "ActiveRecord" && !role_class.table_exists?
+        if role_class.superclass.to_s == "ActiveRecord::Base" && !role_class.table_exists?
           warn "[WARN] table '#{role_cname}' doesn't exist. Did you run the migration ? Ignoring rolify config."
           return false
         end
