@@ -93,6 +93,7 @@ shared_examples_for Rolify::Role do
     
     it { should have_role :admin }
     it { should have_role :moderator, Forum.first }    
+    it { subject.has_any_role?(:admin).should be_true }
   end  
   
   context "on the Class level ", :scope => :mixed do  
