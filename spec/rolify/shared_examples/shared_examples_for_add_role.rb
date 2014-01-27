@@ -10,8 +10,7 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
       end
 
       context "considering a new global role" do
-        before { role_class.create name: "expert".send(param_method) }
-        subject { role_class.last }
+        subject { role_class.create name: "expert".send(param_method) }
 
         its(:name) { should eq("expert") }
         its(:resource_type) { should be(nil) }
@@ -41,8 +40,7 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
       end
 
       context "considering a new class scoped role" do
-        before { role_class.create name: "boss".send(param_method), resource_type: "Forum" }
-        subject { role_class.last }
+        subject { role_class.create name: "boss".send(param_method), resource_type: "Forum" }
       
         its(:name) { should eq("boss") }
         its(:resource_type) { should eq(Forum.to_s) }
@@ -72,9 +70,9 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
       end
 
       context "considering a new class scoped role" do
-        subject { role_class.last }
+        subject { role_class.create name: "mate".send(param_method), resource: Forum.last }
 
-        its(:name) { should eq("member") }
+        its(:name) { should eq("mate") }
         its(:resource) { should eq(Forum.last) }
       end
 
