@@ -18,4 +18,8 @@ services: mongodb
 matrix:
   exclude:
     - rvm: rbx
+      gemfile: gemfiles/Gemfile.rails-3.2 
+      env: ADAPTER=mongoid
+    - rvm: rbx
+      gemfile: gemfiles/Gemfile.rails-4.0 
       env: ADAPTER=mongoid
