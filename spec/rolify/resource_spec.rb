@@ -46,7 +46,7 @@ describe Rolify::Resource do
         it "should be able to modify the resource", :if => ENV['ADAPTER'] == 'active_record' do
           forum_resource = subject.with_role(:forum).first
           forum_resource.name = "modified name"
-          expect(forum_resource.save).not_to raise_error
+          expect { forum_resource.save }.not_to raise_error
         end
       end
 

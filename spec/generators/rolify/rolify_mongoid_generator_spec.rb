@@ -1,7 +1,5 @@
 require 'generators_helper'
 
-require 'mongoid'
-
 # Generators are not automatically loaded by Rails
 require 'generators/rolify/rolify_generator'
 

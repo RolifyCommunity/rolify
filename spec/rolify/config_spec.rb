@@ -1,14 +1,14 @@
 require "spec_helper"
-require "active_record"
-require "mongoid"
 
-class ARUser < ActiveRecord::Base
-  extend Rolify
-end
-
-class MUser
-  include Mongoid::Document
-  extend Rolify
+if ENV['ADAPTER'] == 'active_record'
+  class ARUser < ActiveRecord::Base
+    extend Rolify
+  end
+else
+  class MUser
+    include Mongoid::Document
+    extend Rolify
+  end
 end
 
 describe Rolify do
@@ -35,14 +35,14 @@ describe Rolify do
   end
 
   describe :orm do 
-    context "using defaults values" do
+    context "using defaults values", :if => ENV['ADAPTER'] == 'active_record' do
       subject { Rolify.orm }
 
       it { should eq("active_record") }
       
       context "on the User class" do
         before do
-          ARUser.rolify
+          subject.rolify
         end
         
         subject { ARUser }
@@ -52,7 +52,7 @@ describe Rolify do
       
       context "on the Forum class" do
         before do
-          Forum.resourcify
+          subject.resourcify
         end
         
         subject { Forum }
@@ -61,7 +61,7 @@ describe Rolify do
       end
     end
 
-    context "using custom values" do
+    context "using custom values", :if => ENV['ADAPTER'] == 'mongoid' do
       context "using :orm setter method" do
         before do
           Rolify.orm = "mongoid"
@@ -165,7 +165,7 @@ describe Rolify do
     its(:dynamic_shortcuts) { should be_true }
     its(:orm) { should eq("mongoid") }
     
-    context "on the User class" do
+    context "on the User class", :if => ENV['ADAPTER'] == 'mongoid' do
       before do
         MUser.rolify
       end

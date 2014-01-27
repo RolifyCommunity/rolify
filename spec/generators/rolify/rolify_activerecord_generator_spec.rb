@@ -1,6 +1,5 @@
 require 'generators_helper'
 
-require 'rails/all'
 # Generators are not automatically loaded by Rails
 require 'generators/rolify/rolify_generator'
 

@@ -3,7 +3,7 @@ require "bundler/setup"
 
 require 'rolify'
 require 'rolify/matchers'
-require 'rails/all'
+require 'rails'
 
 require 'coveralls'
 Coveralls.wear_merged!

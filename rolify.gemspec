@@ -25,6 +25,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-rails", ">= 2.0"
   s.add_development_dependency "bundler"
   s.add_development_dependency "fuubar" 
-  s.add_development_dependency "activerecord", ">= 3.2.0"
-  s.add_development_dependency "mongoid", ">= 3.1"
 end
