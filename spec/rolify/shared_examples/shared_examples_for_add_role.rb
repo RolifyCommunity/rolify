@@ -10,9 +10,10 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
       end
 
       context "considering a new global role" do
+        before { role_class.create name: "expert".send(param_method) }
         subject { role_class.last }
 
-        its(:name) { should eq("moderator") }
+        its(:name) { should eq("expert") }
         its(:resource_type) { should be(nil) }
         its(:resource_id) { should be(nil) }
       end

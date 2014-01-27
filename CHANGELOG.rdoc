@@ -6,6 +6,7 @@
 * fixed travis builds for rubinius and mongoid
 * fixed sanity check running before Rolify.config to ensure roles table exists
 * fixed <tt>has_any_role?</tt> to work with unsaved records (thanks to @mhw)
+* fixed specs for Mongoid
 
 = 3.3 (Jan 26, 2014)
 * <b>DEPRECATION NOTICE:</b>Rails 3.1 support dropped: if you use Rails 3.1, please stick to rolify 3.2
