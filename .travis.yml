@@ -15,4 +15,7 @@ env:
 
 services: mongodb
 
-before_script: rails --version
+matrix:
+  exclude:
+    - rvm: rbx
+      env: ADAPTER=mongoid

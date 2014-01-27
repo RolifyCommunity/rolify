@@ -215,7 +215,8 @@ Please read the [upgrade instructions](UPGRADE.rdoc).
 
 ## Known issues
 
-If you are using Mongoid and/or less-rails gem, please read [this](https://github.com/EppO/rolify/wiki/FAQ#when-i-start-rails-using-server-console-whatever-i-get-this-error)
+* If you are using Mongoid and/or less-rails gem, please read [this](https://github.com/EppO/rolify/wiki/FAQ#when-i-start-rails-using-server-console-whatever-i-get-this-error)
+* Moped library (ruby driver for Mongodb used by Mongoid) doesn't support rubinius 2.2 yet (see https://github.com/mongoid/moped/issues/231)
 
 ## Questions or Problems?
 
