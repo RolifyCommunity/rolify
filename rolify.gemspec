@@ -6,6 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "rolify"
   s.version     = Rolify::VERSION
   s.platform    = Gem::Platform::RUBY
+  s.license     = "MIT"
   s.authors     = ["Florent Monbillard"]
   s.email       = ["f.monbillard@gmail.com"]
   s.homepage    = "http://eppo.github.com/rolify/"
