@@ -345,7 +345,7 @@ describe Rolify::Resource do
     it { should respond_to :roles }
 
     context "on a Forum instance" do
-      its(:roles) { should eq([ forum_role, sneaky_role ]) }
+      its(:roles) { should match_array( [ forum_role, sneaky_role ]) }
       its(:roles) { should_not include(group_role, godfather_role, tourist_role) }
     end
 

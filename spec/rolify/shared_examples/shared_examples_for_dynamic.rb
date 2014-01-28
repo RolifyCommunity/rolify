@@ -44,7 +44,6 @@ shared_examples_for Rolify::Dynamic do
       moderator
     end
     
-    it { should respond_to(:is_admin?).with(0).arguments }
     it { should respond_to(:is_moderator?).with(0).arguments }
     it { should respond_to(:is_moderator_of?).with(1).arguments }
     it { should_not respond_to(:is_god?) }
@@ -76,9 +75,6 @@ shared_examples_for Rolify::Dynamic do
       manager
     end
     
-    it { should respond_to(:is_admin?).with(0).arguments }
-    it { should respond_to(:is_moderator?).with(0).arguments }
-    it { should respond_to(:is_moderator_of?).with(1).arguments }
     it { should respond_to(:is_manager?).with(0).arguments }
     it { should respond_to(:is_manager_of?).with(1).arguments }
     it { should_not respond_to(:is_god?) }
