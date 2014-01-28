@@ -1,10 +1,10 @@
-= 3.4 (not released yet)
+= 3.4 (Jan 28, 2014)
 * fixed an initializer bug preventing the rails app to boot
 * enhanced documentation regarding <tt>with_role</tt> method (thanks to @vicomte)
-* added <tt>select(:id)</tt> in SQL subquery used by <tt>in</in> method in ActiveRecord adapter (thanks to @ryanaip and @badaboda)
+* added <tt>select(:id)</tt> in SQL subquery used by <tt>in</tt> method in ActiveRecord adapter (thanks to @ryanaip and @badaboda)
 * improved speed when removing roles using <tt>LIMIT(1)</tt> instead of <tt>COUNT</tt> (thanks to @yankovski)
 * fixed travis builds for rubinius and mongoid
-* fixed sanity check running before Rolify.config to ensure roles table exists
+* fixed sanity check running before <tt>Rolify.config</tt> to ensure roles table exists
 * fixed <tt>has_any_role?</tt> to work with unsaved records (thanks to @mhw)
 * fixed specs for Mongoid
 
