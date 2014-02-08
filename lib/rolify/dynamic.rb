@@ -7,7 +7,7 @@ module Rolify
     end
 
     def define_dynamic_method(role_name, resource)
-      class_eval do 
+      class_eval do
         define_method("is_#{role_name}?".to_sym) do
           has_role?("#{role_name}")
         end if !method_defined?("is_#{role_name}?".to_sym)

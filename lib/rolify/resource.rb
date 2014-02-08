@@ -4,7 +4,7 @@ module Rolify
       base.extend ClassMethods
     end
 
-    module ClassMethods 
+    module ClassMethods
       def find_roles(role_name = nil, user = nil)
         roles = user && (user != :any) ? user.roles : self.role_class
         roles = roles.where(:resource_type => self.to_s)
@@ -23,7 +23,7 @@ module Rolify
       end
       alias :with_roles :with_role
     end
-    
+
     def applied_roles
       self.roles + self.class.role_class.where(:resource_type => self.class.to_s, :resource_id => nil)
     end
