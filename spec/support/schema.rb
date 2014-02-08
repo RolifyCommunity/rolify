@@ -25,7 +25,7 @@ ActiveRecord::Schema.define do
     t.integer :parent_id
     t.string :name
   end
-  
+
   create_table(:teams, :id => false) do |t|
     t.primary_key :team_code
     t.string :name

@@ -7,7 +7,7 @@ module Rolify
       ActiveSupport.on_load(:active_record) do
         ActiveRecord::Base.send :extend, Rolify
       end
-      
+
       config.before_initialize do
         ::Mongoid::Document.module_eval do
           def self.included(base)

@@ -3,14 +3,14 @@ require "rolify/finders"
 module Rolify
   module Role
     extend Utils
-    
+
     def self.included(base)
       base.extend Finders
     end
-          
+
     def add_role(role_name, resource = nil)
-      role = self.class.adapter.find_or_create_by(role_name.to_s, 
-                                                  (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
+      role = self.class.adapter.find_or_create_by(role_name.to_s,
+                                                  (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource),
                                                   (resource.id if resource && !resource.is_a?(Class)))
 
       if !roles.include?(role)
@@ -50,7 +50,7 @@ module Rolify
         self.class.adapter.where(self.roles, *args).size > 0
       end
     end
-    
+
     def only_has_role?(role_name, resource = nil)
       return self.has_role?(role_name,resource) && self.roles.count == 1
     end
@@ -58,7 +58,7 @@ module Rolify
     def remove_role(role_name, resource = nil)
       self.class.adapter.remove(self, role_name.to_s, resource)
     end
-    
+
     alias_method :revoke, :remove_role
     deprecate :has_no_role, :remove_role
 

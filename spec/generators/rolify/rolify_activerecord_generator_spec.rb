@@ -7,11 +7,11 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
   # Tell the generator where to put its output (what it thinks of as Rails.root)
   destination File.expand_path("../../../../tmp", __FILE__)
   teardown :cleanup_destination_root
-  
-  before { 
+
+  before {
     prepare_destination
   }
-  
+
   def cleanup_destination_root
     FileUtils.rm_rf destination_root
   end
@@ -19,7 +19,7 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
   describe 'specifying only Role class name' do
     before(:all) { arguments %w(Role) }
 
-    before { 
+    before {
       capture(:stdout) {
         generator.create_file "app/models/user.rb" do
           <<-RUBY
@@ -29,9 +29,9 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
         end
       }
       require File.join(destination_root, "app/models/user.rb")
-      run_generator 
+      run_generator
     }
-    
+
     describe 'config/initializers/rolify.rb' do
       subject { file('config/initializers/rolify.rb') }
       it { should exist }

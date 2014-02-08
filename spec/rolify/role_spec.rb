@@ -12,7 +12,7 @@ describe Rolify do
   def role_class
     Role
   end
-  
+
   it_behaves_like Rolify::Role
   it_behaves_like "Role.scopes"
   it_behaves_like Rolify::Dynamic
