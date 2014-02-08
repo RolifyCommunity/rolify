@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
 end
 
 class Role < ActiveRecord::Base
-  has_and_belongs_to_many :users, :join_table => :users_roles
+  belongs_to :user
   belongs_to :resource, :polymorphic => true
 
   extend Rolify::Adapter::Scopes
@@ -30,7 +30,7 @@ class Customer < ActiveRecord::Base
 end
 
 class Privilege < ActiveRecord::Base
-  has_and_belongs_to_many :customers, :join_table => :customers_privileges
+  belongs_to :customer
   belongs_to :resource, :polymorphic => true
 
   extend Rolify::Adapter::Scopes
@@ -41,17 +41,17 @@ module Admin
   def self.table_name_prefix
     'admin_'
   end
-  
+
   class Moderator < ActiveRecord::Base
-    rolify :role_cname => "Admin::Right", :role_join_table_name => "moderators_rights"
+    rolify :role_cname => "Admin::Right"
   end
 
   class Right < ActiveRecord::Base
-    has_and_belongs_to_many :moderators, :class_name => "Admin::Moderator", :join_table => "moderators_rights"
+    belongs_to :moderator
     belongs_to :resource, :polymorphic => true
 
     extend Rolify::Adapter::Scopes
-  end  
+  end
 end
 
 

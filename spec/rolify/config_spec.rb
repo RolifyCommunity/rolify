@@ -16,7 +16,7 @@ describe Rolify do
     Rolify.use_defaults
   end
 
-  describe :dynamic_shortcuts do 
+  describe :dynamic_shortcuts do
     context "using defaults values" do
       subject { Rolify.dynamic_shortcuts }
 

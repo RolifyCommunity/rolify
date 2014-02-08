@@ -4,8 +4,9 @@ ActiveRecord::Schema.define do
   [ :roles, :privileges, :admin_rights ].each do |table|
     create_table(table) do |t|
     t.string :name
+    t.belongs_to :user
     t.references :resource, :polymorphic => true
-  
+
     t.timestamps
     end
   end
@@ -14,26 +15,6 @@ ActiveRecord::Schema.define do
     create_table(table) do |t|
       t.string :login
     end
-  end
-
-  create_table(:users_roles, :id => false) do |t|
-    t.references :user
-    t.references :role
-  end
-  
-  create_table(:human_resources_roles, :id => false) do |t|
-    t.references :human_resource
-    t.references :role
-  end
-  
-  create_table(:customers_privileges, :id => false) do |t|
-    t.references :customer
-    t.references :privilege
-  end
-  
-  create_table(:moderators_rights, :id => false) do |t|
-    t.references :moderator
-    t.references :right
   end
 
   create_table(:forums) do |t|
