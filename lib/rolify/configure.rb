@@ -2,7 +2,7 @@ module Rolify
   module Configure
     @@dynamic_shortcuts = false
     @@orm = "active_record"
-     
+
     def configure(*role_cnames)
       return if !sanity_check(role_cnames)
       yield self if block_given?
@@ -27,7 +27,7 @@ module Rolify
     def use_mongoid
       self.orm = "mongoid"
     end
-    
+
     def use_dynamic_shortcuts
       self.dynamic_shortcuts = true
     end
@@ -38,9 +38,9 @@ module Rolify
         config.orm = "active_record"
       end
     end
-    
+
     private
-    
+
     def sanity_check(role_cnames)
       role_cnames = [ "Role" ] if role_cnames.empty?
       role_cnames.each do |role_cname|
@@ -52,9 +52,9 @@ module Rolify
       end
       true
     end
-    
+
     def role_table_missing?(role_class)
-      role_class.connected? && !role_class.table_exists?
+      !role_class.table_exists?
     end
   end
 end
