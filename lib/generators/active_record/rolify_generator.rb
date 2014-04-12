@@ -13,6 +13,15 @@ module ActiveRecord
       end
       
       def inject_role_class
+        if args[1]=="engine"
+          if args[2]=="devise"
+            require 'devise'
+            require "#{ENGINE_ROOT}/config/initializers/devise.rb"
+            require "#{ENGINE_ROOT}/app/models/#{user_cname.downcase}.rb"
+          else
+            require "#{ENGINE_ROOT}/app/models/#{user_cname.downcase}.rb"
+          end
+        end
         inject_into_class(model_path, class_name, model_content)
       end
       
