@@ -24,12 +24,21 @@ describe Rolify::Resource do
   let!(:sneaky_role)     { tourist.add_role(:group, Forum.first) }
   let!(:captain_role)    { captain.add_role(:captain, Team.first) }
   let!(:player_role)     { captain.add_role(:player, Team.last) }
+  let!(:topic_role)      { admin.add_role(:topic, Topic.last) }
+  let!(:discussion_role) { admin.add_role(:discussion, Topic.first) }
 
   describe ".with_roles" do
     subject { Group }
 
     it { should respond_to(:find_roles).with(1).arguments }
     it { should respond_to(:find_roles).with(2).arguments }
+
+    context "on the Topic class" do
+      subject { Topic }
+
+      it { should respond_to(:find_roles).with(1).arguments }
+      it { should respond_to(:find_roles).with(2).arguments }
+    end
 
     context "with a role name as argument" do
       context "on the Forum class" do
@@ -65,6 +74,14 @@ describe Rolify::Resource do
           subject.subgroups.with_role(:group).should =~ [ ]
         end
       end
+
+      context "on the Topic class" do
+        subject { Topic }
+
+        it "should include Topic instances with topic role" do
+          subject.with_role(:topic).should =~ [ Topic.last ]
+        end
+      end
     end
 
     context "with an array of role names as argument" do
@@ -73,6 +90,14 @@ describe Rolify::Resource do
 
         it "should include Group instances with both group and grouper roles" do
           subject.with_roles([:group, :grouper]).should =~ [ Group.first, Group.last ]
+        end
+      end
+
+      context "on the Topic class" do
+        subject { Topic }
+
+        it "should include Topic instances with topic role" do
+          subject.with_roles([:topic, :discussion]).should =~ [ Topic.first, Topic.last ]
         end
       end
     end
@@ -117,6 +142,18 @@ describe Rolify::Resource do
           subject.with_role(:group, admin).should_not include(Group.first)
         end
       end
+
+      context "on the Topic class" do
+        subject { Topic }
+
+        it "should get all resources binded to the topic role and the admin user" do
+          subject.with_role(:topic, admin).should =~ [ Topic.last ]
+        end
+
+        it "should not get resources not binded to the topic role and the admin user" do
+          subject.with_role(:topic, admin).should_not include(Topic.first)
+        end
+      end
     end
 
     context "with an array of role names and a user as arguments" do
@@ -136,6 +173,14 @@ describe Rolify::Resource do
           subject.with_roles([:group, :grouper], admin).should =~ [ Group.first, Group.last ]
         end
 
+      end
+
+      context "on the Topic class" do
+        subject { Topic }
+
+        it "should get Topic intances binded to the topic and discussion roles and the admin user" do
+          subject.with_roles([:topic, :discussion], admin).should =~ [ Topic.first, Topic.last ]
+        end
       end
     end
     

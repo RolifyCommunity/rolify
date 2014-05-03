@@ -18,14 +18,32 @@ module Rolify
         else
           role_name = role_name.to_s
         end
-        resources = self.adapter.resources_find(self.role_table_name, self, role_name)
-        user ? self.adapter.in(resources, user, role_name) : resources
+        klass = class_with_adapter
+        resources = klass.adapter.resources_find(klass.role_table_name, self, role_name)
+        user ? klass.adapter.in(resources, user, role_name) : resources
       end
       alias :with_roles :with_role
+
+      private
+      def class_with_adapter(klass = self)
+        while ( !klass.adapter )
+          klass = klass.superclass
+        end
+        klass
+      end
     end
     
     def applied_roles
-      self.roles + self.class.role_class.where(:resource_type => self.class.to_s, :resource_id => nil)
+      klass = class_with_adapter(self.class)
+      self.roles + klass.role_class.where(:resource_type => self.class.to_s, :resource_id => nil)
+    end
+
+    private
+    def class_with_adapter(klass = self)
+      while ( !klass.adapter )
+        klass = klass.superclass
+      end
+      klass
     end
   end
 end

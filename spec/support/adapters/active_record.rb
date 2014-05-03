@@ -60,6 +60,10 @@ class Forum < ActiveRecord::Base
   #resourcify done during specs setup to be able to use custom user classes
 end
 
+class Topic < Forum
+  #resourcify is done on superclass, not here
+end
+
 class Group < ActiveRecord::Base
   #resourcify done during specs setup to be able to use custom user classes
 
