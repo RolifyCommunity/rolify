@@ -32,10 +32,15 @@ module Rolify
         klass
       end
     end
+
+    def roles_for_class
+      # this is a corrected roles relation ( to deal with polymorphism inheritance )
+      self.roles.unscoped.where(resource_id: self.id, resource_type: self.class.name)
+    end
     
     def applied_roles
       klass = class_with_adapter(self.class)
-      self.roles + klass.role_class.where(:resource_type => self.class.to_s, :resource_id => nil)
+      self.roles_for_class + klass.role_class.where(:resource_type => self.class.to_s, :resource_id => nil)
     end
 
     private

@@ -417,6 +417,47 @@ describe Rolify::Resource do
     end
   end
 
+  describe "#roles_for_class" do
+    before(:all) { Role.destroy_all }
+    subject { Forum.first }
+
+    it { should respond_to :roles_for_class }
+
+    context "on a Forum instance" do
+      its(:roles_for_class) { should match_array( [ forum_role, sneaky_role ]) }
+      its(:roles_for_class) { should_not include(group_role, godfather_role, tourist_role) }
+    end
+
+    context "on a Group instance" do
+      subject { Group.last }
+
+      its(:roles_for_class) { should eq([ group_role ]) }
+      its(:roles_for_class) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role) }
+
+      context "when deleting a Group instance" do
+        subject do
+          Group.create(:name => "to delete")
+        end
+
+        before do
+          subject.roles.create :name => "group_role1"
+          subject.roles.create :name => "group_role2"
+        end
+
+        it "should remove the roles binded to this instance" do
+          expect { subject.destroy }.to change { Role.count }.by(-2)
+        end
+      end
+    end
+
+    context "on a Topic instance" do
+      subject { Topic.last }
+
+      its(:roles_for_class) { should =~ [ topic_role ] }
+      its(:roles_for_class) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role, discussion_role) }
+    end
+  end
+
   describe "#applied_roles" do
     context "on a Forum instance" do
       subject { Forum.first }
@@ -430,6 +471,13 @@ describe Rolify::Resource do
 
       its(:applied_roles) { should =~ [ group_role ] }
       its(:applied_roles) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role) }
+    end
+
+    context "on a Topic instance" do
+      subject { Topic.last }
+
+      its(:applied_roles) { should =~ [ topic_role ] }
+      its(:applied_roles) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role, discussion_role) }
     end
   end
 end
