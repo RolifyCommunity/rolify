@@ -119,7 +119,7 @@ describe Rolify::Resource do
         end
 
         it "should get all Forum instances binded to the godfather role and the tourist user" do
-          subject.with_role(:godfather, tourist).should be_empty
+          subject.with_role(:godfather, tourist).should =~ [ ]
         end
 
         it "should get Forum instances binded to the group role and the tourist user" do
