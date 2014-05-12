@@ -24,7 +24,9 @@ module Rolify
 
     def has_role?(role_name, resource = nil)
       if new_record?
-        self.roles.detect { |r| r.name == role_name.to_s && (r.resource == resource || resource.nil?) }.present?
+        self.roles.detect { |r| r.name == role_name.to_s && ((resource == :any) ||
+        (r.resource.nil? && (r.resource_type.nil? || (r.resource_type == resource.class.to_s))) ||
+        (r.resource == resource))}.present?
       else
         self.class.adapter.where(self.roles, :name => role_name, :resource => resource).size > 0
       end
