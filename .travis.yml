@@ -2,7 +2,7 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.1
-  - rbx
+  - rbx-2
   - jruby-19mode
 
 gemfile:
@@ -19,14 +19,5 @@ services: mongodb
 matrix:
   fast_finish: true
   exclude:
-    - rvm: rbx
-      gemfile: gemfiles/Gemfile.rails-3.2
-      env: ADAPTER=mongoid
-    - rvm: rbx
-      gemfile: gemfiles/Gemfile.rails-4.0
-      env: ADAPTER=mongoid
-    - rvm: rbx
-      gemfile: gemfiles/Gemfile.rails-4.1
-      env: ADAPTER=mongoid
     - rvm: 1.9.3
       gemfile: gemfiles/Gemfile.rails-4.1
