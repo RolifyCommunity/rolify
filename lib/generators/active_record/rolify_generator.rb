@@ -17,7 +17,7 @@ module ActiveRecord
       end
       
       def copy_rolify_migration
-        migration_template "migration.rb", "db/migrate/rolify_create_#{table_name}"
+        migration_template "migration.rb", "db/migrate/rolify_create_#{table_name}.rb"
       end
       
       def join_table
