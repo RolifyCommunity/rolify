@@ -18,7 +18,7 @@ module Rolify
         else
           role_name = role_name.to_s
         end
-        resources = self.adapter.resources_find(self.role_table_name, self, role_name)
+        resources = self.adapter.resources_find(self.role_table_name, self, role_name).select(:id)
         user ? self.adapter.in(resources, user, role_name) : resources
       end
       alias :with_roles :with_role
