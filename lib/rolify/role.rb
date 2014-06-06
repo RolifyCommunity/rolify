@@ -23,10 +23,14 @@ module Rolify
     deprecate :has_role, :add_role
 
     def has_role?(role_name, resource = nil)
+      @r_map ||= {}
+      role_n_resource = role_name.to_s + resource.to_s
+      @r_map[role_n_resource].nil? ? @r_map[role_n_resource] = has_role_helper(role_name, resource) : @r_map[role_n_resource]
+    end
+
+    def has_role_helper(role_name, resource = nil)
       if new_record?
-        self.roles.detect { |r| r.name == role_name.to_s && ((resource == :any) ||
-        (r.resource.nil? && (r.resource_type.nil? || (r.resource_type == resource.class.to_s))) ||
-        (r.resource == resource))}.present?
+        self.roles.detect { |r| r.name == role_name.to_s && (r.resource == resource || resource.nil?) }.present?
       else
         self.class.adapter.where(self.roles, :name => role_name, :resource => resource).size > 0
       end
