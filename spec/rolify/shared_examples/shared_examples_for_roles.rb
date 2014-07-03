@@ -90,9 +90,14 @@ shared_examples_for Rolify::Role do
     end
 
     subject { user }
-    
+
     it { should have_role :admin }
-    it { should have_role :moderator, Forum.first }    
+    it { should have_role :admin, Forum }
+    it { should have_role :admin, :any }
+    it { should have_role :moderator, Forum.first }
+    it { should have_role :moderator, :any }
+    it { should_not have_role :moderator }
+    it { should_not have_role :moderator, Forum }
     it { subject.has_any_role?(:admin).should be_true }
   end  
   
