@@ -28,9 +28,9 @@ module Rolify
       users.uniq
     end
   end
-  
+
   private
-  
+
   def parse_args(args, &block)
     args.each do |arg|
       if arg.is_a? Hash
