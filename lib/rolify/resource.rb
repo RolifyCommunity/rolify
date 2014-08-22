@@ -18,7 +18,7 @@ module Rolify
 
         resources = self.adapter.resources_find(self.role_table_name, self, role_name) #.map(&:id)
         resources = user ? self.adapter.in(resources, user, role_name) : resources
-        resources.distinct
+        resources.distinct.except(:select)
       end
       alias :with_roles :with_role
 
