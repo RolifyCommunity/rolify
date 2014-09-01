@@ -122,6 +122,10 @@ class Forum
   field :name, :type => String
 end
 
+class Topic < Forum
+  #resourcify is done on superclass, not here
+end
+
 class Group
   include Mongoid::Document
   #resourcify done during specs setup to be able to use custom user classes

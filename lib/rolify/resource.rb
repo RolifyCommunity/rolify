@@ -18,14 +18,37 @@ module Rolify
         else
           role_name = role_name.to_s
         end
-        resources = self.adapter.resources_find(self.role_table_name, self, role_name).select(:id)
-        user ? self.adapter.in(resources, user, role_name) : resources
+        klass = class_with_adapter
+        resources = klass.adapter.resources_find(klass.role_table_name, self, role_name).select(:id)
+        user ? klass.adapter.in(resources, user, role_name) : resources
       end
       alias :with_roles :with_role
+
+      private
+      def class_with_adapter(klass = self)
+        while ( !klass.adapter )
+          klass = klass.superclass
+        end
+        klass
+      end
+    end
+
+    def roles_for_class
+      # this is a corrected roles relation ( to deal with polymorphism inheritance )
+      self.roles.unscoped.where(resource_id: self.id, resource_type: self.class.name)
     end
     
     def applied_roles
-      self.roles + self.class.role_class.where(:resource_type => self.class.to_s, :resource_id => nil)
+      klass = class_with_adapter(self.class)
+      self.roles_for_class + klass.role_class.where(:resource_type => self.class.to_s, :resource_id => nil)
+    end
+
+    private
+    def class_with_adapter(klass = self)
+      while ( !klass.adapter )
+        klass = klass.superclass
+      end
+      klass
     end
   end
 end

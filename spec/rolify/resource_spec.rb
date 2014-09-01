@@ -24,12 +24,21 @@ describe Rolify::Resource do
   let!(:sneaky_role)     { tourist.add_role(:group, Forum.first) }
   let!(:captain_role)    { captain.add_role(:captain, Team.first) }
   let!(:player_role)     { captain.add_role(:player, Team.last) }
+  let!(:topic_role)      { admin.add_role(:topic, Topic.last) }
+  let!(:discussion_role) { admin.add_role(:discussion, Topic.first) }
 
   describe ".with_roles" do
     subject { Group }
 
     it { should respond_to(:find_roles).with(1).arguments }
     it { should respond_to(:find_roles).with(2).arguments }
+
+    context "on the Topic class" do
+      subject { Topic }
+
+      it { should respond_to(:find_roles).with(1).arguments }
+      it { should respond_to(:find_roles).with(2).arguments }
+    end
 
     context "with a role name as argument" do
       context "on the Forum class" do
@@ -65,6 +74,14 @@ describe Rolify::Resource do
           subject.subgroups.with_role(:group).should =~ [ ]
         end
       end
+
+      context "on the Topic class" do
+        subject { Topic }
+
+        it "should include Topic instances with topic role" do
+          subject.with_role(:topic).should =~ [ Topic.last ]
+        end
+      end
     end
 
     context "with an array of role names as argument" do
@@ -73,6 +90,14 @@ describe Rolify::Resource do
 
         it "should include Group instances with both group and grouper roles" do
           subject.with_roles([:group, :grouper]).should =~ [ Group.first, Group.last ]
+        end
+      end
+
+      context "on the Topic class" do
+        subject { Topic }
+
+        it "should include Topic instances with topic role" do
+          subject.with_roles([:topic, :discussion]).should =~ [ Topic.first, Topic.last ]
         end
       end
     end
@@ -94,7 +119,7 @@ describe Rolify::Resource do
         end
 
         it "should get all Forum instances binded to the godfather role and the tourist user" do
-          subject.with_role(:godfather, tourist).should be_empty
+          subject.with_role(:godfather, tourist).should =~ [ ]
         end
 
         it "should get Forum instances binded to the group role and the tourist user" do
@@ -117,6 +142,18 @@ describe Rolify::Resource do
           subject.with_role(:group, admin).should_not include(Group.first)
         end
       end
+
+      context "on the Topic class" do
+        subject { Topic }
+
+        it "should get all resources binded to the topic role and the admin user" do
+          subject.with_role(:topic, admin).should =~ [ Topic.last ]
+        end
+
+        it "should not get resources not binded to the topic role and the admin user" do
+          subject.with_role(:topic, admin).should_not include(Topic.first)
+        end
+      end
     end
 
     context "with an array of role names and a user as arguments" do
@@ -136,6 +173,14 @@ describe Rolify::Resource do
           subject.with_roles([:group, :grouper], admin).should =~ [ Group.first, Group.last ]
         end
 
+      end
+
+      context "on the Topic class" do
+        subject { Topic }
+
+        it "should get Topic intances binded to the topic and discussion roles and the admin user" do
+          subject.with_roles([:topic, :discussion], admin).should =~ [ Topic.first, Topic.last ]
+        end
       end
     end
     
@@ -372,6 +417,47 @@ describe Rolify::Resource do
     end
   end
 
+  describe "#roles_for_class" do
+    before(:all) { Role.destroy_all }
+    subject { Forum.first }
+
+    it { should respond_to :roles_for_class }
+
+    context "on a Forum instance" do
+      its(:roles_for_class) { should match_array( [ forum_role, sneaky_role ]) }
+      its(:roles_for_class) { should_not include(group_role, godfather_role, tourist_role) }
+    end
+
+    context "on a Group instance" do
+      subject { Group.last }
+
+      its(:roles_for_class) { should eq([ group_role ]) }
+      its(:roles_for_class) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role) }
+
+      context "when deleting a Group instance" do
+        subject do
+          Group.create(:name => "to delete")
+        end
+
+        before do
+          subject.roles.create :name => "group_role1"
+          subject.roles.create :name => "group_role2"
+        end
+
+        it "should remove the roles binded to this instance" do
+          expect { subject.destroy }.to change { Role.count }.by(-2)
+        end
+      end
+    end
+
+    context "on a Topic instance" do
+      subject { Topic.last }
+
+      its(:roles_for_class) { should =~ [ topic_role ] }
+      its(:roles_for_class) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role, discussion_role) }
+    end
+  end
+
   describe "#applied_roles" do
     context "on a Forum instance" do
       subject { Forum.first }
@@ -385,6 +471,13 @@ describe Rolify::Resource do
 
       its(:applied_roles) { should =~ [ group_role ] }
       its(:applied_roles) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role) }
+    end
+
+    context "on a Topic instance" do
+      subject { Topic.last }
+
+      its(:applied_roles) { should =~ [ topic_role ] }
+      its(:applied_roles) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role, discussion_role) }
     end
   end
 end
