@@ -13,7 +13,7 @@ shared_examples_for Rolify::Role do
     Rolify.dynamic_shortcuts = false
     rolify_options = { :role_cname => role_class.to_s }
     rolify_options[:role_join_table_name] = join_table if defined? join_table
-    user_class.rolify rolify_options
+    silence_warnings { user_class.rolify rolify_options }
     role_class.destroy_all
     Forum.resourcify :roles, :role_cname => role_class.to_s
     Group.resourcify :roles, :role_cname => role_class.to_s
