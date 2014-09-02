@@ -24,6 +24,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake',        '~> 10.3.2'
   s.add_development_dependency 'rspec',       '2.99.0'
   s.add_development_dependency 'rspec-rails', '2.99.0'
-  s.add_development_dependency 'bundler',     '~> 1.7.2'
+  s.add_development_dependency 'bundler',     '~> 1.6.2'
   s.add_development_dependency 'fuubar',      '~> 1.3.3'
 end
