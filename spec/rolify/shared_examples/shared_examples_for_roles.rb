@@ -98,7 +98,7 @@ shared_examples_for Rolify::Role do
     # it { should have_role :moderator, :any }
     # it { should_not have_role :moderator }
     # it { should_not have_role :moderator, Forum }
-    it { subject.has_any_role?(:admin).should be_true }
+    it { subject.has_any_role?(:admin).should be_truthy }
   end
 
   context "on the Class level ", :scope => :mixed do
