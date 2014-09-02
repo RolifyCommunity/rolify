@@ -1,7 +1,7 @@
 language: ruby
 rvm:
   - 2.1.2
-script: bundle exec rspec spec
+script: bundle exec rake
 env:
   - ADAPTER=active_record
   - ADAPTER=mongoid
