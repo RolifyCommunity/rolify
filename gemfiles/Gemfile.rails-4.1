@@ -32,6 +32,6 @@ group :test do
     gem 'mongoid', github: 'mongoid/mongoid'
     gem 'bson_ext', :platform => 'ruby'
   else
-    raise 'Unknown model adapter: #{ENV['ADAPTER']}'
+    raise "Unknown model adapter: #{ENV['ADAPTER']}"
   end
 end
