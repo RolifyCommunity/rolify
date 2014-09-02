@@ -10,7 +10,13 @@ Coveralls.wear_merged!
 
 ENV['ADAPTER'] ||= 'active_record'
 
-load File.dirname(__FILE__) + "/support/adapters/#{ENV['ADAPTER']}.rb"
+begin
+  load File.dirname(__FILE__) + "/support/adapters/#{ENV['ADAPTER']}.rb"
+rescue NameError => e
+  if e.message =~ /uninitialized constant RSpec::Matchers::BuiltIn::MatchArray/
+    RSpec::Matchers::OperatorMatcher.register(ActiveRecord::Relation, '=~', RSpec::Matchers::BuiltIn::MatchArray)
+  end
+end
 load File.dirname(__FILE__) + '/support/data.rb'
 
 begin
