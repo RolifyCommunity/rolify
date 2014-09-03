@@ -1,14 +1,9 @@
-rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.1
-  - rbx-2
-  - jruby-19mode
+language: ruby
 
-gemfile:
-  - gemfiles/Gemfile.rails-3.2
-  - gemfiles/Gemfile.rails-4.0
-  - gemfiles/Gemfile.rails-4.1
+rvm:
+  - 2.1.2
+
+script: bundle exec rake
 
 env:
   - ADAPTER=active_record
@@ -16,8 +11,31 @@ env:
 
 services: mongodb
 
-matrix:
-  fast_finish: true
-  exclude:
-    - rvm: 1.9.3
-      gemfile: gemfiles/Gemfile.rails-4.1
+# language: ruby
+#
+# rvm:
+#   - 1.9.3
+#   - 2.0.0
+#   - 2.1.1
+#   - 2.1.2
+#   - rbx-2
+#   - jruby-19mode
+#
+# script: bundle exec rake
+#
+# gemfile:
+#   - gemfiles/Gemfile.rails-3.2
+#   - gemfiles/Gemfile.rails-4.0
+#   - gemfiles/Gemfile.rails-4.1
+#
+# env:
+#   - ADAPTER=active_record
+#   - ADAPTER=mongoid
+#
+# services: mongodb
+#
+# matrix:
+#   fast_finish: true
+#   exclude:
+#     - rvm: 1.9.3
+#       gemfile: gemfiles/Gemfile.rails-4.1

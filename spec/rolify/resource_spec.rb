@@ -3,7 +3,7 @@ require "spec_helper"
 describe Rolify::Resource do
   before(:all) do
     reset_defaults
-    User.rolify
+    silence_warnings { User.rolify }
     Forum.resourcify
     Group.resourcify
     Team.resourcify
@@ -38,11 +38,11 @@ describe Rolify::Resource do
         it "should include Forum instances with forum role" do
           subject.with_role(:forum).should =~ [ Forum.first, Forum.last ]
         end
-        
+
         it "should include Forum instances with godfather role" do
           subject.with_role(:godfather).should =~ Forum.all.to_a
         end
-        
+
         it "should be able to modify the resource", :if => ENV['ADAPTER'] == 'active_record' do
           forum_resource = subject.with_role(:forum).first
           forum_resource.name = "modified name"
@@ -138,10 +138,10 @@ describe Rolify::Resource do
 
       end
     end
-    
+
     context "with a model not having ID column" do
       subject { Team }
-      
+
       it "should find Team instance using team_code column" do
         subject.with_roles([:captain, :player], captain).should =~ [ Team.first, Team.last ]
       end
