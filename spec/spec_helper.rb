@@ -4,7 +4,10 @@ require "bundler/setup"
 require 'rolify'
 require 'rolify/matchers'
 require 'rails'
-require 'its'
+begin
+  require 'its'
+rescue LoadError
+end
 require 'coveralls'
 Coveralls.wear_merged!
 
@@ -14,7 +17,8 @@ begin
   load File.dirname(__FILE__) + "/support/adapters/#{ENV['ADAPTER']}.rb"
 rescue NameError => e
   if e.message =~ /uninitialized constant RSpec::Matchers::BuiltIn::MatchArray/
-    RSpec::Matchers::OperatorMatcher.register(ActiveRecord::Relation, '=~', RSpec::Matchers::BuiltIn::MatchArray)
+    RSpec::Matchers::OperatorMatcher.register(
+      ActiveRecord::Relation, '=~', RSpec::Matchers::BuiltIn::MatchArray)
   end
 end
 load File.dirname(__FILE__) + '/support/data.rb'
