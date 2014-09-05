@@ -7,6 +7,7 @@ describe Rolify::Resource do
     Forum.resourcify
     Group.resourcify
     Team.resourcify
+    Organization.resourcify
     Role.destroy_all
   end
 
@@ -24,6 +25,7 @@ describe Rolify::Resource do
   let!(:sneaky_role)     { tourist.add_role(:group, Forum.first) }
   let!(:captain_role)    { captain.add_role(:captain, Team.first) }
   let!(:player_role)     { captain.add_role(:player, Team.last) }
+  let!(:company_role)    { admin.add_role(:owner, Company.first) }
 
   describe ".with_roles" do
     subject { Group }
@@ -144,6 +146,13 @@ describe Rolify::Resource do
 
       it "should find Team instance using team_code column" do
         subject.with_roles([:captain, :player], captain).should =~ [ Team.first, Team.last ]
+      end
+    end
+
+    context "with a resource using STI" do
+      subject { Organization }
+      it "should find instances of children classes" do
+        subject.with_roles(:owner, admin).should =~ [ Company.first ]
       end
     end
   end
@@ -334,6 +343,13 @@ describe Rolify::Resource do
             subject.find_roles(:any, :any).should_not include(forum_role, godfather_role, tourist_role, sneaky_role)
           end
         end
+      end
+    end
+
+    context "with a resource using STI" do
+      subject{ Organization }
+      it "should find instances of children classes" do
+        subject.find_roles(:owner, admin).should =~ [company_role]
       end
     end
   end

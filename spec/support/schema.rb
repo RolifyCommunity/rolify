@@ -49,4 +49,8 @@ ActiveRecord::Schema.define do
     t.primary_key :team_code
     t.string :name
   end
+
+  create_table(:organizations) do |t|
+    t.string :type
+  end
 end

@@ -23,3 +23,6 @@ Group.create(:name => "group 2")
 
 Team.create(:team_code => "1", :name => "PSG")
 Team.create(:team_code => "2", :name => "MU")
+
+Organization.create
+Company.create
