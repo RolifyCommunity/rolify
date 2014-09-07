@@ -33,6 +33,11 @@ module Rolify
     load_dynamic_methods if Rolify.dynamic_shortcuts
   end
 
+  def adapter
+    return self.superclass.adapter unless self.instance_variable_defined? '@adapter'
+    @adapter
+  end
+
   def resourcify(association_name = :roles, options = {})
     include Resource
 
@@ -52,6 +57,7 @@ module Rolify
   end
 
   def role_class
+    return self.superclass.role_class unless self.instance_variable_defined? '@role_cname'
     self.role_cname.constantize
   end
 end

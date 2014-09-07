@@ -74,3 +74,11 @@ class Team < ActiveRecord::Base
 
   default_scope { order(:team_code) }
 end
+
+class Organization < ActiveRecord::Base
+
+end
+
+class Company < Organization
+
+end

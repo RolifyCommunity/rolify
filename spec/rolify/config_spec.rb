@@ -183,7 +183,6 @@ describe Rolify do
       end
 
       subject { Forum }
-      
       it { should satisfy { |u| u.include? Rolify::Resource }}
       its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
     end

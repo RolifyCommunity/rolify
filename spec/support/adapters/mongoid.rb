@@ -141,3 +141,11 @@ class Team
   field :team_code, :type => Integer
   field :name, :type => String
 end
+
+class Organization
+  include Mongoid::Document
+end
+
+class Company < Organization
+
+end
