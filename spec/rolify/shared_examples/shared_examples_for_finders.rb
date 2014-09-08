@@ -42,6 +42,10 @@ shared_examples_for :finders do |param_name, param_method|
           it { subject.with_role("moderator".send(param_method), Group.first).should eq([ root ]) }
           it { subject.with_role("visitor".send(param_method), Group.first).should eq([ modo ]) }
         end
+
+        context "on Company.first_instance" do
+          it { subject.with_role("owner".send(param_method), Company.first).should eq([ owner ]) }
+        end
       end
     end
 
