@@ -1,4 +1,4 @@
-= 3.4.1 (Sep 07, 2014)
+= 3.4.1 (Sep 08, 2014)
 * Fixed issue with migrations being generated without a file extension.
 * Updated spec tests to work with Travis CI on Ruby up to 2.1.2 and Rails 4.1.x
 * Made it possible for inheritance of resources.
