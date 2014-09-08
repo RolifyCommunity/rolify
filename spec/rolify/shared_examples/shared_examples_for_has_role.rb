@@ -28,6 +28,20 @@ shared_examples_for "#has_role?_examples" do |param_name, param_method|
         it { subject.has_role?("dummy".send(param_method)).should be_falsey }
         it { subject.has_role?("dumber".send(param_method), Forum.first).should be_falsey }
       end
+
+      context "with a change in role" do
+        it "should be able to remove a role, then check" do
+          subject.has_role?("admin".send(param_method), Forum).should be_truthy
+          subject.remove_role("admin".send(param_method), Forum)
+          subject.has_role?("admin".send(param_method), Forum).should be_falsey
+        end
+
+        it "should be able to add a role, then check" do
+          subject.has_role?("dummy".send(param_method)).should be_falsey
+          subject.add_role("dummy".send(param_method))
+          subject.has_role?("dummy".send(param_method)).should be_truthy
+        end
+      end
     end
 
     context "with a class scoped role", :scope => :class do
