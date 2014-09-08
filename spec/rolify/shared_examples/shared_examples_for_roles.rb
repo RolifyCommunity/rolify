@@ -17,6 +17,7 @@ shared_examples_for Rolify::Role do
     role_class.destroy_all
     Forum.resourcify :roles, :role_cname => role_class.to_s
     Group.resourcify :roles, :role_cname => role_class.to_s
+    Organization.resourcify :roles, :role_cname => role_class.to_s
   end
 
   context "in the Instance level" do
