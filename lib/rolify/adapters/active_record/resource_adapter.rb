@@ -13,7 +13,7 @@ module Rolify
       def resources_find(roles_table, relation, role_name)
         klasses   = self.relation_types_for(relation)
         relations = klasses.inject('') do |str, klass|
-          str = "#{str}#{quote(klass.to_s)}"
+          str = "#{str}'#{klass.to_s}'"
           str << ', ' unless klass == klasses.last
           str
         end
