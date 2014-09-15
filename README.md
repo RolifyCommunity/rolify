@@ -1,4 +1,4 @@
-# rolify [![Gem Version](https://badge.fury.io/rb/rolify.svg)](http://badge.fury.io/rb/rolify) [![build status](https://secure.travis-ci.org/RolifyCommunity/rolify.png)](http://travis-ci.org/RolifyCommunity/rolify) [![dependency status](https://gemnasium.com/EppO/rolify.png)](https://gemnasium.com/EppO/rolify) [![Code Climate](https://codeclimate.com/github/EppO/rolify.png)](https://codeclimate.com/github/EppO/rolify) [![Coverage Status](https://coveralls.io/repos/EppO/rolify/badge.png?branch=master)](https://coveralls.io/r/EppO/rolify)
+# rolify [![Gem Version](https://badge.fury.io/rb/rolify.svg)](http://badge.fury.io/rb/rolify) [![build status](https://secure.travis-ci.org/RolifyCommunity/rolify.png)](http://travis-ci.org/RolifyCommunity/rolify) [![Dependency Status](https://gemnasium.com/RolifyCommunity/rolify.svg)](https://gemnasium.com/RolifyCommunity/rolify) [![Code Climate](https://codeclimate.com/github/RolifyCommunity/rolify.png)](https://codeclimate.com/github/RolifyCommunity/rolify) [![Coverage Status](https://coveralls.io/repos/RolifyCommunity/rolify/badge.png?branch=master)](https://coveralls.io/r/RolifyCommunity/rolify)
 
 
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
@@ -10,7 +10,7 @@ user.has_role?(:moderator, Forum.first)
 => false # if user is moderator of another Forum
 ```
 
-This library can be easily integrated with any authentication gem ([devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), [Clearance](https://github.com/thoughtbot/clearance)) and authorization gem<span style="color: red"><strong>*</strong></span> ([CanCan](https://github.com/ryanb/cancan), [authority](https://github.com/nathanl/authority))
+This library can be easily integrated with any authentication gem ([devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), [Clearance](https://github.com/thoughtbot/clearance)) and authorization gem<span style="color: red"><strong>*</strong></span> ([CanCanCan](https://github.com/CanCanCommunity/cancan), [authority](https://github.com/nathanl/authority))
 
 <span style="color: red"><strong>*</strong></span>: authorization gem that doesn't provide a role class
 
@@ -202,11 +202,11 @@ Forum.find_roles(:admin, current_user)
 
 ## Resources
 
-* [Wiki](https://github.com/EppO/rolify/wiki)
-* [Usage](https://github.com/EppO/rolify/wiki/Usage): all the available commands
-* [Tutorials](https://github.com/EppO/rolify/wiki#wiki-tutorials):  
-  * [How-To use rolify with Devise and CanCan](https://github.com/EppO/rolify/wiki/Tutorial)
-  * [Using rolify with Devise and Authority](https://github.com/EppO/rolify/wiki/Using-rolify-with-Devise-and-Authority)
+* [Wiki](https://github.com/RolifyCommunity/rolify/wiki)
+* [Usage](https://github.com/RolifyCommunity/rolify/wiki/Usage): all the available commands
+* [Tutorials](https://github.com/RolifyCommunity/rolify/wiki#wiki-tutorials):
+  * [How-To use rolify with Devise and CanCan](https://github.com/RolifyCommunity/rolify/wiki/Tutorial)
+  * [Using rolify with Devise and Authority](https://github.com/Community/rolify/wiki/Using-rolify-with-Devise-and-Authority)
   * [Step-by-step tutorial](http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html) provided by [RailsApps](http://railsapps.github.com/)
 
 ## Upgrade from previous versions
@@ -215,12 +215,12 @@ Please read the [upgrade instructions](UPGRADE.rdoc).
 
 ## Known issues
 
-* If you are using Mongoid and/or less-rails gem, please read [this](https://github.com/EppO/rolify/wiki/FAQ#when-i-start-rails-using-server-console-whatever-i-get-this-error)
+* If you are using Mongoid and/or less-rails gem, please read [this](https://github.com/RolifyCommunity/rolify/wiki/FAQ#when-i-start-rails-using-server-console-whatever-i-get-this-error)
 * Moped library (ruby driver for Mongodb used by Mongoid) doesn't support rubinius 2.2 yet (see https://github.com/mongoid/moped/issues/231)
-* If you use Rails 4 and Mongoid, use Mongoid ~> 4 (not released yet). rolify is fully tested with Rails 4 and Mongoid master branch
+* If you use Rails 4 and Mongoid, use Mongoid ~> 4. rolify is fully tested with Rails 4 and Mongoid 4.
 
 ## Questions or Problems?
 
-If you have any issue or feature request with/for rolify, please create an new [issue on GitHub](https://github.com/EppO/rolify/issues) **specifying the ruby runtime, rails and rolify versions you're using and the gems listed in your Gemfile**, or fork the project and send a pull request.
+If you have any issue or feature request with/for rolify, please create an new [issue on GitHub](https://github.com/RolifyCommunity/rolify/issues) **specifying the ruby runtime, rails and rolify versions you're using and the gems listed in your Gemfile**, or fork the project and send a pull request.
 
 To get the specs running you should call `bundle` and then `rake`. See the spec/README for more information.
