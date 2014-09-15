@@ -6,7 +6,7 @@ require 'rolify/matchers'
 require 'rails'
 
 require 'coveralls'
-Coveralls.wear_merged!
+Coveralls.wear!
 
 ENV['ADAPTER'] ||= 'active_record'
 
