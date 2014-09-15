@@ -12,7 +12,7 @@ begin
 rescue LoadError
 end
 require 'coveralls'
-Coveralls.wear!
+Coveralls.wear_merged!
 
 ENV['ADAPTER'] ||= 'active_record'
 
