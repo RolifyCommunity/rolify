@@ -6,4 +6,5 @@ machine:
 
 test:
   post:
+    - bundle install
     - bundle exec rake
