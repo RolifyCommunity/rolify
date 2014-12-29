@@ -10,6 +10,7 @@ module Rolify
   extend Configure
 
   attr_accessor :role_cname, :adapter, :role_join_table_name, :role_table_name
+  @@resource_types = []
 
   def rolify(options = {})
     include Role
@@ -49,6 +50,7 @@ module Rolify
     has_many association_name, resourcify_options
 
     self.adapter = Rolify::Adapter::Base.create("resource_adapter", self.role_cname, self.name)
+    @@resource_types << self.name
   end
 
   def scopify
@@ -59,5 +61,9 @@ module Rolify
   def role_class
     return self.superclass.role_class unless self.instance_variable_defined? '@role_cname'
     self.role_cname.constantize
+  end
+
+  def self.resource_types
+    @@resource_types
   end
 end
