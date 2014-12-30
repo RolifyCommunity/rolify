@@ -403,4 +403,12 @@ describe Rolify::Resource do
       its(:applied_roles) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role) }
     end
   end
+
+  describe '.resource_types' do
+
+    it 'include all models that call resourcify' do
+      Rolify.resource_types.should include("HumanResource", "Forum", "Group",
+                                          "Team", "Organization")
+    end
+  end
 end
