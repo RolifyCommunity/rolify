@@ -16,7 +16,7 @@ module Rolify
           role_name = role_name.to_s
         end
 
-        resources = self.adapter.resources_find(self.role_table_name, self, role_name) #.map(&:id)
+        resources = self.adapter.resources_find(self.role_cname, self, role_name)
         user ? self.adapter.in(resources, user, role_name) : resources
       end
       alias :with_roles :with_role

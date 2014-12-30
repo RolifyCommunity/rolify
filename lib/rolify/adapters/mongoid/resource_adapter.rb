@@ -12,7 +12,7 @@ module Rolify
       end
 
       def resources_find(roles_table, relation, role_name)
-        roles = roles_table.classify.constantize.where(:name.in => Array(role_name), :resource_type.in => self.relation_types_for(relation))
+        roles = roles_table.classify.constantize.in(:name => Array(role_name), :resource_type => self.relation_types_for(relation))
         resources = []
         roles.each do |role|
           if role.resource_id.nil?
