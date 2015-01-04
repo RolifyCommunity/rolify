@@ -4,6 +4,8 @@ require "bundler/setup"
 require 'rolify'
 require 'rolify/matchers'
 require 'rails'
+require_relative 'support/stream_helpers'
+include StreamHelpers
 
 require 'coveralls'
 Coveralls.wear_merged!
