@@ -8,4 +8,5 @@ machine:
 
 test:
   override:
+    - gem install bundler
     - bundle exec rake:spec_all
