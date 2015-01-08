@@ -29,7 +29,7 @@ shared_examples_for Rolify::Role do
 
     subject { user_class.first }
 
-    [ :has_role, :grant, :add_role ].each do |method_alias|
+    [ :grant, :add_role ].each do |method_alias|
       it { should respond_to(method_alias.to_sym).with(1).arguments }
       it { should respond_to(method_alias.to_sym).with(2).arguments }
     end
@@ -50,11 +50,6 @@ shared_examples_for Rolify::Role do
 
     it { should_not respond_to(:is_admin?) }
     it { should_not respond_to(:is_moderator_of?) }
-
-    describe "#has_role" do
-      it_should_behave_like "#add_role_examples", "String", :to_s
-      it_should_behave_like "#add_role_examples", "Symbol", :to_sym
-    end
 
     describe "#has_role?" do
       it_should_behave_like "#has_role?_examples", "String", :to_s
