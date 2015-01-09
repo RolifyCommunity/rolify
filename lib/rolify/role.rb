@@ -26,7 +26,7 @@ module Rolify
         self.roles.detect { |r| r.name.to_s == role_name.to_s && (r.resource == resource || resource.nil?) }
       else
         self.class.adapter.where(self.roles, name: role_name, resource: resource)
-      end.present?
+      end.length > 0
     end
 
     def has_all_roles?(*args)

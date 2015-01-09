@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rolify (3.5.0)
+    rolify (3.5.1)
 
 GEM
   remote: https://rubygems.org/
