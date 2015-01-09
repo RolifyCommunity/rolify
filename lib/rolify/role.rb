@@ -23,10 +23,13 @@ module Rolify
 
     def has_role?(role_name, resource = nil)
       if new_record?
-        self.roles.detect { |r| r.name.to_s == role_name.to_s && (r.resource == resource || resource.nil?) }
+        role_array = self.roles.detect { |r| r.name.to_s == role_name.to_s && (r.resource == resource || resource.nil?) }
       else
-        self.class.adapter.where(self.roles, name: role_name, resource: resource)
-      end.length > 0
+        role_array = self.class.adapter.where(self.roles, name: role_name, resource: resource)
+      end
+
+      return false if role_array.nil?
+      role_array != []
     end
 
     def has_all_roles?(*args)
