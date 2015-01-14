@@ -56,7 +56,9 @@ RUBY
                           "      { :resource_id => 1 }\n"
                           "    },\n"
                           "    { unique => true })"}
-      it { should contain "validates :resource_type, :inclusion => { :in => Rolify.resource_types }, :allow_nil => true" }
+      it { should contain "validates :resource_type,\n"
+                          "          :inclusion => { :in => Rolify.resource_types },\n"
+                          "          :allow_nil => true" }
     end
 
     describe 'app/models/user.rb' do

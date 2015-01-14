@@ -46,7 +46,9 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should contain "class Role < ActiveRecord::Base" }
       it { should contain "has_and_belongs_to_many :users, :join_table => :users_roles" }
       it { should contain "belongs_to :resource, :polymorphic => true" }
-      it { should contain "validates :resource_type, :inclusion => { :in => Rolify.resource_types }, :allow_nil => true" }
+      it { should contain "validates :resource_type,\n"
+                          "          :inclusion => { :in => Rolify.resource_types },\n"
+                          "          :allow_nil => true" }
     end
 
     describe 'app/models/user.rb' do
