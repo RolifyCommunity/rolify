@@ -1,3 +1,7 @@
+= 3.5.2 (Jan 14, 2015)
+* Fixed regression in RolifyGenerator
+* Updated dependencies
+
 = 3.5.0 (Jan 08, 2015)
 * Removed `has_role` method alias for `add_role`
 * Fixed regression in caching system
