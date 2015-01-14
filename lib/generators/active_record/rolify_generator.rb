@@ -41,7 +41,9 @@ module ActiveRecord
   has_and_belongs_to_many :%{user_cname}, :join_table => :%{join_table}
   belongs_to :resource, :polymorphic => true
 
-  validates :resource_type, :inclusion => { :in => Rolify.resource_types }
+  validates :resource_type,
+            :inclusion => { :in => Rolify.resource_types },
+            :allow_nil => true
 
   scopify
 RUBY

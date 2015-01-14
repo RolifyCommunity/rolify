@@ -1,4 +1,5 @@
 require "rolify/finders"
+require "rolify/utils"
 
 module Rolify
   module Role

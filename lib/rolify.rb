@@ -1,10 +1,9 @@
-require 'rolify/railtie' if defined?(Rails)
-require 'rolify/utils'
-require 'rolify/role'
+require 'rolify/adapters/base'
 require 'rolify/configure'
 require 'rolify/dynamic'
+require 'rolify/railtie' if defined?(Rails)
 require 'rolify/resource'
-require 'rolify/adapters/base'
+require 'rolify/role'
 
 module Rolify
   extend Configure
