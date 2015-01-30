@@ -9,24 +9,7 @@ module Rolify
       end
 
       def find_or_create_by(role_name, resource_type = nil, resource_id = nil)
-        # role_class.where(:name => role_name, :resource_type => resource_type, :resource_id => resource_id).first_or_create
-        begin
-          resource_type = if resource_type == 'ProProject' or resource_type == 'StandaloneProject'
-            'Project'
-          else
-            resource_type
-          end
-          if (request = role_class.where(:name => role_name, :resource_type => resource_type, :resource_id => resource_id)).exists?
-            request.first!
-          else
-            r = role_class.new({:name => role_name, :resource_type => resource_type, :resource_id => resource_id})
-            r.save!
-            r
-          end
-        rescue Exception => e
-          binding.pry
-          raise
-        end
+        role_class.where(:name => role_name, :resource_type => resource_type, :resource_id => resource_id).first_or_create
       end
 
       def add(relation, role)
