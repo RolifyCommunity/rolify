@@ -6,7 +6,11 @@ platforms :rbx do
 end
 
 group :test do
-  gem 'railties', '~> 4.0.1', '< 4.1'
+  gem 'rails', github: 'rails/rails', branch: '4-1-stable'
+  # There is currently an active record bug in Rails 4.1.0, this is a workaround until 4.1.1 is released
+  # See https://github.com/rails/rails/issues/13648
+  # Without this patch, Resource.with_role(:role, User.first).count throws an SQL syntax exception
+  #gem 'railties', '~> 4.1.0'
   gem 'ammeter'
   gem 'rake'
   gem 'rspec'
@@ -19,7 +23,7 @@ group :test do
 
   case ENV['ADAPTER']
   when nil, 'active_record'
-    gem 'activerecord', '~> 4.0.1', :require => 'active_record'
+    gem 'activerecord', '~> 4.1.0', :require => 'active_record'
     gem 'activerecord-jdbcsqlite3-adapter', '~> 1.3.5', :platform => 'jruby'
     #Fix sqlite3 version for rbx until rubinus is updated
     #https://github.com/travis-ci/travis-ci/issues/2006

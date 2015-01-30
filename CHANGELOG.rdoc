@@ -1,3 +1,20 @@
+= 3.5.2 (Jan 14, 2015)
+* Fixed regression in RolifyGenerator
+* Updated dependencies
+
+= 3.5.0 (Jan 08, 2015)
+* Removed `has_role` method alias for `add_role`
+* Fixed regression in caching system
+* Fix deprecation warning about timestamp on specs
+* Copy Kernel#capture helper from Rails
+* Add validation on Role.resource_type
+
+= 3.4.1 (Sep 08, 2014)
+* Fixed issue with migrations being generated without a file extension.
+* Updated spec tests to work with Travis CI on Ruby up to 2.1.2 and Rails 4.1.x
+* Made it possible for inheritance of resources.
+* Fixed small bugs throughout project.
+
 = 3.4 (Jan 28, 2014)
 * fixed an initializer bug preventing the rails app to boot
 * enhanced documentation regarding <tt>with_role</tt> method (thanks to @vicomte)

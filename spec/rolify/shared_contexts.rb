@@ -79,6 +79,7 @@ shared_context "mixed scoped roles", :scope => :mixed do
   let!(:root) { provision_user(user_class.first, [ :admin, :staff, [ :moderator, Group ], [ :visitor, Forum.last ] ]) }
   let!(:modo) { provision_user(user_class.where(:login => "moderator").first, [[ :moderator, Forum ], [ :manager, Group ], [ :visitor, Group.first ]])}
   let!(:visitor) { provision_user(user_class.last, [[ :visitor, Forum.last ]]) }
+  let!(:owner) { provision_user(user_class.first, [[:owner, Company.first]]) }
 end
 
 def create_other_roles

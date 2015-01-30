@@ -1,15 +1,15 @@
-require 'rolify/railtie' if defined?(Rails)
-require 'rolify/utils'
-require 'rolify/role'
+require 'rolify/adapters/base'
 require 'rolify/configure'
 require 'rolify/dynamic'
+require 'rolify/railtie' if defined?(Rails)
 require 'rolify/resource'
-require 'rolify/adapters/base'
+require 'rolify/role'
 
 module Rolify
   extend Configure
 
   attr_accessor :role_cname, :adapter, :role_join_table_name, :role_table_name
+  @@resource_types = []
 
   def rolify(options = {})
     include Role
@@ -33,6 +33,11 @@ module Rolify
     load_dynamic_methods if Rolify.dynamic_shortcuts
   end
 
+  def adapter
+    return self.superclass.adapter unless self.instance_variable_defined? '@adapter'
+    @adapter
+  end
+
   def resourcify(association_name = :roles, options = {})
     include Resource
 
@@ -44,6 +49,7 @@ module Rolify
     has_many association_name, resourcify_options
 
     self.adapter = Rolify::Adapter::Base.create("resource_adapter", self.role_cname, self.name)
+    @@resource_types << self.name
   end
 
   def scopify
@@ -52,6 +58,11 @@ module Rolify
   end
 
   def role_class
+    return self.superclass.role_class unless self.instance_variable_defined? '@role_cname'
     self.role_cname.constantize
+  end
+
+  def self.resource_types
+    @@resource_types
   end
 end

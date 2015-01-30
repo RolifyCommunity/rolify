@@ -4,12 +4,9 @@ module Rolify
       base.extend ClassMethods
     end
 
-    module ClassMethods 
+    module ClassMethods
       def find_roles(role_name = nil, user = nil)
-        roles = user && (user != :any) ? user.roles : self.role_class
-        roles = roles.where(:resource_type => self.to_s)
-        roles = roles.where(:name => role_name.to_s) if role_name && (role_name != :any)
-        roles
+        self.adapter.find_roles(role_name, self, user)
       end
 
       def with_role(role_name, user = nil)
@@ -18,14 +15,20 @@ module Rolify
         else
           role_name = role_name.to_s
         end
-        resources = self.adapter.resources_find(self.role_table_name, self, role_name)
+
+        resources = self.adapter.resources_find(self.role_table_name, self, role_name) #.map(&:id)
         user ? self.adapter.in(resources, user, role_name) : resources
       end
       alias :with_roles :with_role
+
+      def applied_roles(children = true)
+        self.adapter.applied_roles(self, children)
+      end
     end
-    
+
     def applied_roles
-      self.roles + self.class.role_class.where(:resource_type => self.class.to_s, :resource_id => nil)
+      #self.roles + self.class.role_class.where(:resource_type => self.class.to_s, :resource_id => nil)
+      self.roles + self.class.applied_roles(true)
     end
   end
 end

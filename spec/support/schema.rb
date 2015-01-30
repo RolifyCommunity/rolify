@@ -5,8 +5,8 @@ ActiveRecord::Schema.define do
     create_table(table) do |t|
     t.string :name
     t.references :resource, :polymorphic => true
-  
-    t.timestamps
+
+    t.timestamps null: false
     end
   end
 
@@ -20,17 +20,17 @@ ActiveRecord::Schema.define do
     t.references :user
     t.references :role
   end
-  
+
   create_table(:human_resources_roles, :id => false) do |t|
     t.references :human_resource
     t.references :role
   end
-  
+
   create_table(:customers_privileges, :id => false) do |t|
     t.references :customer
     t.references :privilege
   end
-  
+
   create_table(:moderators_rights, :id => false) do |t|
     t.references :moderator
     t.references :right
@@ -44,9 +44,13 @@ ActiveRecord::Schema.define do
     t.integer :parent_id
     t.string :name
   end
-  
+
   create_table(:teams, :id => false) do |t|
     t.primary_key :team_code
     t.string :name
+  end
+
+  create_table(:organizations) do |t|
+    t.string :type
   end
 end

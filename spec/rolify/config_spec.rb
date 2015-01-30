@@ -20,7 +20,7 @@ describe Rolify do
     context "using defaults values" do
       subject { Rolify.dynamic_shortcuts }
 
-      it { should be_false }
+      it { should be_falsey }
     end
 
     context "using custom values" do
@@ -30,7 +30,7 @@ describe Rolify do
 
       subject { Rolify.dynamic_shortcuts }
 
-      it { should be_true }
+      it { should be_truthy }
     end
   end
 
@@ -127,7 +127,7 @@ describe Rolify do
       context "using defaults values" do
         subject { Rolify.dynamic_shortcuts }
 
-        it { should be_false }
+        it { should be_falsey }
       end
       
       context "using custom values" do
@@ -138,7 +138,7 @@ describe Rolify do
 
           subject { Rolify.dynamic_shortcuts }
 
-          it { should be_true }
+          it { should be_truthy }
         end
 
         context "using :use_dynamic_shortcuts method" do
@@ -148,7 +148,7 @@ describe Rolify do
 
           subject { Rolify.dynamic_shortcuts }
 
-          it { should be_true }
+          it { should be_truthy }
         end
       end
     end
@@ -162,7 +162,7 @@ describe Rolify do
       end
     end
     
-    its(:dynamic_shortcuts) { should be_true }
+    its(:dynamic_shortcuts) { should be_truthy }
     its(:orm) { should eq("mongoid") }
     
     context "on the User class", :if => ENV['ADAPTER'] == 'mongoid' do
@@ -183,7 +183,6 @@ describe Rolify do
       end
 
       subject { Forum }
-      
       it { should satisfy { |u| u.include? Rolify::Resource }}
       its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
     end

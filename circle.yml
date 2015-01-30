@@ -1,0 +1,13 @@
+machine:
+  ruby:
+    version: 2.1.3
+  environment:
+    CODECLIMATE_REPO_TOKEN: 6bd8d374b120a5449b9a4b7dfda40cc0609dbade48a1b6655f04a9bc8de3a3ee
+    ADAPTER: active_record
+    ADAPTER: mongoid
+dependencies:
+  pre:
+    - gem install bundler
+test:
+  override:
+    - bundle exec rake:spec_all

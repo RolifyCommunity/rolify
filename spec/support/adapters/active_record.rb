@@ -1,6 +1,6 @@
 require 'active_record'
 
-RSpec::Matchers::OperatorMatcher.register(ActiveRecord::Relation, '=~', RSpec::Matchers::BuiltIn::MatchArray)
+RSpec::Matchers::BuiltIn::OperatorMatcher.register(ActiveRecord::Relation, '=~', RSpec::Matchers::BuiltIn::MatchArray)
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 ActiveRecord::Base.extend Rolify
 
@@ -41,7 +41,7 @@ module Admin
   def self.table_name_prefix
     'admin_'
   end
-  
+
   class Moderator < ActiveRecord::Base
     rolify :role_cname => "Admin::Right", :role_join_table_name => "moderators_rights"
   end
@@ -51,7 +51,7 @@ module Admin
     belongs_to :resource, :polymorphic => true
 
     extend Rolify::Adapter::Scopes
-  end  
+  end
 end
 
 
@@ -71,6 +71,14 @@ end
 class Team < ActiveRecord::Base
   #resourcify done during specs setup to be able to use custom user classes
   self.primary_key = "team_code"
-  
+
   default_scope { order(:team_code) }
+end
+
+class Organization < ActiveRecord::Base
+
+end
+
+class Company < Organization
+
 end

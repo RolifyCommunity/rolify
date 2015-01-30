@@ -3,10 +3,11 @@ require "spec_helper"
 describe Rolify::Resource do
   before(:all) do
     reset_defaults
-    User.rolify
+    silence_warnings { User.rolify }
     Forum.resourcify
     Group.resourcify
     Team.resourcify
+    Organization.resourcify
     Role.destroy_all
   end
 
@@ -24,6 +25,7 @@ describe Rolify::Resource do
   let!(:sneaky_role)     { tourist.add_role(:group, Forum.first) }
   let!(:captain_role)    { captain.add_role(:captain, Team.first) }
   let!(:player_role)     { captain.add_role(:player, Team.last) }
+  let!(:company_role)    { admin.add_role(:owner, Company.first) }
 
   describe ".with_roles" do
     subject { Group }
@@ -38,11 +40,11 @@ describe Rolify::Resource do
         it "should include Forum instances with forum role" do
           subject.with_role(:forum).should =~ [ Forum.first, Forum.last ]
         end
-        
+
         it "should include Forum instances with godfather role" do
           subject.with_role(:godfather).should =~ Forum.all.to_a
         end
-        
+
         it "should be able to modify the resource", :if => ENV['ADAPTER'] == 'active_record' do
           forum_resource = subject.with_role(:forum).first
           forum_resource.name = "modified name"
@@ -138,12 +140,19 @@ describe Rolify::Resource do
 
       end
     end
-    
+
     context "with a model not having ID column" do
       subject { Team }
-      
+
       it "should find Team instance using team_code column" do
         subject.with_roles([:captain, :player], captain).should =~ [ Team.first, Team.last ]
+      end
+    end
+
+    context "with a resource using STI" do
+      subject { Organization }
+      it "should find instances of children classes" do
+        subject.with_roles(:owner, admin).should =~ [ Company.first ]
       end
     end
   end
@@ -336,6 +345,13 @@ describe Rolify::Resource do
         end
       end
     end
+
+    context "with a resource using STI" do
+      subject{ Organization }
+      it "should find instances of children classes" do
+        subject.find_roles(:owner, admin).should =~ [company_role]
+      end
+    end
   end
 
   describe "#roles" do
@@ -385,6 +401,14 @@ describe Rolify::Resource do
 
       its(:applied_roles) { should =~ [ group_role ] }
       its(:applied_roles) { should_not include(forum_role, godfather_role, sneaky_role, tourist_role) }
+    end
+  end
+
+  describe '.resource_types' do
+
+    it 'include all models that call resourcify' do
+      Rolify.resource_types.should include("HumanResource", "Forum", "Group",
+                                          "Team", "Organization")
     end
   end
 end
