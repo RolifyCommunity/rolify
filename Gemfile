@@ -15,7 +15,8 @@ group :test do
 
   gem 'coveralls', :require => false
   gem 'its'
-  gem 'pry'
+  gem 'byebug'
+  gem 'pry-byebug'
   gem 'codeclimate-test-reporter', :require => nil
 end
 

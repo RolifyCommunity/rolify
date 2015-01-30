@@ -23,8 +23,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'ammeter',     '~> 1.1.2' # Spec generator
   s.add_development_dependency 'bundler',     '~> 1.7.12' # packaging feature
-  s.add_development_dependency 'fuubar',      '~> 2.0.0' # instafailing RSpec progress bar formatter
   s.add_development_dependency 'rake',        '~> 10.4.2' # Tasks manager
-  s.add_development_dependency 'rspec',       '3.1.0' # Behavior Driven Development
-  s.add_development_dependency 'rspec-rails', '3.1.0' # Rspec for Rails
+  s.add_development_dependency 'rspec-rails', '2.99.0'
 end
