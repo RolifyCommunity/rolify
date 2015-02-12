@@ -30,6 +30,7 @@ module Rolify
     end
 
     def use_dynamic_shortcuts
+      return if !sanity_check([])
       self.dynamic_shortcuts = true
     end
 
@@ -65,7 +66,7 @@ module Rolify
     end
 
     def role_table_missing?(role_class)
-      role_class.connected? && !role_class.table_exists?
+      !role_class.table_exists?
     end
   end
 end
