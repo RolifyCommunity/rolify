@@ -1,3 +1,8 @@
+= 4.0.0 (Feb 12, 2015)
+* Increasing version number to 4.0.0 for semantic versioning since `has_role` was removed in 3.5.0
+* Fix spec to pass.
+* Fix dynamic shortcuts being set before migration.
+
 = 3.5.2 (Jan 14, 2015)
 * Fixed regression in RolifyGenerator
 * Updated dependencies
