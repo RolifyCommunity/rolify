@@ -30,6 +30,7 @@ module Rolify
     end
 
     def use_dynamic_shortcuts
+      return if !sanity_check([])
       self.dynamic_shortcuts = true
     end
 
