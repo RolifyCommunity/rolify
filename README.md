@@ -184,7 +184,7 @@ Forum.with_role(:admin)
 # => [ list of Forum instances that has role "admin" binded to it ] 
 Forum.with_role(:admin, current_user)
 # => [ list of Forum instances that has role "admin" binded to it and belongs to current_user roles ]
-Forum.with_roles([:admin, :user], current_user)
+Forum.with_all_roles([:admin, :user], current_user)
 # => [ list of Forum instances that has role "admin" or "user" binded to it and belongs to current_user roles ]
 
 User.with_any_role(:user, :admin)
