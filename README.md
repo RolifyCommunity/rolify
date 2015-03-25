@@ -3,10 +3,10 @@
 
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
 
-Let's see an example: 
+Let's see an example:
 
 ```ruby
-user.has_role?(:moderator, Forum.first) 
+user.has_role?(:moderator, Forum.first)
 => false # if user is moderator of another Forum
 ```
 
@@ -119,7 +119,7 @@ That's it !
 
 ### 5. Role queries
 
-To check if a user has a global role: 
+To check if a user has a global role:
 
 ```ruby
 user = User.find(1)
@@ -152,7 +152,7 @@ user.has_role? :moderator, Forum.last
 => true
 ```
 
-A global role overrides resource role request: 
+A global role overrides resource role request:
 
 ```ruby
 user = User.find(4)
@@ -163,7 +163,7 @@ user.has_role? :moderator, Forum.last
 => true
 ```
 
-### 6. Resource roles querying 
+### 6. Resource roles querying
 
 Starting from rolify 3.0, you can search roles on instance level or class level resources.
 
@@ -181,7 +181,7 @@ forum.applied_roles
 
 ```ruby
 Forum.with_role(:admin)
-# => [ list of Forum instances that has role "admin" binded to it ] 
+# => [ list of Forum instances that has role "admin" binded to it ]
 Forum.with_role(:admin, current_user)
 # => [ list of Forum instances that has role "admin" binded to it and belongs to current_user roles ]
 Forum.with_all_roles([:admin, :user], current_user)
@@ -207,7 +207,7 @@ Forum.find_roles(:admin, current_user)
 * [Wiki](https://github.com/RolifyCommunity/rolify/wiki)
 * [Usage](https://github.com/RolifyCommunity/rolify/wiki/Usage): all the available commands
 * [Tutorials](https://github.com/RolifyCommunity/rolify/wiki#wiki-tutorials):
-  * [How-To use rolify with Devise and CanCan](https://github.com/RolifyCommunity/rolify/wiki/Tutorial)
+  * [How-To use rolify with Devise and CanCanCan](https://github.com/RolifyCommunity/rolify/wiki/Devise---CanCanCan---rolify-Tutorial)
   * [Using rolify with Devise and Authority](https://github.com/RolifyCommunity/rolify/wiki/Using-rolify-with-Devise-and-Authority)
   * [Step-by-step tutorial](http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html) provided by [RailsApps](http://railsapps.github.com/)
 
