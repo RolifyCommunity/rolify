@@ -21,9 +21,19 @@ module Rolify
       end
       alias :with_roles :with_role
 
+
+      def without_role(role_name, user = nil)
+        prime_key = self.primary_key.to_sym
+        self.where(prime_key => (self.all - self.with_role(role_name, user)).map(&prime_key))       
+      end
+      alias :without_roles :without_role
+
       def applied_roles(children = true)
         self.adapter.applied_roles(self, children)
       end
+
+
+      
     end
 
     def applied_roles

@@ -157,6 +157,130 @@ describe Rolify::Resource do
     end
   end
 
+
+  describe ".without_roles" do
+    subject { Group }
+
+    it { should respond_to(:find_roles).with(1).arguments }
+    it { should respond_to(:find_roles).with(2).arguments }
+
+    context "with a role name as argument" do
+      context "on the Forum class" do
+        subject { Forum }
+
+        it "should not include Forum instances with forum role" do
+          subject.without_role(:forum).should =~ [ Forum.second ]
+        end
+
+        it "should not include Forum instances with godfather role" do
+          subject.without_role(:godfather).should =~ []
+        end
+
+        it "should be able to modify the resource", :if => ENV['ADAPTER'] == 'active_record' do
+          forum_resource = subject.without_role(:forum).first
+          forum_resource.name = "modified name"
+          expect { forum_resource.save }.not_to raise_error
+        end
+      end
+
+      context "on the Group class" do
+        subject { Group }
+
+        it "should not include Group instances with group role" do
+          subject.without_role(:group).should_not =~ [ Group.last ]
+        end
+      end
+
+    end
+
+    context "with an array of role names as argument" do
+      context "on the Group class" do
+        subject { Group }
+
+        it "should include Group instances without either the group and grouper roles" do
+          subject.without_roles([:group, :grouper]).should_not =~ [ Group.first, Group.last ]
+        end
+      end
+    end
+
+    context "with a role name and a user as arguments" do
+      context "on the Forum class" do
+        subject { Forum }
+
+        it "should get all Forum instances the admin user does not have the forum role" do
+          subject.without_role(:forum, admin).should_not =~ [ Forum.first ]
+        end
+
+        it "should get all Forum instances the tourist user does not have the forum role" do
+          subject.without_role(:forum, tourist).should =~ [ Forum.first, Forum.second]
+        end
+
+        it "should get all Forum instances the admin user does not have the godfather role" do
+          subject.without_role(:godfather, admin).should_not =~ Forum.all.to_a
+        end
+
+        it "should get all Forum instances tourist user does not have the godfather role" do
+          subject.without_role(:godfather, tourist).should =~ Forum.all.to_a
+        end
+
+        it "should get Forum instances the tourist user does not have the group role" do
+          subject.without_role(:group, tourist).should_not =~ [ Forum.first ]
+        end
+
+        it "should get Forum instances the tourist user does not have the group role" do
+          subject.without_role(:group, tourist).should =~ [Forum.second, Forum.last]
+        end
+      end
+
+      context "on the Group class" do
+        subject { Group }
+
+        it "should get all resources not bounded to the group role and the admin user" do
+          subject.without_role(:group, admin).should =~ [ Group.first ]
+        end
+
+        it "should not get resources bound to the group role and the admin user" do
+          subject.without_role(:group, admin).should include(Group.first)
+        end
+      end
+    end
+
+    context "with an array of role names and a user as arguments" do
+      context "on the Forum class" do
+        subject { Forum }
+
+        it "should get Forum instances not bound to the forum and group roles and the tourist user" do
+          subject.without_roles([:forum, :group], tourist).should =~ [ Forum.second ]
+        end
+
+      end
+
+      context "on the Group class" do
+        subject { Group }
+
+        it "should get Group instances binded to the group and grouper roles and the admin user" do
+          subject.without_roles([:group, :grouper], admin).should =~ [ ]
+        end
+
+      end
+    end
+
+    context "with a model not having ID column" do
+      subject { Team }
+
+      it "should find Team instance not using team_code column" do
+        subject.without_roles(:captain, captain).should =~ [ Team.last ]
+      end
+    end
+
+    context "with a resource using STI" do
+      subject { Organization }
+      it "should exclude instances of children classes with matching" do
+        subject.without_role(:owner, admin).should_not =~ [ Company.first ]
+      end
+    end
+  end
+
   describe ".find_role" do
 
     context "without using a role name parameter" do

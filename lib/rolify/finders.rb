@@ -4,6 +4,11 @@ module Rolify
       self.adapter.scope(self, :name => role_name, :resource => resource)
     end
 
+    def without_role(role_name, resource = nil)
+      prime_key = self.primary_key.to_sym
+      self.where(prime_key => (self.all - self.with_role(role_name, resource)).map(&prime_key))
+    end
+
     def with_all_roles(*args)
       users = []
       parse_args(args, users) do |users_to_add|
