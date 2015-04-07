@@ -42,7 +42,7 @@ describe Rolify::Resource do
         end
 
         it "should include Forum instances with godfather role" do
-          subject.with_role(:godfather).should =~ Forum.all.to_a
+          subject.with_role(:godfather).should =~ Forum.all
         end
 
         it "should be able to modify the resource", :if => ENV['ADAPTER'] == 'active_record' do
@@ -169,11 +169,11 @@ describe Rolify::Resource do
         subject { Forum }
 
         it "should not include Forum instances with forum role" do
-          subject.without_role(:forum).should =~ [ Forum.second ]
+          subject.without_role(:forum).should_not =~ [ Forum.first, Forum.last ]
         end
 
         it "should not include Forum instances with godfather role" do
-          subject.without_role(:godfather).should =~ []
+          subject.without_role(:godfather).should be_empty
         end
 
         it "should be able to modify the resource", :if => ENV['ADAPTER'] == 'active_record' do
@@ -212,15 +212,15 @@ describe Rolify::Resource do
         end
 
         it "should get all Forum instances the tourist user does not have the forum role" do
-          subject.without_role(:forum, tourist).should =~ [ Forum.first, Forum.second]
+          subject.without_role(:forum, tourist).should_not =~ [ Forum.last ]
         end
 
         it "should get all Forum instances the admin user does not have the godfather role" do
-          subject.without_role(:godfather, admin).should_not =~ Forum.all.to_a
+          subject.without_role(:godfather, admin).should_not =~ Forum.all
         end
 
         it "should get all Forum instances tourist user does not have the godfather role" do
-          subject.without_role(:godfather, tourist).should =~ Forum.all.to_a
+          subject.without_role(:godfather, tourist).should =~ Forum.all
         end
 
         it "should get Forum instances the tourist user does not have the group role" do
@@ -228,7 +228,7 @@ describe Rolify::Resource do
         end
 
         it "should get Forum instances the tourist user does not have the group role" do
-          subject.without_role(:group, tourist).should =~ [Forum.second, Forum.last]
+          subject.without_role(:group, tourist).should_not =~ [ Forum.first ]
         end
       end
 
@@ -250,7 +250,7 @@ describe Rolify::Resource do
         subject { Forum }
 
         it "should get Forum instances not bound to the forum and group roles and the tourist user" do
-          subject.without_roles([:forum, :group], tourist).should =~ [ Forum.second ]
+          subject.without_roles([:forum, :group], tourist).should_not =~ [ Forum.first, Forum.last ]
         end
 
       end

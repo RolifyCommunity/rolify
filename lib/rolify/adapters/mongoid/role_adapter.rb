@@ -58,6 +58,10 @@ module Rolify
         query
       end
 
+      def all_except(user, excluded_obj)
+        user.not_in(_id: excluded_obj.to_a)
+      end
+
       private
 
       def build_conditions(relation, args)

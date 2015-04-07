@@ -5,8 +5,7 @@ module Rolify
     end
 
     def without_role(role_name, resource = nil)
-      prime_key = self.primary_key.to_sym
-      self.where(prime_key => (self.all - self.with_role(role_name, resource)).map(&prime_key))
+      self.adapter.all_except(self, self.with_role(role_name, resource))
     end
 
     def with_all_roles(*args)
