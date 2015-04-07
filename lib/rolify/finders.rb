@@ -4,6 +4,10 @@ module Rolify
       self.adapter.scope(self, :name => role_name, :resource => resource)
     end
 
+    def without_role(role_name, resource = nil)
+      self.adapter.all_except(self, self.with_role(role_name, resource))
+    end
+
     def with_all_roles(*args)
       users = []
       parse_args(args, users) do |users_to_add|

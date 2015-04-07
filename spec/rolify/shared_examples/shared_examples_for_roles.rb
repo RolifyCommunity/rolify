@@ -7,6 +7,7 @@ require "rolify/shared_examples/shared_examples_for_has_any_role"
 require "rolify/shared_examples/shared_examples_for_remove_role"
 require "rolify/shared_examples/shared_examples_for_finders"
 
+
 shared_examples_for Rolify::Role do
   before(:all) do
     reset_defaults

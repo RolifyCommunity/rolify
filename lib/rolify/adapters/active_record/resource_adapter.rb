@@ -37,6 +37,11 @@ module Rolify
         end
       end
 
+      def all_except(resource, excluded_obj)
+        prime_key = resource.primary_key.to_sym
+        resource.where(prime_key => (resource.all - excluded_obj).map(&prime_key))
+      end
+
       private
 
       def quote(column)

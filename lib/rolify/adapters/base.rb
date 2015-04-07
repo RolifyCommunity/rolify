@@ -59,6 +59,7 @@ module Rolify
       def in(resources, roles)
         raise NotImplementedError.new("You must implement in")
       end
+
     end
   end
 end

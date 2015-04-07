@@ -49,6 +49,56 @@ shared_examples_for :finders do |param_name, param_method|
       end
     end
 
+    describe ".without_role" do
+      it { should respond_to(:without_role).with(1).argument }
+      it { should respond_to(:without_role).with(2).arguments }
+
+      context "with a global role" do
+        it { subject.without_role("admin".send(param_method)).should_not eq([ root ]) }
+        it { subject.without_role("moderator".send(param_method)).should_not be_empty }
+        it { subject.without_role("visitor".send(param_method)).should_not be_empty }
+      end
+
+      context "with a class scoped role" do
+        context "on Forum class" do
+          it { subject.without_role("admin".send(param_method), Forum).should_not eq([ root ]) }
+          it { subject.without_role("moderator".send(param_method), Forum).should_not eq([ modo ]) }
+          it { subject.without_role("visitor".send(param_method), Forum).should_not be_empty }
+        end
+
+        context "on Group class" do
+          it { subject.without_role("admin".send(param_method), Group).should_not eq([ root ]) }
+          it { subject.without_role("moderator".send(param_method), Group).should_not eq([ root ]) }
+          it { subject.without_role("visitor".send(param_method), Group).should_not be_empty }
+        end
+      end
+
+      context "with an instance scoped role" do
+        context "on Forum.first instance" do
+          it { subject.without_role("admin".send(param_method), Forum.first).should_not eq([ root ]) }
+          it { subject.without_role("moderator".send(param_method), Forum.first).should_not eq([ modo ]) }
+          it { subject.without_role("visitor".send(param_method), Forum.first).should_not be_empty }
+        end
+
+        context "on Forum.last instance" do
+          it { subject.without_role("admin".send(param_method), Forum.last).should_not eq([ root ]) }
+          it { subject.without_role("moderator".send(param_method), Forum.last).should_not eq([ modo ]) }
+          it { subject.without_role("visitor".send(param_method), Forum.last).should_not include(root, visitor) } # =~ doesn't pass using mongoid, don't know why...
+        end
+
+        context "on Group.first instance" do
+          it { subject.without_role("admin".send(param_method), Group.first).should_not eq([ root ]) }
+          it { subject.without_role("moderator".send(param_method), Group.first).should_not eq([ root ]) }
+          it { subject.without_role("visitor".send(param_method), Group.first).should_not eq([ modo ]) }
+        end
+
+        context "on Company.first_instance" do
+          it { subject.without_role("owner".send(param_method), Company.first).should_not eq([ owner ]) }
+        end
+      end
+    end
+    
+
     describe ".with_all_roles" do
       it { should respond_to(:with_all_roles) }
 

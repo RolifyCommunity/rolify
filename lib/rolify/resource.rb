@@ -21,9 +21,20 @@ module Rolify
       end
       alias :with_roles :with_role
 
+
+      def without_role(role_name, user = nil)
+        self.adapter.all_except(self, self.with_role(role_name, user))
+      end
+      alias :without_roles :without_role
+
+
+
       def applied_roles(children = true)
         self.adapter.applied_roles(self, children)
       end
+
+
+      
     end
 
     def applied_roles

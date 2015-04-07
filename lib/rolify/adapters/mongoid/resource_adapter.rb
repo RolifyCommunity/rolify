@@ -39,6 +39,10 @@ module Rolify
         end
       end
 
+      def all_except(resource, excluded_obj)
+        resource.not_in(_id: excluded_obj.to_a)
+      end
+
     end
   end
 end
