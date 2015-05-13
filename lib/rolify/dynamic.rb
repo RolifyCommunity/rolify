@@ -3,8 +3,16 @@ require "rolify/configure"
 module Rolify
   module Dynamic
     def load_dynamic_methods
-      self.role_class.includes(:resource).find_each do |r|
-        define_dynamic_method(r.name, r.resource)
+      if self.role_class.respond_to?(:find_each)
+        # newer Rails version should probably use find_each, since use of .all.each is deprecated
+        self.role_class.includes(:resource).find_each do |r|
+          define_dynamic_method(r.name, r.resource)
+        end
+      else
+        # for backward compatibility for Rails 2
+        self.role_class.includes(:resource).all.each do |r|
+          define_dynamic_method(r.name, r.resource)
+        end
       end
     end
 
