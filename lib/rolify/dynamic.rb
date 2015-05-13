@@ -3,7 +3,7 @@ require "rolify/configure"
 module Rolify
   module Dynamic
     def load_dynamic_methods
-      self.role_class.all.each do |r|
+      self.role_class.includes(:resource).find_each do |r|
         define_dynamic_method(r.name, r.resource)
       end
     end
