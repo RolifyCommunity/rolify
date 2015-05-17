@@ -79,6 +79,11 @@ shared_examples_for "#has_role?_examples" do |param_name, param_method|
       context "on instance scoped role request" do
         it { subject.has_role?("moderator".send(param_method), Forum.first).should be_truthy }
         it { subject.has_role?("moderator".send(param_method), :any).should be_truthy }
+        it {
+          m = subject.class.new
+          m.add_role("moderator", Forum.first)
+          m.has_role?("moderator".send(param_method), :any).should be_truthy
+        }
       end
 
       it "should not get an instance scoped role when asking for a global" do
