@@ -58,7 +58,7 @@ module Rolify
       role_cnames.each do |role_cname|
         role_class = role_cname.constantize
         if role_class.superclass.to_s == "ActiveRecord::Base" && role_table_missing?(role_class)
-          warn "[WARN] table '#{role_cname}' doesn't exist. Did you run the migration ? Ignoring rolify config."
+          warn "[WARN] table '#{role_cname}' doesn't exist. Did you run the migration? Ignoring rolify config."
           return false
         end
       end
