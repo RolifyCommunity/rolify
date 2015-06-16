@@ -6,7 +6,7 @@ module Rolify
 
     module ClassMethods
       def find_roles(role_name = nil, user = nil)
-        self.adapter.find_roles(role_name, self, user)
+        self.resource_adapter.find_roles(role_name, self, user)
       end
 
       def find_as(role_name, user = nil)
@@ -16,21 +16,21 @@ module Rolify
           role_name = role_name.to_s
         end
 
-        resources = self.adapter.resources_find(self.role_table_name, self, role_name) #.map(&:id)
-        user ? self.adapter.in(resources, user, role_name) : resources
+        resources = self.resource_adapter.resources_find(self.role_table_name, self, role_name) #.map(&:id)
+        user ? self.resource_adapter.in(resources, user, role_name) : resources
       end
       alias :find_as_multiple :find_as
 
 
       def except_as(role_name, user = nil)
-        self.adapter.all_except(self, self.find_as(role_name, user))
+        self.resource_adapter.all_except(self, self.find_as(role_name, user))
       end
       alias :except_as_multiple :except_as
 
 
 
       def applied_roles(children = true)
-        self.adapter.applied_roles(self, children)
+        self.resource_adapter.applied_roles(self, children)
       end
 
 
