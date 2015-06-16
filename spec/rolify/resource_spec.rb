@@ -27,7 +27,7 @@ describe Rolify::Resource do
   let!(:player_role)     { captain.add_role(:player, Team.last) }
   let!(:company_role)    { admin.add_role(:owner, Company.first) }
 
-  describe ".find_as_multiple" do
+  describe ".find_multiple_as" do
     subject { Group }
 
     it { should respond_to(:find_roles).with(1).arguments }
@@ -74,7 +74,7 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should include Group instances with both group and grouper roles" do
-          subject.find_as_multiple([:group, :grouper]).should =~ [ Group.first, Group.last ]
+          subject.find_multiple_as([:group, :grouper]).should =~ [ Group.first, Group.last ]
         end
       end
     end
@@ -126,7 +126,7 @@ describe Rolify::Resource do
         subject { Forum }
 
         it "should get Forum instances binded to the forum and group roles and the tourist user" do
-          subject.find_as_multiple([:forum, :group], tourist).should =~ [ Forum.first, Forum.last ]
+          subject.find_multiple_as([:forum, :group], tourist).should =~ [ Forum.first, Forum.last ]
         end
 
       end
@@ -135,7 +135,7 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should get Group instances binded to the group and grouper roles and the admin user" do
-          subject.find_as_multiple([:group, :grouper], admin).should =~ [ Group.first, Group.last ]
+          subject.find_multiple_as([:group, :grouper], admin).should =~ [ Group.first, Group.last ]
         end
 
       end
@@ -145,20 +145,20 @@ describe Rolify::Resource do
       subject { Team }
 
       it "should find Team instance using team_code column" do
-        subject.find_as_multiple([:captain, :player], captain).should =~ [ Team.first, Team.last ]
+        subject.find_multiple_as([:captain, :player], captain).should =~ [ Team.first, Team.last ]
       end
     end
 
     context "with a resource using STI" do
       subject { Organization }
       it "should find instances of children classes" do
-        subject.find_as_multiple(:owner, admin).should =~ [ Company.first ]
+        subject.find_multiple_as(:owner, admin).should =~ [ Company.first ]
       end
     end
   end
 
 
-  describe ".except_as_multiple" do
+  describe ".except_multiple_as" do
     subject { Group }
 
     it { should respond_to(:find_roles).with(1).arguments }
@@ -198,7 +198,7 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should include Group instances without either the group and grouper roles" do
-          subject.except_as_multiple([:group, :grouper]).should_not =~ [ Group.first, Group.last ]
+          subject.except_multiple_as([:group, :grouper]).should_not =~ [ Group.first, Group.last ]
         end
       end
     end
@@ -250,7 +250,7 @@ describe Rolify::Resource do
         subject { Forum }
 
         it "should get Forum instances not bound to the forum and group roles and the tourist user" do
-          subject.except_as_multiple([:forum, :group], tourist).should_not =~ [ Forum.first, Forum.last ]
+          subject.except_multiple_as([:forum, :group], tourist).should_not =~ [ Forum.first, Forum.last ]
         end
 
       end
@@ -259,7 +259,7 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should get Group instances binded to the group and grouper roles and the admin user" do
-          subject.except_as_multiple([:group, :grouper], admin).should =~ [ ]
+          subject.except_multiple_as([:group, :grouper], admin).should =~ [ ]
         end
 
       end
@@ -269,7 +269,7 @@ describe Rolify::Resource do
       subject { Team }
 
       it "should find Team instance not using team_code column" do
-        subject.except_as_multiple(:captain, captain).should =~ [ Team.last ]
+        subject.except_multiple_as(:captain, captain).should =~ [ Team.last ]
       end
     end
 
