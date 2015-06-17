@@ -52,6 +52,11 @@ module Rolify
     @@resource_types << self.name
   end
 
+  def resource_adapter
+    return self.superclass.resource_adapter unless self.instance_variable_defined? '@resource_adapter'
+    @resource_adapter
+  end
+
   def scopify
     require "rolify/adapters/#{Rolify.orm}/scopes.rb"
     extend Rolify::Adapter::Scopes
