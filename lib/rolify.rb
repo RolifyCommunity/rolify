@@ -8,7 +8,7 @@ require 'rolify/role'
 module Rolify
   extend Configure
 
-  attr_accessor :role_cname, :adapter, :role_join_table_name, :role_table_name
+  attr_accessor :role_cname, :adapter, :resource_adapter, :role_join_table_name, :role_table_name
   @@resource_types = []
 
   def rolify(options = {})
@@ -48,8 +48,13 @@ module Rolify
 
     has_many association_name, resourcify_options
 
-    self.adapter = Rolify::Adapter::Base.create("resource_adapter", self.role_cname, self.name)
+    self.resource_adapter = Rolify::Adapter::Base.create("resource_adapter", self.role_cname, self.name)
     @@resource_types << self.name
+  end
+
+  def resource_adapter
+    return self.superclass.resource_adapter unless self.instance_variable_defined? '@resource_adapter'
+    @resource_adapter
   end
 
   def scopify

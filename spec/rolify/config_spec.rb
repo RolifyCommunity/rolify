@@ -57,7 +57,7 @@ describe Rolify do
         
         subject { Forum }
         
-        its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
+        its("resource_adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
       end
     end
 
@@ -88,7 +88,7 @@ describe Rolify do
 
           subject { Forum }
 
-          its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
+          its("resource_adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
         end
       end
       
@@ -118,7 +118,7 @@ describe Rolify do
 
           subject { Forum }
 
-          its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
+          its("resource_adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
         end
       end
     end
@@ -184,7 +184,7 @@ describe Rolify do
 
       subject { Forum }
       it { should satisfy { |u| u.include? Rolify::Resource }}
-      its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
+      its("resource_adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
     end
   end
 end

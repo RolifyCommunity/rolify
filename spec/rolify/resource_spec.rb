@@ -27,7 +27,7 @@ describe Rolify::Resource do
   let!(:player_role)     { captain.add_role(:player, Team.last) }
   let!(:company_role)    { admin.add_role(:owner, Company.first) }
 
-  describe ".with_roles" do
+  describe ".find_multiple_as" do
     subject { Group }
 
     it { should respond_to(:find_roles).with(1).arguments }
@@ -38,15 +38,15 @@ describe Rolify::Resource do
         subject { Forum }
 
         it "should include Forum instances with forum role" do
-          subject.with_role(:forum).should =~ [ Forum.first, Forum.last ]
+          subject.find_as(:forum).should =~ [ Forum.first, Forum.last ]
         end
 
         it "should include Forum instances with godfather role" do
-          subject.with_role(:godfather).should =~ Forum.all
+          subject.find_as(:godfather).should =~ Forum.all
         end
 
         it "should be able to modify the resource", :if => ENV['ADAPTER'] == 'active_record' do
-          forum_resource = subject.with_role(:forum).first
+          forum_resource = subject.find_as(:forum).first
           forum_resource.name = "modified name"
           expect { forum_resource.save }.not_to raise_error
         end
@@ -56,7 +56,7 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should include Group instances with group role" do
-          subject.with_role(:group).should =~ [ Group.last ]
+          subject.find_as(:group).should =~ [ Group.last ]
         end
       end
 
@@ -64,7 +64,7 @@ describe Rolify::Resource do
         subject { Group.last }
 
         it "should ignore nil entries" do
-          subject.subgroups.with_role(:group).should =~ [ ]
+          subject.subgroups.find_as(:group).should =~ [ ]
         end
       end
     end
@@ -74,7 +74,7 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should include Group instances with both group and grouper roles" do
-          subject.with_roles([:group, :grouper]).should =~ [ Group.first, Group.last ]
+          subject.find_multiple_as([:group, :grouper]).should =~ [ Group.first, Group.last ]
         end
       end
     end
@@ -84,27 +84,27 @@ describe Rolify::Resource do
         subject { Forum }
 
         it "should get all Forum instances binded to the forum role and the admin user" do
-          subject.with_role(:forum, admin).should =~ [ Forum.first ]
+          subject.find_as(:forum, admin).should =~ [ Forum.first ]
         end
 
         it "should get all Forum instances binded to the forum role and the tourist user" do
-          subject.with_role(:forum, tourist).should =~ [ Forum.last ]
+          subject.find_as(:forum, tourist).should =~ [ Forum.last ]
         end
 
         it "should get all Forum instances binded to the godfather role and the admin user" do
-          subject.with_role(:godfather, admin).should =~ Forum.all.to_a
+          subject.find_as(:godfather, admin).should =~ Forum.all.to_a
         end
 
         it "should get all Forum instances binded to the godfather role and the tourist user" do
-          subject.with_role(:godfather, tourist).should be_empty
+          subject.find_as(:godfather, tourist).should be_empty
         end
 
         it "should get Forum instances binded to the group role and the tourist user" do
-          subject.with_role(:group, tourist).should =~ [ Forum.first ]
+          subject.find_as(:group, tourist).should =~ [ Forum.first ]
         end
 
         it "should not get Forum instances not binded to the group role and the tourist user" do
-          subject.with_role(:group, tourist).should_not include(Forum.last)
+          subject.find_as(:group, tourist).should_not include(Forum.last)
         end
       end
 
@@ -112,11 +112,11 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should get all resources binded to the group role and the admin user" do
-          subject.with_role(:group, admin).should =~ [ Group.last ]
+          subject.find_as(:group, admin).should =~ [ Group.last ]
         end
 
         it "should not get resources not binded to the group role and the admin user" do
-          subject.with_role(:group, admin).should_not include(Group.first)
+          subject.find_as(:group, admin).should_not include(Group.first)
         end
       end
     end
@@ -126,7 +126,7 @@ describe Rolify::Resource do
         subject { Forum }
 
         it "should get Forum instances binded to the forum and group roles and the tourist user" do
-          subject.with_roles([:forum, :group], tourist).should =~ [ Forum.first, Forum.last ]
+          subject.find_multiple_as([:forum, :group], tourist).should =~ [ Forum.first, Forum.last ]
         end
 
       end
@@ -135,7 +135,7 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should get Group instances binded to the group and grouper roles and the admin user" do
-          subject.with_roles([:group, :grouper], admin).should =~ [ Group.first, Group.last ]
+          subject.find_multiple_as([:group, :grouper], admin).should =~ [ Group.first, Group.last ]
         end
 
       end
@@ -145,20 +145,20 @@ describe Rolify::Resource do
       subject { Team }
 
       it "should find Team instance using team_code column" do
-        subject.with_roles([:captain, :player], captain).should =~ [ Team.first, Team.last ]
+        subject.find_multiple_as([:captain, :player], captain).should =~ [ Team.first, Team.last ]
       end
     end
 
     context "with a resource using STI" do
       subject { Organization }
       it "should find instances of children classes" do
-        subject.with_roles(:owner, admin).should =~ [ Company.first ]
+        subject.find_multiple_as(:owner, admin).should =~ [ Company.first ]
       end
     end
   end
 
 
-  describe ".without_roles" do
+  describe ".except_multiple_as" do
     subject { Group }
 
     it { should respond_to(:find_roles).with(1).arguments }
@@ -169,15 +169,15 @@ describe Rolify::Resource do
         subject { Forum }
 
         it "should not include Forum instances with forum role" do
-          subject.without_role(:forum).should_not =~ [ Forum.first, Forum.last ]
+          subject.except_as(:forum).should_not =~ [ Forum.first, Forum.last ]
         end
 
         it "should not include Forum instances with godfather role" do
-          subject.without_role(:godfather).should be_empty
+          subject.except_as(:godfather).should be_empty
         end
 
         it "should be able to modify the resource", :if => ENV['ADAPTER'] == 'active_record' do
-          forum_resource = subject.without_role(:forum).first
+          forum_resource = subject.except_as(:forum).first
           forum_resource.name = "modified name"
           expect { forum_resource.save }.not_to raise_error
         end
@@ -187,7 +187,7 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should not include Group instances with group role" do
-          subject.without_role(:group).should_not =~ [ Group.last ]
+          subject.except_as(:group).should_not =~ [ Group.last ]
         end
       end
 
@@ -198,7 +198,7 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should include Group instances without either the group and grouper roles" do
-          subject.without_roles([:group, :grouper]).should_not =~ [ Group.first, Group.last ]
+          subject.except_multiple_as([:group, :grouper]).should_not =~ [ Group.first, Group.last ]
         end
       end
     end
@@ -208,27 +208,27 @@ describe Rolify::Resource do
         subject { Forum }
 
         it "should get all Forum instances the admin user does not have the forum role" do
-          subject.without_role(:forum, admin).should_not =~ [ Forum.first ]
+          subject.except_as(:forum, admin).should_not =~ [ Forum.first ]
         end
 
         it "should get all Forum instances the tourist user does not have the forum role" do
-          subject.without_role(:forum, tourist).should_not =~ [ Forum.last ]
+          subject.except_as(:forum, tourist).should_not =~ [ Forum.last ]
         end
 
         it "should get all Forum instances the admin user does not have the godfather role" do
-          subject.without_role(:godfather, admin).should_not =~ Forum.all
+          subject.except_as(:godfather, admin).should_not =~ Forum.all
         end
 
         it "should get all Forum instances tourist user does not have the godfather role" do
-          subject.without_role(:godfather, tourist).should =~ Forum.all
+          subject.except_as(:godfather, tourist).should =~ Forum.all
         end
 
         it "should get Forum instances the tourist user does not have the group role" do
-          subject.without_role(:group, tourist).should_not =~ [ Forum.first ]
+          subject.except_as(:group, tourist).should_not =~ [ Forum.first ]
         end
 
         it "should get Forum instances the tourist user does not have the group role" do
-          subject.without_role(:group, tourist).should_not =~ [ Forum.first ]
+          subject.except_as(:group, tourist).should_not =~ [ Forum.first ]
         end
       end
 
@@ -236,11 +236,11 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should get all resources not bounded to the group role and the admin user" do
-          subject.without_role(:group, admin).should =~ [ Group.first ]
+          subject.except_as(:group, admin).should =~ [ Group.first ]
         end
 
         it "should not get resources bound to the group role and the admin user" do
-          subject.without_role(:group, admin).should include(Group.first)
+          subject.except_as(:group, admin).should include(Group.first)
         end
       end
     end
@@ -250,7 +250,7 @@ describe Rolify::Resource do
         subject { Forum }
 
         it "should get Forum instances not bound to the forum and group roles and the tourist user" do
-          subject.without_roles([:forum, :group], tourist).should_not =~ [ Forum.first, Forum.last ]
+          subject.except_multiple_as([:forum, :group], tourist).should_not =~ [ Forum.first, Forum.last ]
         end
 
       end
@@ -259,7 +259,7 @@ describe Rolify::Resource do
         subject { Group }
 
         it "should get Group instances binded to the group and grouper roles and the admin user" do
-          subject.without_roles([:group, :grouper], admin).should =~ [ ]
+          subject.except_multiple_as([:group, :grouper], admin).should =~ [ ]
         end
 
       end
@@ -269,14 +269,14 @@ describe Rolify::Resource do
       subject { Team }
 
       it "should find Team instance not using team_code column" do
-        subject.without_roles(:captain, captain).should =~ [ Team.last ]
+        subject.except_multiple_as(:captain, captain).should =~ [ Team.last ]
       end
     end
 
     context "with a resource using STI" do
       subject { Organization }
       it "should exclude instances of children classes with matching" do
-        subject.without_role(:owner, admin).should_not =~ [ Company.first ]
+        subject.except_as(:owner, admin).should_not =~ [ Company.first ]
       end
     end
   end
