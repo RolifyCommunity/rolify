@@ -18,6 +18,11 @@ class Role < ActiveRecord::Base
   extend Rolify::Adapter::Scopes
 end
 
+# Strict user and role classes
+class StrictUser < ActiveRecord::Base
+  rolify strict: true
+end
+
 # Resourcifed and rolifed at the same time
 class HumanResource < ActiveRecord::Base
   resourcify :resources

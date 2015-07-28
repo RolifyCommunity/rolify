@@ -18,6 +18,14 @@ class User
   field :login, :type => String
 end
 
+# Standard user and role classes
+class StrictUser
+  include Mongoid::Document
+  rolify strict: true
+
+  field :login, :type => String
+end
+
 class Role
   include Mongoid::Document
   has_and_belongs_to_many :users

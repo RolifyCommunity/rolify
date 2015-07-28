@@ -23,6 +23,8 @@ module Rolify
     alias_method :grant, :add_role
 
     def has_role?(role_name, resource = nil)
+      return has_strict_role?(role_name, resource) if self.class.strict_rolify and resource
+
       if new_record?
         role_array = self.roles.detect { |r|
           r.name.to_s == role_name.to_s &&
@@ -36,6 +38,10 @@ module Rolify
 
       return false if role_array.nil?
       role_array != []
+    end
+
+    def has_strict_role?(role_name, resource)
+      self.class.adapter.where_strict(self.roles, name: role_name, resource: resource).any?
     end
 
     def has_all_roles?(*args)

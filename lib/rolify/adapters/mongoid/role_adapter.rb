@@ -8,6 +8,16 @@ module Rolify
         relation.any_of(*conditions)
       end
 
+      def where_strict(relation, args)
+        resource = if args[:resource].is_a?(Class)
+                     {class: args[:resource].to_s, id: nil}
+                   else
+                     {class: args[:resource].class.name, id: args[:resource].id}
+                   end
+
+         self.role_class.where(:name => args[:name], :resource_type => resource[:class], :resource_id => resource[:id])
+      end
+
       def find_or_create_by(role_name, resource_type = nil, resource_id = nil)
         self.role_class.find_or_create_by(:name => role_name,
                                           :resource_type => resource_type,

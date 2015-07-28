@@ -8,7 +8,7 @@ require 'rolify/role'
 module Rolify
   extend Configure
 
-  attr_accessor :role_cname, :adapter, :resource_adapter, :role_join_table_name, :role_table_name
+  attr_accessor :role_cname, :adapter, :resource_adapter, :role_join_table_name, :role_table_name, :strict_rolify
   @@resource_types = []
 
   def rolify(options = {})
@@ -31,6 +31,9 @@ module Rolify
 
     self.adapter = Rolify::Adapter::Base.create("role_adapter", self.role_cname, self.name)
     load_dynamic_methods if Rolify.dynamic_shortcuts
+
+    #use strict roles
+    self.strict_rolify = true if options[:strict]
   end
 
   def adapter
@@ -70,4 +73,5 @@ module Rolify
   def self.resource_types
     @@resource_types
   end
+
 end
