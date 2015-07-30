@@ -540,13 +540,11 @@ describe Rolify::Resource do
 
   describe "#strict" do
     context "strict user" do
-      before do
+      before(:all) do
         @strict_user = StrictUser.first
         @strict_user.add_role(:forum, Forum.first)
         @strict_user.add_role(:forum, Forum)
       end
-
-      subject { Forum.first }
 
       it "should return only strict forum" do
         @strict_user.has_role?(:forum, Forum.first).should be true
@@ -558,6 +556,15 @@ describe Rolify::Resource do
 
       it "should return true if user has role on Forum model" do
         @strict_user.has_role?(:forum, Forum).should be true
+      end
+
+      it "should return true if user has role any forum name" do
+        @strict_user.has_role?(:forum, :any).should be true
+      end
+
+      it "should return false when deleted role on Forum model" do
+        @strict_user.remove_role(:forum, Forum)
+        @strict_user.has_role?(:forum, Forum).should be false
       end
     end
   end

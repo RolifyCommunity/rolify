@@ -23,7 +23,7 @@ module Rolify
     alias_method :grant, :add_role
 
     def has_role?(role_name, resource = nil)
-      return has_strict_role?(role_name, resource) if self.class.strict_rolify and resource
+      return has_strict_role?(role_name, resource) if self.class.strict_rolify and resource and resource != :any
 
       if new_record?
         role_array = self.roles.detect { |r|

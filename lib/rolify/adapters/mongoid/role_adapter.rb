@@ -15,7 +15,7 @@ module Rolify
                      {class: args[:resource].class.name, id: args[:resource].id}
                    end
 
-         self.role_class.where(:name => args[:name], :resource_type => resource[:class], :resource_id => resource[:id])
+          relation.where(:name => args[:name], :resource_type => resource[:class], :resource_id => resource[:id])
       end
 
       def find_or_create_by(role_name, resource_type = nil, resource_id = nil)
