@@ -1,25 +1,5 @@
 # rolify [![Gem Version](https://badge.fury.io/rb/rolify.svg)](http://badge.fury.io/rb/rolify) [![build status](https://secure.travis-ci.org/RolifyCommunity/rolify.png)](http://travis-ci.org/RolifyCommunity/rolify) [![Dependency Status](https://gemnasium.com/RolifyCommunity/rolify.svg)](https://gemnasium.com/RolifyCommunity/rolify) [![Code Climate](https://codeclimate.com/github/RolifyCommunity/rolify.png)](https://codeclimate.com/github/RolifyCommunity/rolify) [![Coverage Status](https://img.shields.io/coveralls/RolifyCommunity/rolify.svg)](https://coveralls.io/r/RolifyCommunity/rolify?branch=master)
 
-
-##This is a fork the rolify gem version 4.0.0. It's able to you use strict has_role?
-
-```ruby
-class User < ActiveRecord::Base
-  rolify strict: true
-end
-
-@user = User.first
-
-@user.add_role(:forum, Forum)
-@user.add_role(:forum, Forum.first)
-
-@user.has_role?(:forum, Froum) #=> true
-@user.has_role?(:forum, Froum.first) #=> true
-@user.has_role?(:forum, Froum.last) #=> false
-```
-I.e. you get true only on a role that you manually add.
-
-
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
 
 Let's see an example:
@@ -220,6 +200,24 @@ Forum.find_roles(:admin)
 Forum.find_roles(:admin, current_user)
 # => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name and belongs to current_user roles ]
 ```
+
+### Strict Mode
+
+```ruby
+class User < ActiveRecord::Base
+  rolify strict: true
+end
+
+@user = User.first
+
+@user.add_role(:forum, Forum)
+@user.add_role(:forum, Forum.first)
+
+@user.has_role?(:forum, Forum) #=> true
+@user.has_role?(:forum, Forum.first) #=> true
+@user.has_role?(:forum, Forum.last) #=> false
+```
+I.e. you get true only on a role that you manually add.
 
 ## Resources
 
