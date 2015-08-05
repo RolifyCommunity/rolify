@@ -3,15 +3,15 @@ require "rolify/configure"
 module Rolify
   module Dynamic
     def load_dynamic_methods
-      if ENV['ADAPTER'] == 'mongoid'
-        # for compatibility with MongoidDB - does not support polymorphic includes
-        self.role_class.all.each do |r|
-          define_dynamic_method(r.name, r.resource)
-        end
-      else
+      if ENV['ADAPTER'] == 'active_record'
         # otherwise should be able to support polymorphic includes.
         # supported Rails version >= 3.2 with AR should use find_each, since use of .all.each is deprecated
         self.role_class.includes(:resource).find_each do |r|
+          define_dynamic_method(r.name, r.resource)
+        end
+      else
+        # for compatibility with MongoidDB - does not support polymorphic includes
+        self.role_class.all.each do |r|
           define_dynamic_method(r.name, r.resource)
         end
       end
