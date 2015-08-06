@@ -13,8 +13,14 @@ Gem::Specification.new do |s|
 
   s.license     = 'MIT'
 
-  s.authors     = ['Florent Monbillard']
-  s.email       = ['f.monbillard@gmail.com']
+  s.authors     = [
+    'Florent Monbillard',
+    'Wellington Cordeiro'
+  ]
+  s.email       = [
+    'f.monbillard@gmail.com',
+    'wellington@wellingtoncordeiro.com'
+  ]
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
