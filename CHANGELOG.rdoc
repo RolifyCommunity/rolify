@@ -1,3 +1,6 @@
+= 4.1.1 (Aug 06, 2015)
+* Fix a regression in the dynamic method loader.
+
 = 4.1.0 (Aug 04, 2015)
 * added `without_role` method for resources and classes
 * fix `has_role?` with :any and an unsaved user
