@@ -52,7 +52,7 @@ module Rolify
     private
 
     def sanity_check(role_cnames)
-      return true if (ARGV[0] =~ /assets:/) == 0
+      return true if ARGV.reduce(nil) { |acc,arg| arg =~ /assets:/ if acc.nil? } == 0
 
       role_cnames = [ "Role" ] if role_cnames.empty?
       role_cnames.each do |role_cname|
