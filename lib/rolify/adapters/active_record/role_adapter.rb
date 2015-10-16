@@ -51,7 +51,7 @@ module Rolify
           query = relation.all
         end
         query = query.joins(:roles)
-        query = where(query, conditions)
+        query = where(query, conditions) if conditions
         query
       end
 

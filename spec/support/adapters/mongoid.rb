@@ -1,6 +1,8 @@
 require 'mongoid'
 
 Mongoid.load!("spec/support/adapters/mongoid.yml", :test)
+Mongoid.logger = ::Logger.new('/dev/null')
+Mongo::Logger.logger.level = Logger::INFO
 
 ::Mongoid::Document.module_eval do
   def self.included(base)

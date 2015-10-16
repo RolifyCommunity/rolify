@@ -19,6 +19,7 @@ module Rolify
     end
 
     def with_any_role(*args)
+      return self.adapter.scope(self, nil) if args.empty?
       users = []
       parse_args(args, users) do |users_to_add|
         users += users_to_add

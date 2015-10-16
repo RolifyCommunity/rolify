@@ -1,6 +1,7 @@
 test:
-  sessions:
+  clients:
     default:
+      logger: false
       database: godfather
       hosts:
         - localhost:27017
