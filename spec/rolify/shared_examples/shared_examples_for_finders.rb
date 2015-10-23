@@ -116,6 +116,7 @@ shared_examples_for :finders do |param_name, param_method|
     describe ".with_any_role" do
       it { should respond_to(:with_any_role) }
 
+      it { subject.with_any_role().should eq(subject.joins(:roles).all)}
       it { subject.with_any_role("admin".send(param_method), :staff).should eq([ root ]) }
       it { subject.with_any_role("admin".send(param_method), :staff, { :name => "moderator".send(param_method), :resource => Group }).should eq([ root ]) }
       it { subject.with_any_role("admin".send(param_method), "moderator".send(param_method)).should eq([ root ]) }

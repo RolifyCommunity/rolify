@@ -2,7 +2,7 @@ shared_context "global role", :scope => :global do
   subject { admin }
   
   def admin
-    user_class.first
+    user_class.where(:login => "admin").first
   end
   
   before(:all) do
