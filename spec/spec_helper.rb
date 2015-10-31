@@ -19,10 +19,7 @@ ENV['ADAPTER'] ||= 'active_record'
 load File.dirname(__FILE__) + "/support/adapters/#{ENV['ADAPTER']}.rb"
 load File.dirname(__FILE__) + '/support/data.rb'
 
-begin
-  require 'pry'
-rescue LoadError
-end
+
 
 def reset_defaults
   Rolify.use_defaults
@@ -46,4 +43,8 @@ def silence_warnings(&block)
   result = block.call
   $VERBOSE = warn_level
   result
+end
+
+RSpec.configure do |config|
+  config.expect_with(:rspec) { |c| c.syntax = [:should, :expect] }
 end

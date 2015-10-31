@@ -5,11 +5,11 @@ RSpec::Matchers.define :have_role do |*args|
     resource.has_role?(*args)
   end
 
-  failure_message_for_should do |resource|
+  failure_message do |resource|
     "expected to have role #{args.map(&:inspect).join(" ")}"
   end
 
-  failure_message_for_should_not do |resource|
+  failure_message_when_negated do |resource|
     "expected not to have role #{args.map(&:inspect).join(" ")}"
   end
 end

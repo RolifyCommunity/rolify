@@ -161,6 +161,8 @@ describe Rolify do
         config.orm = "mongoid"
       end
     end
+
+    subject { Rolify }
     
     its(:dynamic_shortcuts) { should be_truthy }
     its(:orm) { should eq("mongoid") }
