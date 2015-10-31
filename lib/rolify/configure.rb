@@ -66,6 +66,9 @@ module Rolify
 
     def role_table_missing?(role_class)
       !role_class.table_exists?
+    rescue ActiveRecord::NoDatabaseError
+      true
     end
+
   end
 end
