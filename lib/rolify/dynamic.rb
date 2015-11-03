@@ -5,7 +5,7 @@ module Rolify
     def load_dynamic_methods
       if ENV['ADAPTER'] == 'active_record'
         # supported Rails version >= 3.2 with AR should use find_each, since use of .all.each is deprecated
-        self.role_class.includes(:resource).find_each do |r|
+        self.role_class.group("name, resource_type").includes(:resource).find_each do |r|
           define_dynamic_method(r.name, r.resource)
         end
       else
