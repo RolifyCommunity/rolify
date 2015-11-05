@@ -221,6 +221,20 @@ end
 ```
 I.e. you get true only on a role that you manually add.
 
+### Cached Roles (to avoid N+1 issue)
+
+```ruby
+@user.add_role :admin, Forum
+@user.add_role :member, Forum
+
+users = User.with_role(:admin, Forum).preload(:roles)
+users.each do |user|
+  user.has_cached_role?(:member, Forum) # no extra queries
+end
+```
+
+This method should be used with caution. If you don't preload the roles, the `has_cached_role?` might return `false`. In the above example, it would return `false` for `@user.has_cached_role?(:member, Forum)`, because `User.with_role(:admin, Forum)` will load only the `:admin` roles.
+
 ## Resources
 
 * [Wiki](https://github.com/RolifyCommunity/rolify/wiki)

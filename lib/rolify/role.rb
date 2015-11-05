@@ -44,6 +44,15 @@ module Rolify
       self.class.adapter.where_strict(self.roles, name: role_name, resource: resource).any?
     end
 
+    def has_cached_role?(role_name, resource = nil)
+      return has_strict_cached_role?(role_name, resource) if self.class.strict_rolify and resource and resource != :any
+      self.class.adapter.find_cached(self.roles, name: role_name, resource: resource).any?
+    end
+
+    def has_strict_cached_role?(role_name, resource = nil)
+      self.class.adapter.find_cached_strict(self.roles, name: role_name, resource: resource).any?
+    end
+
     def has_all_roles?(*args)
       args.each do |arg|
         if arg.is_a? Hash

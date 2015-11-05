@@ -548,23 +548,28 @@ describe Rolify::Resource do
 
       it "should return only strict forum" do
         @strict_user.has_role?(:forum, Forum.first).should be true
+        @strict_user.has_cached_role?(:forum, Forum.first).should be true
       end
 
       it "should return false on strict another forum" do
         @strict_user.has_role?(:forum, Forum.last).should be false
+        @strict_user.has_cached_role?(:forum, Forum.last).should be false
       end
 
       it "should return true if user has role on Forum model" do
         @strict_user.has_role?(:forum, Forum).should be true
+        @strict_user.has_cached_role?(:forum, Forum).should be true
       end
 
       it "should return true if user has role any forum name" do
         @strict_user.has_role?(:forum, :any).should be true
+        @strict_user.has_cached_role?(:forum, :any).should be true
       end
 
       it "should return false when deleted role on Forum model" do
         @strict_user.remove_role(:forum, Forum)
         @strict_user.has_role?(:forum, Forum).should be false
+        @strict_user.has_cached_role?(:forum, Forum).should be false
       end
     end
   end
