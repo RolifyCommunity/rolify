@@ -542,6 +542,7 @@ describe Rolify::Resource do
     context "strict user" do
       before(:all) do
         @strict_user = StrictUser.first
+        @strict_user.role_ids
         @strict_user.add_role(:forum, Forum.first)
         @strict_user.add_role(:forum, Forum)
       end

@@ -7,7 +7,14 @@ group :test do
     gem "sqlite3", :platform => "ruby"
     gem "activerecord", ">= 3.2.0", :require => "active_record"
   when "mongoid"
-    gem "mongoid", "~> 3.1"
+    case ENV["MONGOID_VERSION"]
+    when nil, '5'
+      gem "mongoid", "~> 5"
+    when '4'
+      gem "mongoid", "~> 4"
+    when '3'
+      gem "mongoid", "~> 3"
+    end
     gem "bson_ext", :platform => "ruby"
   else
     raise "Unknown model adapter: #{ENV["ADAPTER"]}"
@@ -18,6 +25,7 @@ group :test do
   gem 'byebug'
   gem 'pry-byebug'
   gem 'test-unit' # Implicitly loaded by ammeter
+  gem 'database_cleaner'
   gem 'codeclimate-test-reporter', :require => nil
 end
 
