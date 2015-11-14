@@ -1,4 +1,5 @@
 require "codeclimate-test-reporter"
+
 CodeClimate::TestReporter.start
 
 require 'rubygems'
@@ -11,6 +12,8 @@ begin
   require 'its'
 rescue LoadError
 end
+require 'database_cleaner'
+
 require 'coveralls'
 Coveralls.wear_merged!
 
@@ -47,4 +50,14 @@ end
 
 RSpec.configure do |config|
   config.expect_with(:rspec) { |c| c.syntax = [:should, :expect] }
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.start
+  end
+
+  config.after(:suite) do |example|
+    DatabaseCleaner.clean
+  end
+
 end

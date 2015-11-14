@@ -17,11 +17,12 @@ require 'common_helper'
 ENV['ADAPTER'] ||= 'active_record'
 
 if ENV['ADAPTER'] == 'active_record'
+  load File.dirname(__FILE__) + '/support/adapters/utils/active_record.rb'
   require 'active_record/railtie'
-  ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
+  establish_connection
 else
-  require 'mongoid'
-  Mongoid.load!("spec/support/adapters/mongoid.yml", :test)
+  load File.dirname(__FILE__) + '/support/adapters/utils/mongoid.rb'
+  load_mongoid_config
 end
 
 module TestApp

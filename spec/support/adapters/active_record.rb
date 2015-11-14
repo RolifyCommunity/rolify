@@ -1,7 +1,8 @@
-require 'active_record'
+load File.dirname(__FILE__) + '/utils/active_record.rb'
 
-RSpec::Matchers::BuiltIn::OperatorMatcher.register(ActiveRecord::Relation, '=~', RSpec::Matchers::BuiltIn::ContainExactly)
-ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
+extend_rspec_with_activerecord_specific_matchers
+establish_connection
+
 ActiveRecord::Base.extend Rolify
 
 load File.dirname(__FILE__) + '/../schema.rb'
