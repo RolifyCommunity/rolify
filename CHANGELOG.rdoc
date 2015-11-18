@@ -1,3 +1,10 @@
+= 5.0.0 (Nov 17, 2015)
+* Fix migration warning showing when it shouldn't
+* Add role lazy-loading
+* Add has_cached_role and has_cached_strict_role to project.
+  See: https://github.com/RolifyCommunity/rolify#cached-roles-to-avoid-n1-issue
+* Update specs to pass with all Mongoid version.
+
 = 4.1.1 (Aug 06, 2015)
 * Fix a regression in the dynamic method loader.
 
