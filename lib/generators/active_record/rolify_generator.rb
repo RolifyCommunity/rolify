@@ -8,6 +8,13 @@ module ActiveRecord
 
       argument :user_cname, :type => :string, :default => "User", :banner => "User"
 
+      def ensure_user_class_defined
+        unless user_class_defined?
+          prompt_missing_user
+          abort
+        end
+      end
+
       def generate_model
         invoke "active_record:model", [ name ], :migration => false
       end
@@ -22,6 +29,7 @@ module ActiveRecord
             require "#{ENGINE_ROOT}/app/models/#{user_cname.downcase}.rb"
           end
         end
+
         inject_into_class(model_path, class_name, model_content)
       end
 
@@ -30,7 +38,7 @@ module ActiveRecord
       end
 
       def join_table
-        user_cname.constantize.table_name + "_" + table_name
+        user_class.table_name + "_" + table_name
       end
 
       def user_reference
@@ -56,8 +64,31 @@ module ActiveRecord
 
   scopify
 RUBY
-        content % { :user_cname => user_cname.constantize.table_name, :join_table => "#{user_cname.constantize.table_name}_#{table_name}"}
+        content % { :user_cname => user_class.table_name, :join_table => "#{user_cname.constantize.table_name}_#{table_name}"}
       end
+
+      def user_class
+        user_cname.constantize
+      end
+
+      def user_class_defined?
+        user_class
+        true
+      rescue NameError => ex
+        if ex.missing_name == user_cname
+          false
+        else
+          raise ex
+        end
+      end
+
+      def prompt_missing_user
+        puts <<MSG
+Rolify expected a model named #{user_cname} to be defined but could not find one.
+Please ensure that this model exists and is not mis-spelled and re-run the generator.
+MSG
+      end
+
     end
   end
 end
