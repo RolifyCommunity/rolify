@@ -17,9 +17,10 @@ module ActiveRecord
           if args[2]=="devise"
             require 'devise'
             require "#{ENGINE_ROOT}/config/initializers/devise.rb"
-            require "#{ENGINE_ROOT}/app/models/#{user_cname.downcase}.rb"
+            require "#{ENGINE_ROOT}/#{model_path}"
+            require "#{ENGINE_ROOT}/app/models/#{user_classname.underscore}"
           else
-            require "#{ENGINE_ROOT}/app/models/#{user_cname.downcase}.rb"
+            require "#{ENGINE_ROOT}/#{model_path}"
           end
         end
         inject_into_class(model_path, class_name, model_content)
@@ -30,7 +31,7 @@ module ActiveRecord
       end
 
       def join_table
-        user_cname.constantize.table_name + "_" + table_name
+        user_classname.constantize.table_name + "_" + table_name
       end
 
       def user_reference
@@ -56,7 +57,11 @@ module ActiveRecord
 
   scopify
 RUBY
-        content % { :user_cname => user_cname.constantize.table_name, :join_table => "#{user_cname.constantize.table_name}_#{table_name}"}
+        content % { :user_cname => user_classname.constantize.table_name, :join_table => "#{user_classname}_#{table_name}"}
+      end
+
+      def user_classname
+        (class_name.deconstantize + "::" + user_cname)
       end
     end
   end
