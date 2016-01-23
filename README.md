@@ -44,14 +44,14 @@ rails g rolify Role User
 rails g rolify:role Role User
 ```
 
-Role and User classes are the default. You can specify any Role class name you want. This is completly a new file so any name can do the job.
+Role and User classes are the default. You can specify any Role class name you want. This is a completely new file so any name will do the job.
 For the User class name, you would probably use the one provided by your authentication solution. rolify just adds some class methods in an existing User class.
 
 If you want to use Mongoid instead of ActiveRecord, just add `--orm=mongoid` argument, and skip to step #3
 
 ### 2. Run the migration (only required when using ActiveRecord)
 
-Let's migrate !
+Let's migrate!
 
 ```
 rake db:migrate
@@ -100,21 +100,21 @@ user = User.find(1)
 user.add_role :admin
 ```
 
-To define a role scoped to a resource instance
+To define a role scoped to a resource instance:
 
 ```ruby
 user = User.find(2)
 user.add_role :moderator, Forum.first
 ```
 
-To define a role scoped to a resource class
+To define a role scoped to a resource class:
 
 ```ruby
 user = User.find(3)
 user.add_role :moderator, Forum
 ```
 
-That's it !
+That's it!
 
 ### 5. Role queries
 
@@ -171,36 +171,36 @@ Starting from rolify 3.0, you can search roles on instance level or class level 
 ```ruby
 forum = Forum.first
 forum.roles
-# => [ list of roles that are only binded to forum instance ]
+# => [ list of roles that are only bound to forum instance ]
 forum.applied_roles
-# => [ list of roles binded to forum instance and to the Forum class ]
+# => [ list of roles bound to forum instance and to the Forum class ]
 ```
 
 #### Class level
 
 ```ruby
 Forum.with_role(:admin)
-# => [ list of Forum instances that has role "admin" binded to it ]
+# => [ list of Forum instances that have role "admin" bound to them ]
 Forum.with_role(:admin, current_user)
-# => [ list of Forum instances that has role "admin" binded to it and belongs to current_user roles ]
+# => [ list of Forum instances that have role "admin" bound to them and belong to current_user roles ]
 Forum.with_roles([:admin, :user], current_user)
-# => [ list of Forum instances that has role "admin" or "user" binded to it and belongs to current_user roles ]
+# => [ list of Forum instances that have role "admin" or "user" bound to them and belong to current_user roles ]
 
 User.with_any_role(:user, :admin)
-# => [ list of User instances that has role "admin" or "user" binded to it ]
+# => [ list of User instances that have role "admin" or "user" bound to them ]
 User.with_role(:site_admin, current_site)
 # => [ list of User instances that have a scoped role of "site_admin" to a site instance ]
 User.with_role(:site_admin, :any)
 # => [ list of User instances that have a scoped role of "site_admin" for any site instances ]
 User.with_all_roles(:site_admin, :admin)
-# => [ list of User instances that have a role of "site_admin" and a role of "admin" binded to it ]
+# => [ list of User instances that have a role of "site_admin" and a role of "admin" bound to it ]
 
 Forum.find_roles
-# => [ list of roles that binded to any Forum instance or to the Forum class ]
+# => [ list of roles that are bound to any Forum instance or to the Forum class ]
 Forum.find_roles(:admin)
-# => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name ]
+# => [ list of roles that are bound to any Forum instance or to the Forum class, with "admin" as a role name ]
 Forum.find_roles(:admin, current_user)
-# => [ list of roles that binded to any Forum instance or to the Forum class with "admin" as a role name and belongs to current_user roles ]
+# => [ list of roles that are bound to any Forum instance, or to the Forum class with "admin" as a role name, and belongs to current_user ]
 ```
 
 ### Strict Mode
