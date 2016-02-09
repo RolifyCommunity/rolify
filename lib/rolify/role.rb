@@ -94,7 +94,7 @@ module Rolify
         resource = args.first
         self.class.define_dynamic_method $1, resource
         return has_role?("#{$1}", resource)
-      end unless !Rolify.dynamic_shortcuts
+      end if Rolify.dynamic_shortcuts
       super
     end
 
