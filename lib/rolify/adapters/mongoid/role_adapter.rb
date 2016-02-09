@@ -9,13 +9,14 @@ module Rolify
       end
 
       def where_strict(relation, args)
+        return relation.where(:name => args[:name]) if args[:resource].blank?
         resource = if args[:resource].is_a?(Class)
                      {class: args[:resource].to_s, id: nil}
                    else
                      {class: args[:resource].class.name, id: args[:resource].id}
                    end
 
-          relation.where(:name => args[:name], :resource_type => resource[:class], :resource_id => resource[:id])
+        relation.where(:name => args[:name], :resource_type => resource[:class], :resource_id => resource[:id])
       end
 
       def find_cached(relation, args)
