@@ -30,7 +30,6 @@ module Rolify
     has_and_belongs_to_many :roles, rolify_options
 
     self.adapter = Rolify::Adapter::Base.create("role_adapter", self.role_cname, self.name)
-    load_dynamic_methods if Rolify.dynamic_shortcuts
 
     #use strict roles
     self.strict_rolify = true if options[:strict]

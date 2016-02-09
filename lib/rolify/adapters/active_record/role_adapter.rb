@@ -9,6 +9,7 @@ module Rolify
       end
 
       def where_strict(relation, args)
+        return relation.where(:name => args[:name]) if args[:resource].blank?
         resource = if args[:resource].is_a?(Class)
                      {class: args[:resource].to_s, id: nil}
                    else
