@@ -14,11 +14,80 @@ before_install:
 
 script: bundle exec rake
 
-env:
-  - ADAPTER=active_record
-  - ADAPTER=mongoid MONGOID_VERSION=3
-  - ADAPTER=mongoid MONGOID_VERSION=4
-  - ADAPTER=mongoid MONGOID_VERSION=5
+matrix:
+  include:
+    - rvm: 2.2.3
+      gemfile: gemfiles/activerecord_3.gemfile
+      env: ADAPTER=active_record
+    - rvm: 2.2.2
+      gemfile: gemfiles/activerecord_3.gemfile
+      env: ADAPTER=active_record
+    - rvm: 2.1.2
+      gemfile: gemfiles/activerecord_3.gemfile
+      env: ADAPTER=active_record
+    - rvm: 2.0.0
+      gemfile: gemfiles/activerecord_3.gemfile
+      env: ADAPTER=active_record
+
+    - rvm: 2.2.3
+      gemfile: gemfiles/activerecord_4.gemfile
+      env: ADAPTER=active_record
+    - rvm: 2.2.2
+      gemfile: gemfiles/activerecord_4.gemfile
+      env: ADAPTER=active_record
+    - rvm: 2.1.2
+      gemfile: gemfiles/activerecord_4.gemfile
+      env: ADAPTER=active_record
+    - rvm: 2.0.0
+      gemfile: gemfiles/activerecord_4.gemfile
+      env: ADAPTER=active_record
+
+    - rvm: 2.2.3
+      gemfile: gemfiles/activerecord_5.gemfile
+      env: ADAPTER=active_record
+    - rvm: 2.2.2
+      gemfile: gemfiles/activerecord_5.gemfile
+      env: ADAPTER=active_record
+
+    - rvm: 2.2.3
+      gemfile: gemfiles/mongoid_3.gemfile
+      env: ADAPTER=mongoid
+    - rvm: 2.2.2
+      gemfile: gemfiles/mongoid_3.gemfile
+      env: ADAPTER=mongoid
+    - rvm: 2.1.2
+      gemfile: gemfiles/mongoid_3.gemfile
+      env: ADAPTER=mongoid
+    - rvm: 2.0.0
+      gemfile: gemfiles/mongoid_3.gemfile
+      env: ADAPTER=mongoid
+
+    - rvm: 2.2.3
+      gemfile: gemfiles/mongoid_4.gemfile
+      env: ADAPTER=mongoid
+    - rvm: 2.2.2
+      gemfile: gemfiles/mongoid_4.gemfile
+      env: ADAPTER=mongoid
+    - rvm: 2.1.2
+      gemfile: gemfiles/mongoid_4.gemfile
+      env: ADAPTER=mongoid
+    - rvm: 2.0.0
+      gemfile: gemfiles/mongoid_4.gemfile
+      env: ADAPTER=mongoid
+
+    - rvm: 2.2.3
+      gemfile: gemfiles/mongoid_5.gemfile
+      env: ADAPTER=mongoid
+    - rvm: 2.2.2
+      gemfile: gemfiles/mongoid_5.gemfile
+      env: ADAPTER=mongoid
+    - rvm: 2.1.2
+      gemfile: gemfiles/mongoid_5.gemfile
+      env: ADAPTER=mongoid
+    - rvm: 2.0.0
+      gemfile: gemfiles/mongoid_5.gemfile
+      env: ADAPTER=mongoid
+
 
 services: mongodb
 
