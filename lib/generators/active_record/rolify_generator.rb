@@ -56,7 +56,10 @@ module ActiveRecord
       def model_content
         content = <<RUBY
   has_and_belongs_to_many :%{user_cname}, :join_table => :%{join_table}
-  belongs_to :resource, :polymorphic => true
+
+  belongs_to :resource,
+             :polymorphic => true,
+             :optional => true
 
   validates :resource_type,
             :inclusion => { :in => Rolify.resource_types },
