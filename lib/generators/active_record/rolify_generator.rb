@@ -37,6 +37,8 @@ module ActiveRecord
         migration_template "migration.rb", "db/migrate/rolify_create_#{table_name}.rb"
       end
 
+      private
+
       def join_table
         user_class.table_name + "_" + table_name
       end
