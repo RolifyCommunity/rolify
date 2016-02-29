@@ -45,7 +45,10 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should exist }
       it { should contain "class Role < ActiveRecord::Base" }
       it { should contain "has_and_belongs_to_many :users, :join_table => :users_roles" }
-      it { should contain "belongs_to :resource, :polymorphic => true" }
+      it { should contain "belongs_to :resource,\n"
+                          "           :polymorphic => true,\n"
+                          "           :optional => true"
+      }
       it { should contain "validates :resource_type,\n"
                           "          :inclusion => { :in => Rolify.resource_types },\n"
                           "          :allow_nil => true" }
@@ -93,7 +96,10 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should exist }
       it { should contain "class AdminRole < ActiveRecord::Base" }
       it { should contain "has_and_belongs_to_many :admin_users, :join_table => :admin_users_admin_roles" }
-      it { should contain "belongs_to :resource, :polymorphic => true" }
+      it { should contain "belongs_to :resource,\n"
+                          "           :polymorphic => true,\n"
+                          "           :optional => true"
+      }
     end
 
     describe 'app/models/admin_user.rb' do
@@ -145,7 +151,10 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should exist }
       it { should contain "class Admin::Role < ActiveRecord::Base" }
       it { should contain "has_and_belongs_to_many :admin_users, :join_table => :admin_users_admin_roles" }
-      it { should contain "belongs_to :resource, :polymorphic => true" }
+      it { should contain "belongs_to :resource,\n"
+                          "           :polymorphic => true,\n"
+                          "           :optional => true"
+      }
     end
 
     describe 'app/models/admin/user.rb' do
