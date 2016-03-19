@@ -1,3 +1,9 @@
+= 5.1.0 (Mar 19, 2016)
+* Rails 5 Support (thanks @lorefnon)
+* Fix user handling in generator (thanks @lorefnon)
+* Fix quoting issues (thanks @lorefnon)
+* Improvements to dynamic module loading (thanks to @DmitryKK)
+
 = 5.0.0 (Nov 17, 2015)
 * Fix migration warning showing when it shouldn't
 * Add role lazy-loading
