@@ -45,6 +45,16 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should exist }
       it { should contain "class Role < ActiveRecord::Base" }
       it { should contain "has_and_belongs_to_many :users, :join_table => :users_roles" }
+      it do
+        if Rails::VERSION::MAJOR < 5
+          should contain "belongs_to :resource,\n"
+                          "           :polymorphic => true"
+        else
+          should contain "belongs_to :resource,\n"
+                          "           :polymorphic => true,\n"
+                          "           :optional => true"
+        end
+      end
       it { should contain "belongs_to :resource,\n"
                           "           :polymorphic => true,\n"
                           "           :optional => true"
