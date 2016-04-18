@@ -1,5 +1,6 @@
 require 'rails/generators/active_record'
 require 'active_support/core_ext'
+require 'erb'
 
 module ActiveRecord
   module Generators
@@ -56,20 +57,7 @@ module ActiveRecord
       end
 
       def model_content
-        content = <<RUBY
-  has_and_belongs_to_many :%{user_cname}, :join_table => :%{join_table}
-
-  belongs_to :resource,
-             :polymorphic => true,
-             :optional => true
-
-  validates :resource_type,
-            :inclusion => { :in => Rolify.resource_types },
-            :allow_nil => true
-
-  scopify
-RUBY
-        content % { :user_cname => user_class.table_name, :join_table => "#{user_cname.constantize.table_name}_#{table_name}"}
+        ERB.new(File.read(File.join(__dir__, 'templates/model.rb'))).result(binding)
       end
 
       def user_class
