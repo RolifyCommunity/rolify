@@ -114,6 +114,12 @@ user = User.find(3)
 user.add_role :moderator, Forum
 ```
 
+Remove role:
+```ruby
+user = User.find(3)
+user.remove_role :moderator
+```
+
 That's it!
 
 ### 5. Role queries
