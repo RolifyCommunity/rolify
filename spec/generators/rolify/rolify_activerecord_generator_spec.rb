@@ -43,7 +43,13 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
     describe 'app/models/role.rb' do
       subject { file('app/models/role.rb') }
       it { should exist }
-      it { should contain "class Role < ActiveRecord::Base" }
+      it do
+        if Rails::VERSION::MAJOR < 5
+          should contain "class Role < ActiveRecord::Base"
+        else
+          should contain "class Role < ApplicationRecord"
+        end
+      end
       it { should contain "has_and_belongs_to_many :users, :join_table => :users_roles" }
       it do
         if Rails::VERSION::MAJOR < 5
@@ -104,7 +110,13 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       subject { file('app/models/admin_role.rb') }
 
       it { should exist }
-      it { should contain "class AdminRole < ActiveRecord::Base" }
+      it do
+        if Rails::VERSION::MAJOR < 5
+          should contain "class AdminRole < ActiveRecord::Base"
+        else
+          should contain "class AdminRole < ApplicationRecord"
+        end
+      end
       it { should contain "has_and_belongs_to_many :admin_users, :join_table => :admin_users_admin_roles" }
       it { should contain "belongs_to :resource,\n"
                           "           :polymorphic => true,\n"
@@ -159,7 +171,13 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       subject { file('app/models/admin/role.rb') }
 
       it { should exist }
-      it { should contain "class Admin::Role < ActiveRecord::Base" }
+      it do
+        if Rails::VERSION::MAJOR < 5
+          should contain "class Admin::Role < ActiveRecord::Base"
+        else
+          should contain "class Admin::Role < ApplicationRecord"
+        end
+      end
       it { should contain "has_and_belongs_to_many :admin_users, :join_table => :admin_users_admin_roles" }
       it { should contain "belongs_to :resource,\n"
                           "           :polymorphic => true,\n"
