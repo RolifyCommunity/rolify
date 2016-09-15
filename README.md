@@ -11,7 +11,7 @@ user.has_role?(:moderator, Forum.first)
 
 This library can be easily integrated with any authentication gem ([devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), [Clearance](https://github.com/thoughtbot/clearance)) and authorization gem<span style="color: red"><strong>*</strong></span> ([CanCanCan](https://github.com/CanCanCommunity/cancancan), [authority](https://github.com/nathanl/authority))
 
-<span style="color: red"><strong>*</strong></span>: authorization gem that doesn't provide a role class
+*: _authorization gem that doesn't provide a role class_
 
 ## Requirements
 
