@@ -91,6 +91,18 @@ class Forum < ActiveRecord::Base
 end
 ```
 
+### 3.3 Assign default role
+
+```ruby
+class User < ActiveRecord::Base
+  after_create :assign_default_role
+
+  def assign_default_role
+    self.add_role(:newuser) if self.roles.blank?
+  end
+end
+```
+
 ### 4. Add a role to a user
 
 To define a global role:
