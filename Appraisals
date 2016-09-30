@@ -15,12 +15,12 @@ end
 
 appraise 'activerecord-3' do
   gem "sqlite3", :platform => "ruby"
-  gem "activerecord", ">= 3.2.0", :require => "active_record"
+  gem "activerecord", "~> 3.2.0", :require => "active_record"
 end
 
 appraise 'activerecord-4' do
   gem "sqlite3", :platform => "ruby"
-  gem "activerecord", ">= 4.2.5", :require => "active_record"
+  gem "activerecord", "~> 4.2.5", :require => "active_record"
 end
 
 appraise 'activerecord-5' do
