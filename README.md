@@ -80,6 +80,8 @@ The `rolify` method accepts the following callback options:
 
 Mongoid callbacks are also supported and works the same way.
 
+The `rolify` method also accepts the `inverse_of` option if you need to disambiguate the relationship.
+
 ### 3.2 Configure your resource models
 
 In the resource models you want to apply roles on, just add ``resourcify`` method.
