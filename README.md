@@ -5,11 +5,11 @@ Very simple Roles library without any authorization enforcement supporting scope
 Let's see an example:
 
 ```ruby
-user.has_role?(:moderator, Forum.first)
+user.has_role?(:moderator, @forum)
 => false # if user is moderator of another Forum
 ```
 
-This library can be easily integrated with any authentication gem ([devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), [Clearance](https://github.com/thoughtbot/clearance)) and authorization gem<span style="color: red"><strong>*</strong></span> ([CanCanCan](https://github.com/CanCanCommunity/cancancan), [authority](https://github.com/nathanl/authority))
+This library can be easily integrated with any authentication gem ([devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), [Clearance](https://github.com/thoughtbot/clearance)) and authorization gem<span style="color: red"><strong>*</strong></span> ([CanCanCan](https://github.com/CanCanCommunity/cancancan), [authority](https://github.com/nathanl/authority), [Pundit](https://github.com/elabs/pundit))
 
 <span style="color: red"><strong>*</strong></span>: authorization gem that doesn't provide a role class
 
@@ -32,7 +32,9 @@ gem "rolify"
 
 ### 1. Generate Role Model
 
-First, create your Role model and migration file using this generator:
+First, use the generator to setup Rolify. Role and User class are the default names. However, you can specify any class name you want. For the User class name, you would probably use the one provided by your authentication solution.
+
+If you want to use Mongoid instead of ActiveRecord, just add `--orm=mongoid` argument, and skip to step #3.
 
 ```
 rails g rolify Role User
@@ -44,10 +46,7 @@ rails g rolify Role User
 rails g rolify:role Role User
 ```
 
-Role and User classes are the default. You can specify any Role class name you want. This is a completely new file so any name will do the job.
-For the User class name, you would probably use the one provided by your authentication solution. rolify just adds some class methods in an existing User class.
-
-If you want to use Mongoid instead of ActiveRecord, just add `--orm=mongoid` argument, and skip to step #3
+The generator will create your Role model, add a migration file, and update your User class with new class methods. 
 
 ### 2. Run the migration (only required when using ActiveRecord)
 
