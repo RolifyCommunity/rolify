@@ -66,7 +66,8 @@ module Rolify
         #
         #  role.destroy if role.send(user_class.to_s.tableize.to_sym).empty?
         #end
-        cond = { :name => role_name }
+        cond = {}
+        cond[:name] = role_name unless role_name.blank?
         cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
         cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
         roles = relation.roles.where(cond)
