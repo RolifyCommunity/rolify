@@ -46,7 +46,7 @@ module Rolify
       end
 
       def add(relation, role)
-        relation.role_ids |= [role.id]
+        relation.roles << role
       end
 
       def remove(relation, role_name, resource = nil)
