@@ -2,7 +2,7 @@ class RolifyCreate<%= table_name.camelize %> < ActiveRecord::Migration
   def change
     create_table(:<%= table_name %>) do |t|
       t.string :name
-      t.references :resource, :polymorphic => true
+      t.references :resource, polymorphic: true
 
       t.timestamps
     end
