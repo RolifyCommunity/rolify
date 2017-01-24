@@ -27,7 +27,7 @@ module Rolify
 
       def in(relation, user, role_names)
         roles = user.roles.where(:name => role_names).select("#{quote_table(role_class.table_name)}.#{quote_column(role_class.primary_key)}")
-        relation.where("#{quote_table(role_class.table_name)}.#{quote_column(role_class.primary_key)} IN (?) AND ((resource_id = #{quote_table(relation.table_name)}.#{quote_column(relation.primary_key)}) OR (resource_id IS NULL))", roles)
+        relation.where("#{quote_table(role_class.table_name)}.#{quote_column(role_class.primary_key)} IN (?) AND ((#{quote_table(role_class.table_name)}.resource_id = #{quote_table(relation.table_name)}.#{quote_column(relation.primary_key)}) OR (#{quote_table(role_class.table_name)}.resource_id IS NULL))", roles)
       end
 
       def applied_roles(relation, children)
