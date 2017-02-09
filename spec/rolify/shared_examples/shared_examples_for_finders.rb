@@ -97,7 +97,55 @@ shared_examples_for :finders do |param_name, param_method|
         end
       end
     end
-    
+
+    describe ".only_with_role" do
+      it { should respond_to(:only_with_role).with(1).argument }
+      it { should respond_to(:only_with_role).with(2).arguments }
+
+      context "with a global role" do
+        it { subject.only_with_role("admin".send(param_method)).should be_empty }
+        it { subject.only_with_role("moderator".send(param_method)).should be_empty }
+        it { subject.only_with_role("visitor".send(param_method)).should be_empty }
+      end
+
+      context "with a class scoped role" do
+        context "on Forum class" do
+          it { subject.only_with_role("admin".send(param_method), Forum).should be_empty }
+          it { subject.only_with_role("moderator".send(param_method), Forum).should be_empty }
+          it { subject.only_with_role("visitor".send(param_method), Forum).should be_empty }
+        end
+
+        context "on Group class" do
+          it { subject.only_with_role("admin".send(param_method), Group).should be_empty }
+          it { subject.only_with_role("moderator".send(param_method), Group).should be_empty }
+          it { subject.only_with_role("visitor".send(param_method), Group).should be_empty }
+        end
+      end
+
+      context "with an instance scoped role" do
+        context "on Forum.first instance" do
+          it { subject.only_with_role("admin".send(param_method), Forum.first).should be_empty }
+          it { subject.only_with_role("moderator".send(param_method), Forum.first).should be_empty }
+          it { subject.only_with_role("visitor".send(param_method), Forum.first).should be_empty }
+        end
+
+        context "on Forum.last instance" do
+          it { subject.only_with_role("admin".send(param_method), Forum.last).should be_empty }
+          it { subject.only_with_role("moderator".send(param_method), Forum.last).should be_empty }
+          it { subject.only_with_role("visitor".send(param_method), Forum.last).should eq[visitor] } # =~ doesn't pass using mongoid, don't know why...
+        end
+
+        context "on Group.first instance" do
+          it { subject.only_with_role("admin".send(param_method), Group.first).should be_empty }
+          it { subject.only_with_role("moderator".send(param_method), Group.first).should be_empty }
+          it { subject.only_with_role("visitor".send(param_method), Group.first).should be_empty }
+        end
+
+        context "on Company.first_instance" do
+          it { subject.only_with_role("owner".send(param_method), Company.first).should be_empty }
+        end
+      end
+    end
 
     describe ".with_all_roles" do
       it { should respond_to(:with_all_roles) }
