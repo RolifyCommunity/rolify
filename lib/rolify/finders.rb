@@ -8,6 +8,10 @@ module Rolify
       self.adapter.all_except(self, self.with_role(role_name, resource))
     end
 
+    def only_with_role(role_name, resource = nil)
+      with_role(role_name, resource).select { |record| record.roles.count == 1 }
+    end
+
     def with_all_roles(*args)
       users = []
       parse_args(args, users) do |users_to_add|
@@ -26,9 +30,9 @@ module Rolify
       users.uniq
     end
   end
-  
+
   private
-  
+
   def parse_args(args, users, &block)
     args.each do |arg|
       if arg.is_a? Hash
