@@ -9,13 +9,7 @@ module Rolify
     end
 
     def with_all_roles(*args)
-      users = []
-      parse_args(args) do |users_to_add|
-        users = users_to_add if users.empty?
-        users &= users_to_add
-        return [] if users.empty?
-      end
-      users
+      intersect_ars(parse_args(args)).uniq
     end
 
     def with_any_role(*args)
@@ -48,6 +42,13 @@ module Rolify
     normalized.flatten.compact
   end
 
+
+  def intersect_ars(ars)
+    query = ars.map(&:to_sql).join(" INTERSECT ")
+    from("(#{query}) AS #{table_name}")
+  end
+
+  # http://stackoverflow.com/a/16868735/1202488
   def union_ars(ars)
     query = ars.map(&:to_sql).join(" UNION ")
     from("(#{query}) AS #{table_name}")
