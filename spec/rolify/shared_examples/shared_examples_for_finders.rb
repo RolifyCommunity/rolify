@@ -97,7 +97,7 @@ shared_examples_for :finders do |param_name, param_method|
         end
       end
     end
-    
+
 
     describe ".with_all_roles" do
       it { should respond_to(:with_all_roles) }
@@ -126,6 +126,11 @@ shared_examples_for :finders do |param_name, param_method|
       it { subject.with_any_role({ :name => "visitor".send(param_method), :resource => Forum.last }, { :name => "moderator".send(param_method), :resource => Group }).should =~ [ root, visitor ] }
       it { subject.with_any_role({ :name => "visitor".send(param_method), :resource => Group.first }, { :name => "moderator".send(param_method), :resource => Forum }).should eq([ modo ]) }
       it { subject.with_any_role({ :name => "visitor".send(param_method), :resource => :any }, { :name => "moderator".send(param_method), :resource => :any }).should =~ [ root, modo, visitor ] }
+
+      it 'should return an AR relation' do
+        subject.with_any_role("admin".send(params_method), :staff, { :name => "moderator".send(param_method), :resource => Group }).should be_a(ActiveRecord::Relation)
+        subject.with_any_role({ :name => "visitor".send(param_method), :resource => :any }, { :name => "moderator".send(param_method), :resource => :any }).should be_a(ActiveRecord::Relation)
+      end
     end
   end
 end
