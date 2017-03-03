@@ -19,7 +19,7 @@ module Rolify
     end
 
     def with_any_role(*args)
-      union_ars(parse_args(args))
+      union_ars(parse_args(args)).uniq
     end
   end
 
