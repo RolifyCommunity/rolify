@@ -201,6 +201,8 @@ forum.applied_roles
 ```ruby
 Forum.with_role(:admin)
 # => [ list of Forum instances that have role "admin" bound to them ]
+Forum.without_role(:admin)
+# => [ list of Forum instances that do NOT have role "admin" bound to them ]
 Forum.with_role(:admin, current_user)
 # => [ list of Forum instances that have role "admin" bound to them and belong to current_user roles ]
 Forum.with_roles([:admin, :user], current_user)
