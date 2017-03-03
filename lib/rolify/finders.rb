@@ -9,18 +9,18 @@ module Rolify
     end
 
     def with_all_roles(*args)
-      intersect_ars(parse_args(args)).uniq
+      intersect_ars(parse_args(args, :split)).uniq
     end
 
     def with_any_role(*args)
-      union_ars(parse_args(args)).uniq
+      union_ars(parse_args(args, :join)).uniq
     end
   end
 
   private
 
-  def parse_args(args, &block)
-    normalize_args(args).map do |arg|
+  def parse_args(args, mode, &block)
+    normalize_args(args, mode).map do |arg|
       self.with_role(arg[:name], arg[:resource]).tap do |users_to_add|
         block.call(users_to_add) if block
       end
@@ -29,7 +29,7 @@ module Rolify
 
   # In: [:a, "b", { name: :c, resource: :d }]
   # Out: [{ name: [:a, "b"] }, { name: :c, resource: :d }]
-  def normalize_args(args)
+  def normalize_args(args, mode)
     groups = args.group_by(&:class)
     unless groups.keys.all? { |type| [Hash, Symbol, String].include?(type) }
       raise ArgumentError, "Invalid argument type: only hash or string or symbol allowed"
@@ -37,7 +37,12 @@ module Rolify
 
     normalized = [groups[Hash]]
     sym_str_args = [groups[Symbol], groups[String]].flatten.compact
-    normalized += [{ name: sym_str_args }] unless sym_str_args.empty?
+    case mode
+    when :join
+      normalized += [{ name: sym_str_args }] unless sym_str_args.empty?
+    when :split
+      normalized += sym_str_args.map { |arg| { name: arg } }
+    end
 
     normalized.flatten.compact
   end
