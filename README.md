@@ -22,7 +22,7 @@ This library can be easily integrated with any authentication gem ([devise](http
 
 ## Installation
 
-Add this to your Gemfile and run the +bundle+ command.
+Add this to your Gemfile and run the `bundle` command.
 
 ```ruby
 gem "rolify"
