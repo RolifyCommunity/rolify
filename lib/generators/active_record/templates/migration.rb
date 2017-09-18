@@ -1,4 +1,4 @@
-class RolifyCreate<%= table_name.camelize %> < ActiveRecord::Migration
+class RolifyCreate<%= table_name.camelize %> < ActiveRecord::Migration[5.1]
   def change
     create_table(:<%= table_name %>) do |t|
       t.string :name
