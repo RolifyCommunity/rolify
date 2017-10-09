@@ -8,6 +8,9 @@ before_install:
 
 script: bundle exec rake
 
+after_success:
+  - bundle exec codeclimate-test-reporter
+
 matrix:
   include:
     - rvm: 2.3.0
