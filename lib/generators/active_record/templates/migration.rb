@@ -12,7 +12,6 @@ class RolifyCreate<%= table_name.camelize %> < ActiveRecord::Migration
       t.references :<%= role_reference %>
     end
 
-    add_index(:<%= table_name %>, :name)
     add_index(:<%= table_name %>, [ :name, :resource_type, :resource_id ])
     add_index(:<%= join_table %>, [ :<%= user_reference %>_id, :<%= role_reference %>_id ])
   end
