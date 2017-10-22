@@ -8,6 +8,7 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
   destination File.expand_path("../../../../tmp", __FILE__)
   teardown :cleanup_destination_root
 
+  let(:adapter) { 'SQLite3Adapter' }
   before {
     prepare_destination
   }
@@ -20,6 +21,8 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
     before(:all) { arguments %w(Role) }
 
     before {
+      allow(ActiveRecord::Base).to receive_message_chain(
+        'connection.class.to_s.demodulize') { adapter }
       capture(:stdout) {
         generator.create_file "app/models/user.rb" do
           <<-RUBY
@@ -81,6 +84,24 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should be_a_migration }
       it { should contain "create_table(:roles) do" }
       it { should contain "create_table(:users_roles, :id => false) do" }
+
+      context 'mysql2' do
+        let(:adapter) { 'Mysql2Adapter' }
+
+        it { expect(subject).to contain('add_index(:roles, :name)') }
+      end
+
+      context 'sqlite3' do
+        let(:adapter) { 'SQLite3Adapter' }
+
+        it { expect(subject).to contain('add_index(:roles, :name)') }
+      end
+
+      context 'pg' do
+        let(:adapter) { 'PostgreSQLAdapter' }
+
+        it { expect(subject).not_to contain('add_index(:roles, :name)') }
+      end
     end
   end
 
@@ -88,6 +109,8 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
     before(:all) { arguments %w(AdminRole AdminUser) }
 
     before {
+      allow(ActiveRecord::Base).to receive_message_chain(
+        'connection.class.to_s.demodulize') { adapter }
       capture(:stdout) {
         generator.create_file "app/models/admin_user.rb" do
           "class AdminUser < ActiveRecord::Base\nend"
@@ -136,6 +159,24 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should be_a_migration }
       it { should contain "create_table(:admin_roles)" }
       it { should contain "create_table(:admin_users_admin_roles, :id => false) do" }
+
+      context 'mysql2' do
+        let(:adapter) { 'Mysql2Adapter' }
+
+        it { expect(subject).to contain('add_index(:admin_roles, :name)') }
+      end
+
+      context 'sqlite3' do
+        let(:adapter) { 'SQLite3Adapter' }
+
+        it { expect(subject).to contain('add_index(:admin_roles, :name)') }
+      end
+
+      context 'pg' do
+        let(:adapter) { 'PostgreSQLAdapter' }
+
+        it { expect(subject).not_to contain('add_index(:admin_roles, :name)') }
+      end
     end
   end
 
@@ -143,6 +184,8 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
     before(:all) { arguments %w(Admin::Role Admin::User) }
 
     before {
+      allow(ActiveRecord::Base).to receive_message_chain(
+        'connection.class.to_s.demodulize') { adapter }
       capture(:stdout) {
         generator.create_file "app/models/admin/user.rb" do
           <<-RUBY
@@ -197,6 +240,24 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should be_a_migration }
       it { should contain "create_table(:admin_roles)" }
       it { should contain "create_table(:admin_users_admin_roles, :id => false) do" }
+
+      context 'mysql2' do
+        let(:adapter) { 'Mysql2Adapter' }
+
+        it { expect(subject).to contain('add_index(:admin_roles, :name)') }
+      end
+
+      context 'sqlite3' do
+        let(:adapter) { 'SQLite3Adapter' }
+
+        it { expect(subject).to contain('add_index(:admin_roles, :name)') }
+      end
+
+      context 'pg' do
+        let(:adapter) { 'PostgreSQLAdapter' }
+
+        it { expect(subject).not_to contain('add_index(:admin_roles, :name)') }
+      end
     end
   end
 end
