@@ -1,3 +1,6 @@
+= 5.2.0 (July 24, 2016)
+* Fix regression in initializer
+
 = 5.1.0 (Mar 19, 2016)
 * Rails 5 Support (thanks @lorefnon)
 * Fix user handling in generator (thanks @lorefnon)
