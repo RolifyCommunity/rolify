@@ -35,7 +35,7 @@ module ActiveRecord
       end
 
       def copy_rolify_migration
-        migration_template "migration.rb", "db/migrate/rolify_create_#{table_name}.rb"
+        migration_template "migration.rb", "db/migrate/rolify_create_#{table_name}.rb", migration_version: migration_version
       end
 
       private
@@ -80,6 +80,16 @@ module ActiveRecord
 Rolify expected a model named #{user_cname} to be defined but could not find one.
 Please ensure that this model exists and is not mis-spelled and re-run the generator.
 MSG
+      end
+
+      def rails5?
+        Rails.version.start_with? '5'
+      end
+
+      def migration_version
+        if rails5?
+          "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
+        end
       end
 
     end
