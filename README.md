@@ -81,6 +81,8 @@ Mongoid callbacks are also supported and works the same way.
 
 The `rolify` method also accepts the `inverse_of` option if you need to disambiguate the relationship.
 
+Also, the `rolify` method accepts the `role_join_table_name` option if you would like to use different join table name rather than default.
+
 ### 3.2 Configure your resource models
 
 In the resource models you want to apply roles on, just add ``resourcify`` method.
