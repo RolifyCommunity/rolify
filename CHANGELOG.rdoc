@@ -1,3 +1,13 @@
+= 5.2.0 (Dec 14, 2017)
+* Fix regression in generator around belongs_to options compatibility
+* Update version of database_cleaner
+* Update initializer.rb to include the remove_role_if_empty option and description
+* Allow inverse_of option on rolify method
+* Fix the code-climate-reporter issue that's causing travis to fail
+* Remove a separate index for the name column
+* Fix migration generator for AR 5.x
+* Fixed ambiguous column error
+
 = 5.1.0 (Mar 19, 2016)
 * Rails 5 Support (thanks @lorefnon)
 * Fix user handling in generator (thanks @lorefnon)
