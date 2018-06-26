@@ -57,7 +57,7 @@ module ActiveRecord
       end
 
       def model_content
-        if RUBY_VERSION == "1.9.3"
+        unless defined? __dir__
           __dir__ = File.expand_path('..', __FILE__)
         end
         ERB.new(File.read(File.join(__dir__, 'templates/model.rb'))).result(binding)
