@@ -57,6 +57,9 @@ module ActiveRecord
       end
 
       def model_content
+        unless defined? __dir__
+          __dir__ = File.expand_path('..', __FILE__)
+        end
         ERB.new(File.read(File.join(__dir__, 'templates/model.rb'))).result(binding)
       end
 
