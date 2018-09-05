@@ -17,7 +17,7 @@ module Rolify
           if resource_type.is_a? Class
             where_conditions = [ "resource_type = ? AND resource_id IS NOT NULL", resource_type.name ]
           else
-            where_conditions = [ "resource_type = ? AND resource_id = ?", resource_type.class.name, resource_type.id ]
+            where_conditions = [ "resource_type = ? AND resource_id = ?", resource_type.class.name, resource_type.send(Rolify.resource_primary_key) ]
           end
         end
         where(where_conditions)
