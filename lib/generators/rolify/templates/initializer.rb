@@ -7,4 +7,7 @@ Rolify.configure<%= "(\"#{class_name.camelize.to_s}\")" if class_name != "Role" 
   
   # Configuration to remove roles from database once the last resource is removed. Default is: true
   # config.remove_role_if_empty = false
+
+  # Configuration to the primary key of the resource. Default is: "id"
+  # config.resource_primary_key = "id"
 end
