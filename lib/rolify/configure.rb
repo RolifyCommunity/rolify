@@ -3,12 +3,21 @@ module Rolify
     @@dynamic_shortcuts = false
     @@orm = "active_record"
     @@remove_role_if_empty = true
+    @@resource_primary_key = "id"
 
     def configure(*role_cnames)
       return if !sanity_check(role_cnames)
       yield self if block_given?
     end
 
+    def resource_primary_key
+      @@resource_primary_key
+    end
+
+    def resource_primary_key=(resource_primary_key_name)
+      @@resource_primary_key = resource_primary_key_name
+    end
+    
     def dynamic_shortcuts
       @@dynamic_shortcuts
     end
