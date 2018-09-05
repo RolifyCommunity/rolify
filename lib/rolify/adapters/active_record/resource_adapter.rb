@@ -19,7 +19,7 @@ module Rolify
         end
 
         resources = relation.joins("INNER JOIN #{quote_table(roles_table)} ON #{quote_table(roles_table)}.resource_type IN (#{relations}) AND
-                                    (#{quote_table(roles_table)}.resource_id IS NULL OR #{quote_table(roles_table)}.resource_id = #{quote_table(relation.table_name)}.#{quote_column(relation.primary_key)}) OR #{quote_table(roles_table)}.resource_id = #{quote_table(relation.table_name)}.#{Rolify.resource_primary_key})")
+                                    (#{quote_table(roles_table)}.resource_id IS NULL OR #{quote_table(roles_table)}.resource_id = #{quote_table(relation.table_name)}.#{quote_column(relation.primary_key)} OR #{quote_table(roles_table)}.resource_id = #{quote_table(relation.table_name)}.#{Rolify.resource_primary_key})")
         resources = resources.where("#{quote_table(roles_table)}.name IN (?) AND #{quote_table(roles_table)}.resource_type IN (?)", Array(role_name), klasses)
         resources = resources.select("#{quote_table(relation.table_name)}.*")
         resources
