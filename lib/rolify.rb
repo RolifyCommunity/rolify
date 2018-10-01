@@ -11,7 +11,7 @@ module Rolify
   attr_accessor :role_cname, :adapter, :resource_adapter, :role_join_table_name, :role_table_name, :strict_rolify
   @@resource_types = []
 
-  def rolify(options = {})
+  def rolify(options = {}, &block)
     include Role
     extend Dynamic if Rolify.dynamic_shortcuts
 
@@ -27,7 +27,7 @@ module Rolify
     rolify_options.merge!({ :join_table => self.role_join_table_name }) if Rolify.orm == "active_record"
     rolify_options.merge!(options.reject{ |k,v| ![ :before_add, :after_add, :before_remove, :after_remove, :inverse_of ].include? k.to_sym })
 
-    has_and_belongs_to_many :roles, rolify_options
+    has_and_belongs_to_many :roles, rolify_options, &block
 
     self.adapter = Rolify::Adapter::Base.create("role_adapter", self.role_cname, self.name)
 
