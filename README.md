@@ -181,6 +181,17 @@ user.has_role? :moderator, Forum.last
 => true
 ```
 
+To check if a user has the exact role scoped to a resource class:
+
+```ruby
+user = User.find(5)
+user.add_role :moderator # sets a global role
+user.has_role? :moderator, Forum.first
+=> true
+user.has_strict_role? :moderator, Forum.last
+=> false
+```
+
 ### 6. Resource roles querying
 
 Starting from rolify 3.0, you can search roles on instance level or class level resources.
