@@ -74,8 +74,7 @@ module Rolify
       end
 
       def all_except(user, excluded_obj)
-        prime_key = user.primary_key.to_sym
-        user.where(prime_key => (user.all - excluded_obj).map(&prime_key))
+        user.where.not(user.primary_key => excluded_obj)
       end
 
       private
