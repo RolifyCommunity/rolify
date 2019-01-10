@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "mongoid", "~> 5"
+gem "mongoid", "~> 5.0"
 gem "bson_ext", platform: "ruby"
 
 group :test do

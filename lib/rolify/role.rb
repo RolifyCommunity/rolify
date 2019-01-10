@@ -86,7 +86,7 @@ module Rolify
     deprecate :has_no_role, :remove_role
 
     def roles_name
-      self.roles.select(:name).map { |r| r.name }
+      self.roles.pluck(:name)
     end
 
     def method_missing(method, *args, &block)
