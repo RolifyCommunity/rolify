@@ -65,6 +65,8 @@ matrix:
       gemfile: gemfiles/mongoid_7.gemfile
       env: ADAPTER=mongoid
 
+  allow_failures:
+    - env: ADAPTER=mongoid
 
 services: mongodb
 
