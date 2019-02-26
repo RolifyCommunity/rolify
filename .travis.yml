@@ -17,7 +17,7 @@ rvm:
   - 2.4.5
   - 2.3.8
 
-gemfiles:
+gemfile:
   - gemfiles/activerecord_4.gemfile
   - gemfiles/activerecord_5.gemfile
   - gemfiles/mongoid_6.gemfile
