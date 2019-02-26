@@ -1,20 +1,20 @@
-appraise 'mongoid-4' do
-  gem "mongoid", "~> 4"
+appraise 'mongoid-6' do
+  gem "mongoid", "~> 6"
   gem "bson_ext", :platform => "ruby"
 end
 
-appraise 'mongoid-5' do
-  gem "mongoid", "~> 5"
+appraise 'mongoid-7' do
+  gem "mongoid", "~> 7"
   gem "bson_ext", :platform => "ruby"
 end
 
 appraise 'activerecord-4' do
-  gem "sqlite3", :platform => "ruby"
-  gem "activerecord", "~> 4.2.5", :require => "active_record"
+  gem "sqlite3", "~> 1.3.6", :platform => "ruby"
+  gem "activerecord", "~> 4.2.11", :require => "active_record"
 end
 
 appraise 'activerecord-5' do
-  gem "sqlite3", :platform => "ruby"
+  gem "sqlite3", "~> 1.3.6", :platform => "ruby"
   gem "activerecord", ">= 5.2.0", :require => "active_record"
 
   # Ammeter dependencies:
