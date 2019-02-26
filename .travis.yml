@@ -13,56 +13,56 @@ after_success:
 
 matrix:
   include:
-    - rvm: 2.5.1
+    - rvm: 2.6.1
       gemfile: gemfiles/activerecord_4.gemfile
       env: ADAPTER=active_record
-    - rvm: 2.4.4
+    - rvm: 2.5.3
       gemfile: gemfiles/activerecord_4.gemfile
       env: ADAPTER=active_record
-    - rvm: 2.3.7
+    - rvm: 2.4.5
       gemfile: gemfiles/activerecord_4.gemfile
       env: ADAPTER=active_record
-    - rvm: 2.2.10
+    - rvm: 2.3.8
       gemfile: gemfiles/activerecord_4.gemfile
       env: ADAPTER=active_record
 
-    - rvm: 2.5.1
+    - rvm: 2.6.1
       gemfile: gemfiles/activerecord_5.gemfile
       env: ADAPTER=active_record
-    - rvm: 2.4.4
+    - rvm: 2.5.3
       gemfile: gemfiles/activerecord_5.gemfile
       env: ADAPTER=active_record
-    - rvm: 2.3.7
+    - rvm: 2.4.5
       gemfile: gemfiles/activerecord_5.gemfile
       env: ADAPTER=active_record
-    - rvm: 2.2.10
+    - rvm: 2.3.8
       gemfile: gemfiles/activerecord_5.gemfile
       env: ADAPTER=active_record
 
-    - rvm: 2.5.1
-      gemfile: gemfiles/mongoid_4.gemfile
+    - rvm: 2.6.1
+      gemfile: gemfiles/mongoid_6.gemfile
       env: ADAPTER=mongoid
-    - rvm: 2.4.4
-      gemfile: gemfiles/mongoid_4.gemfile
+    - rvm: 2.5.3
+      gemfile: gemfiles/mongoid_6.gemfile
       env: ADAPTER=mongoid
-    - rvm: 2.3.7
-      gemfile: gemfiles/mongoid_4.gemfile
+    - rvm: 2.4.5
+      gemfile: gemfiles/mongoid_6.gemfile
       env: ADAPTER=mongoid
-    - rvm: 2.2.10
-      gemfile: gemfiles/mongoid_4.gemfile
+    - rvm: 2.3.8
+      gemfile: gemfiles/mongoid_6.gemfile
       env: ADAPTER=mongoid
 
-    - rvm: 2.5.1
-      gemfile: gemfiles/mongoid_5.gemfile
+    - rvm: 2.6.1
+      gemfile: gemfiles/mongoid_7.gemfile
       env: ADAPTER=mongoid
-    - rvm: 2.4.4
-      gemfile: gemfiles/mongoid_5.gemfile
+    - rvm: 2.5.3
+      gemfile: gemfiles/mongoid_7.gemfile
       env: ADAPTER=mongoid
-    - rvm: 2.3.7
-      gemfile: gemfiles/mongoid_5.gemfile
+    - rvm: 2.4.5
+      gemfile: gemfiles/mongoid_7.gemfile
       env: ADAPTER=mongoid
-    - rvm: 2.2.10
-      gemfile: gemfiles/mongoid_5.gemfile
+    - rvm: 2.3.8
+      gemfile: gemfiles/mongoid_7.gemfile
       env: ADAPTER=mongoid
 
 
