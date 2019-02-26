@@ -1,6 +1,0 @@
-test:
-  sessions:
-    default:
-      database: godfather
-      hosts:
-        - localhost:27017
