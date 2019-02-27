@@ -26,8 +26,8 @@ module Rolify
       end
 
       def in(relation, user, role_names)
-        roles = user.roles.where(:name => role_names).select("#{quote_table(role_class.table_name)}.#{quote_column(role_class.primary_key)}")
-        relation.where("#{quote_table(role_class.table_name)}.#{quote_column(role_class.primary_key)} IN (?) AND ((resource_id = #{quote_table(relation.table_name)}.#{quote_column(relation.primary_key)}) OR (resource_id IS NULL))", roles)
+        roles = user.roles.where(:name => role_names).select("#{quote_table(role_class.table_name)}.#{quote_column(role_class.primary_key)}").to_a
+        relation.where("#{quote_table(role_class.table_name)}.#{quote_column(role_class.primary_key)} IN (?) AND ((#{quote_table(role_class.table_name)}.resource_id = #{quote_table(relation.table_name)}.#{quote_column(relation.primary_key)}) OR (#{quote_table(role_class.table_name)}.resource_id IS NULL))", roles)
       end
 
       def applied_roles(relation, children)
@@ -40,7 +40,7 @@ module Rolify
 
       def all_except(resource, excluded_obj)
         prime_key = resource.primary_key.to_sym
-        resource.where(prime_key => (resource.all - excluded_obj).map(&prime_key))
+        resource.where.not(prime_key => excluded_obj.pluck(prime_key))
       end
 
       private

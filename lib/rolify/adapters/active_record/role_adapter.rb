@@ -46,7 +46,7 @@ module Rolify
       end
 
       def add(relation, role)
-        relation.role_ids |= [role.id]
+        relation.roles << role unless relation.roles.include?(role)
       end
 
       def remove(relation, role_name, resource = nil)
@@ -68,19 +68,13 @@ module Rolify
       end
 
       def scope(relation, conditions)
-        if Rails.version < "4.0"
-          query = relation.scoped
-        else
-          query = relation.all
-        end
-        query = query.joins(:roles)
+        query = relation.joins(:roles)
         query = where(query, conditions)
         query
       end
 
       def all_except(user, excluded_obj)
-        prime_key = user.primary_key.to_sym
-        user.where(prime_key => (user.all - excluded_obj).map(&prime_key))
+        user.where.not(user.primary_key => excluded_obj)
       end
 
       private
