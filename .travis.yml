@@ -39,9 +39,8 @@ matrix:
     - gemfile: gemfiles/mongoid_7.gemfile
       env: ADAPTER=active_record
   allow_failures:
-    - gemfile:
-      - gemfiles/mongoid_6.gemfile
-      - gemfiles/mongoid_7.gemfile
+    - gemfile: gemfiles/mongoid_6.gemfile
+    - gemfile: gemfiles/mongoid_7.gemfile
 
 services: mongodb
 
