@@ -20,6 +20,7 @@ rvm:
 gemfile:
   - gemfiles/activerecord_4.gemfile
   - gemfiles/activerecord_5.gemfile
+  - gemfiles/mongoid_5.gemfile
   - gemfiles/mongoid_6.gemfile
   - gemfiles/mongoid_7.gemfile
 
@@ -38,7 +39,9 @@ matrix:
     - gemfile: gemfiles/mongoid_7.gemfile
       env: ADAPTER=active_record
   allow_failures:
-    - env: ADAPTER=mongoid
+    - gemfile:
+      - gemfiles/mongoid_6.gemfile
+      - gemfiles/mongoid_7.gemfile
 
 services: mongodb
 

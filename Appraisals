@@ -1,3 +1,8 @@
+appraise 'mongoid-5' do
+  gem "mongoid", "~> 5"
+  gem "bson_ext", :platform => "ruby"
+end
+
 appraise 'mongoid-6' do
   gem "mongoid", "~> 6"
   gem "bson_ext", :platform => "ruby"
