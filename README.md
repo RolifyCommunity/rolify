@@ -1,4 +1,4 @@
-# rolify [![Gem Version](https://badge.fury.io/rb/rolify.svg)](http://badge.fury.io/rb/rolify) [![build status](https://secure.travis-ci.org/RolifyCommunity/rolify.png)](http://travis-ci.org/RolifyCommunity/rolify) [![Dependency Status](https://gemnasium.com/RolifyCommunity/rolify.svg)](https://gemnasium.com/RolifyCommunity/rolify) [![Code Climate](https://codeclimate.com/github/RolifyCommunity/rolify.png)](https://codeclimate.com/github/RolifyCommunity/rolify) [![Coverage Status](https://coveralls.io/repos/RolifyCommunity/rolify/badge.svg?branch=master&service=github)](https://coveralls.io/github/RolifyCommunity/rolify?branch=master)
+# rolify [![Gem Version](https://badge.fury.io/rb/rolify.svg)](http://badge.fury.io/rb/rolify) [![build status](https://secure.travis-ci.org/RolifyCommunity/rolify.png)](http://travis-ci.org/RolifyCommunity/rolify) [![Code Climate](https://codeclimate.com/github/RolifyCommunity/rolify.png)](https://codeclimate.com/github/RolifyCommunity/rolify) [![Coverage Status](https://coveralls.io/repos/RolifyCommunity/rolify/badge.svg?branch=master&service=github)](https://coveralls.io/github/RolifyCommunity/rolify?branch=master)
 
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
 
@@ -15,9 +15,9 @@ This library can be easily integrated with any authentication gem ([devise](http
 
 ## Requirements
 
-* Rails >= 3.2
-* ActiveRecord >= 3.2 <b>or</b> Mongoid >= 3.1
-* supports ruby 2.0/1.9.3, JRuby 1.6.0+ (in 1.9 mode) and Rubinius 2.0.0dev (in 1.9 mode)
+* Rails >= 4.2
+* ActiveRecord >= 4.2 <b>or</b> Mongoid >= 4.0
+* supports ruby 2.2+, JRuby 1.6.0+ (in 1.9 mode) and Rubinius 2.0.0dev (in 1.9 mode)
 * support of ruby 1.8 has been dropped due to Mongoid >=3.0 that only supports 1.9 new hash syntax
 
 ## Installation
@@ -179,6 +179,17 @@ user.has_role? :moderator, Forum.first
 => true
 user.has_role? :moderator, Forum.last
 => true
+```
+
+To check if a user has the exact role scoped to a resource class:
+
+```ruby
+user = User.find(5)
+user.add_role :moderator # sets a global role
+user.has_role? :moderator, Forum.first
+=> true
+user.has_strict_role? :moderator, Forum.last
+=> false
 ```
 
 ### 6. Resource roles querying

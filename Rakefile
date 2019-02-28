@@ -1,6 +1,7 @@
 require 'bundler'
 require 'rspec/core/rake_task'
 require 'coveralls/rake/task'
+require 'appraisal'
 
 Bundler::GemHelper.install_tasks
 
