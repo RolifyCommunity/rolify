@@ -86,8 +86,16 @@ MSG
         Rails.version.start_with? '5'
       end
 
+      def rails6?
+        Rails.version.start_with? '6'
+      end
+
+      def use_migration_version?
+        rails5? || rails6?
+      end
+
       def migration_version
-        if rails5?
+        if use_migration_version?
           "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
         end
       end
