@@ -20,6 +20,7 @@ rvm:
 gemfile:
   - gemfiles/activerecord_4.gemfile
   - gemfiles/activerecord_5.gemfile
+  - gemfiles/activerecord_6.gemfile
   - gemfiles/mongoid_6.gemfile
   - gemfiles/mongoid_7.gemfile
 
@@ -32,6 +33,8 @@ matrix:
     - gemfile: gemfiles/activerecord_4.gemfile
       env: ADAPTER=mongoid
     - gemfile: gemfiles/activerecord_5.gemfile
+      env: ADAPTER=mongoid
+    - gemfile: gemfiles/activerecord_6.gemfile
       env: ADAPTER=mongoid
     - gemfile: gemfiles/mongoid_6.gemfile
       env: ADAPTER=active_record
