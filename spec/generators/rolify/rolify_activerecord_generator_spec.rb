@@ -239,6 +239,13 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       subject { migration_file('db/migrate/rolify_create_admin_roles.rb') }
 
       it { should be_a_migration }
+      it do
+        if Rails::VERSION::MAJOR < 5
+          should contain "< ActiveRecord::Migration"
+        else
+          should contain "< ActiveRecord::Migration[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
+        end
+      end
       it { should contain "create_table(:admin_roles)" }
       it { should contain "create_table(:admin_users_admin_roles, :id => false) do" }
 
