@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler'
 require 'rspec/core/rake_task'
 require 'coveralls/rake/task'
@@ -15,19 +17,19 @@ RSpec::Core::RakeTask.new(:rolify) do |task|
   task.pattern = 'spec/rolify/**/*_spec.rb'
 end
 
-if !ENV["APPRAISAL_INITIALIZED"] && !ENV["TRAVIS"]
-  task :default => :appraisal
+if !ENV['APPRAISAL_INITIALIZED'] && !ENV['TRAVIS']
+  task default: :appraisal
 else
-  task :default => [ :spec, 'coveralls:push' ]
+  task default: %i[spec coveralls:push]
 end
 
 desc 'Run all specs'
 task 'spec' do
   Rake::Task['generators'].invoke
-  return_code1 = $?.exitstatus
+  return_code1 = $CHILD_STATUS.exitstatus
   Rake::Task['rolify'].invoke
-  return_code2 = $?.exitstatus
-  fail if return_code1 != 0 || return_code2 != 0
+  return_code2 = $CHILD_STATUS.exitstatus
+  raise if return_code1 != 0 || return_code2 != 0
 end
 
 desc 'Run specs for all adapters'
