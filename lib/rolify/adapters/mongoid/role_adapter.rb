@@ -95,7 +95,7 @@ module Rolify
         user.not_in(_id: excluded_obj.to_a)
       end
 
-      private
+    private
 
       def build_conditions(relation, args)
         conditions = []

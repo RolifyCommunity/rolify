@@ -49,7 +49,7 @@ module Rolify
       @@remove_role_if_empty
     end
 
-    private
+  private
 
     def sanity_check(role_cnames)
       return true if ARGV.reduce(nil) { |acc,arg| arg =~ /assets:/ if acc.nil? } == 0

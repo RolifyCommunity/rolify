@@ -27,7 +27,7 @@ module Rolify
     end
   end
   
-  private
+private
   
   def parse_args(args, users, &block)
     args.each do |arg|
