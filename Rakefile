@@ -26,9 +26,9 @@ end
 desc 'Run all specs'
 task 'spec' do
   Rake::Task['generators'].invoke
-  return_code1 = $CHILD_STATUS.exitstatus
+  return_code1 = $?.exitstatus
   Rake::Task['rolify'].invoke
-  return_code2 = $CHILD_STATUS.exitstatus
+  return_code2 = $?.exitstatus
   raise if return_code1 != 0 || return_code2 != 0
 end
 
