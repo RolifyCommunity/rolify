@@ -3,6 +3,7 @@ AllCops:
   DisplayCopNames: true
 
   Exclude:
+    - 'gemfiles/*'
     - 'vendor/**/*'
 
 Layout/AccessModifierIndentation:
