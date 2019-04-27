@@ -1,11 +1,14 @@
+# frozen_string_literal: true
+
 module Rolify
   module Configure
     @@dynamic_shortcuts = false
-    @@orm = "active_record"
+    @@orm = 'active_record'
     @@remove_role_if_empty = true
 
     def configure(*role_cnames)
-      return if !sanity_check(role_cnames)
+      return unless sanity_check role_cnames
+
       yield self if block_given?
     end
 
@@ -26,18 +29,19 @@ module Rolify
     end
 
     def use_mongoid
-      self.orm = "mongoid"
+      self.orm = 'mongoid'
     end
 
     def use_dynamic_shortcuts
-      return if !sanity_check([])
+      return unless sanity_check []
+
       self.dynamic_shortcuts = true
     end
 
     def use_defaults
       configure do |config|
         config.dynamic_shortcuts = false
-        config.orm = "active_record"
+        config.orm = 'active_record'
       end
     end
 
@@ -52,15 +56,19 @@ module Rolify
   private
 
     def sanity_check(role_cnames)
-      return true if ARGV.reduce(nil) { |acc,arg| arg =~ /assets:/ if acc.nil? } == 0
+      return true if ARGV.reduce(nil) { |acc, arg| arg =~ /assets:/ if acc.nil? } == 0
 
       role_cnames.each do |role_cname|
         role_class = role_cname.constantize
-        if role_class.superclass.to_s == "ActiveRecord::Base" && role_table_missing?(role_class)
-          warn "[WARN] table '#{role_cname}' doesn't exist. Did you run the migration? Ignoring rolify config."
-          return false
-        end
+
+        next unless role_class.superclass.to_s == 'ActiveRecord::Base' &&
+                    role_table_missing?(role_class)
+
+        warn "[WARN] table '#{role_cname}' doesn't exist. " \
+             'Did you run the migration? Ignoring rolify config.'
+        return false
       end
+
       true
     end
 
@@ -69,6 +77,5 @@ module Rolify
     rescue ActiveRecord::NoDatabaseError
       true
     end
-
   end
 end
