@@ -43,7 +43,7 @@ module Rolify
         resource.where.not(prime_key => excluded_obj.pluck(prime_key))
       end
 
-      private
+    private
 
       def quote_column(column)
         ActiveRecord::Base.connection.quote_column_name column

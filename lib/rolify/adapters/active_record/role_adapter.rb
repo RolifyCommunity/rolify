@@ -77,7 +77,7 @@ module Rolify
         user.where.not(user.primary_key => excluded_obj)
       end
 
-      private
+    private
 
       def build_conditions(relation, args)
         conditions = []
