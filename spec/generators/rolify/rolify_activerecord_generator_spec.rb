@@ -71,6 +71,7 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should contain "validates :resource_type,\n"
                           "          :inclusion => { :in => Rolify.resource_types },\n"
                           "          :allow_nil => true" }
+      it { should contain "scopify" }
     end
 
     describe 'app/models/user.rb' do
