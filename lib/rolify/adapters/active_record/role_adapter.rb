@@ -23,9 +23,9 @@ module Rolify
         resource_id = (args[:resource].nil? || args[:resource].is_a?(Class) || args[:resource] == :any) ? nil : args[:resource].id
         resource_type = args[:resource].is_a?(Class) ? args[:resource].to_s : args[:resource].class.name
 
-        return relation.find_all { |role| role.name == args[:name].to_s } if args[:resource] == :any
+        return relation.any? { |role| role.name == args[:name].to_s } if args[:resource] == :any
 
-        relation.find_all do |role|
+        relation.any? do |role|
           (role.name == args[:name].to_s && role.resource_type == nil && role.resource_id == nil) ||
           (role.name == args[:name].to_s && role.resource_type == resource_type && role.resource_id == nil) ||
           (role.name == args[:name].to_s && role.resource_type == resource_type && role.resource_id == resource_id)
@@ -36,7 +36,7 @@ module Rolify
         resource_id = (args[:resource].nil? || args[:resource].is_a?(Class)) ? nil : args[:resource].id
         resource_type = args[:resource].is_a?(Class) ? args[:resource].to_s : args[:resource].class.name
 
-        relation.find_all do |role|
+        relation.any? do |role|
           role.resource_id == resource_id && role.resource_type == resource_type && role.name == args[:name].to_s
         end
       end
