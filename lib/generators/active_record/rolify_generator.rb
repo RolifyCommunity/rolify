@@ -83,7 +83,7 @@ MSG
       end
 
       def versioned_migrations?
-        Rails::VERSION::MAJOR.to_i >= 5
+        Rails::VERSION::MAJOR >= 5
       end
 
       def migration_version

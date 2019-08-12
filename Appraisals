@@ -31,12 +31,12 @@ end
 
 appraise 'activerecord-6' do
   gem "sqlite3", "~> 1.3.6", :platform => "ruby"
-  gem "activerecord", ">= 6.0.0.beta3", :require => "active_record"
+  gem "activerecord", ">= 6.0.0.rc1", :require => "active_record"
 
   # Ammeter dependencies:
-  gem "actionpack", ">= 6.0.0.beta3"
-  gem "activemodel", ">= 6.0.0.beta3"
-  gem "railties", ">= 6.0.0.beta3"
+  gem "actionpack", ">= 6.0.0.rc1"
+  gem "activemodel", ">= 6.0.0.rc1"
+  gem "railties", ">= 6.0.0.rc1"
 
   gem 'rspec-rails'       , github: 'rspec/rspec-rails'
   gem 'rspec-core'        , github: 'rspec/rspec-core'
