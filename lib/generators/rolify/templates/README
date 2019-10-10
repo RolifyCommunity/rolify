@@ -11,3 +11,4 @@ inside.
 Inside your User class (or the name you gave as argument otherwise the default 
 is user.rb), rolify method has been inserted to provide rolify methods.
 
+Before migrating you will need to edit the migration file and specify the Rails version on the ActiveRecord::Migration class, for example ActiveRecord::Migration[6.0].
