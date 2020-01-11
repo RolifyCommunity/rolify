@@ -9,17 +9,22 @@ module Rolify
   extend Configure
 
   attr_accessor :role_cname, :adapter, :resource_adapter, :role_join_table_name, :role_table_name, :strict_rolify
+  attr_accessor :role_cname, :adapter, :resource_adapter, :role_join_table_name, :role_table_name, :strict_rolify, :demodulize
   @@resource_types = []
 
   def rolify(options = {})
     include Role
     extend Dynamic if Rolify.dynamic_shortcuts
 
-    options.reverse_merge!({:role_cname => 'Role'})
+    options.reverse_merge!({:role_cname => 'Role', :demodulize => false})
     self.role_cname = options[:role_cname]
+    self.demodulize = options[:demodulize]
+
     self.role_table_name = self.role_cname.tableize.gsub(/\//, "_")
 
-    default_join_table = "#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_table_name}"
+    rolfied_class_table_name = self.demodulize ? self.to_s.demodulize : self.to_s
+
+    default_join_table = "#{rolfied_class_table_name.tableize.gsub(/\//, "_")}_#{self.role_table_name}"
     options.reverse_merge!({:role_join_table_name => default_join_table})
     self.role_join_table_name = options[:role_join_table_name]
 
