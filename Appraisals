@@ -16,12 +16,12 @@ end
 
 appraise 'activerecord-5' do
   gem "sqlite3", "~> 1.3.6"
-  gem "activerecord", "~> 5.2.0", :require => "active_record"
+  gem "activerecord", "~> 5.2.4", :require => "active_record"
 
   # Ammeter dependencies:
-  gem "actionpack", "~> 5.2.0"
-  gem "activemodel", "~> 5.2.0"
-  gem "railties", "~> 5.2.0"
+  gem "actionpack", "~> 5.2.4"
+  gem "activemodel", "~> 5.2.4"
+  gem "railties", "~> 5.2.4"
 
   gem 'rspec-rails'       , github: 'rspec/rspec-rails'
   gem 'rspec-core'        , github: 'rspec/rspec-core'
