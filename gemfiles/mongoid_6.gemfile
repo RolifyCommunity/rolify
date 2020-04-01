@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 gem "mongoid", "~> 6"
-gem "bson_ext", platform: "ruby"
+gem "bson_ext", "1.5.1"
 
 group :test do
   gem "appraisal"
