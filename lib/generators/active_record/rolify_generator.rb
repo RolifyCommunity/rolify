@@ -82,14 +82,8 @@ Please ensure that this model exists and is not mis-spelled and re-run the gener
 MSG
       end
 
-      def rails5?
-        Rails.version.start_with? '5'
-      end
-
       def migration_version
-        if rails5?
-          "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
-        end
+        "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
       end
 
     end
