@@ -51,21 +51,23 @@ matrix:
       env: ADAPTER=active_record
   allow_failures:
     - env: ADAPTER=mongoid
-    - rvm:
-        - 2.7.1
-        - 2.6.6
-        - 2.5.7
+    - rvm: 2.7.1
+    - rvm: 2.6.6
+    - rvm: 2.5.7
     - gemfile: gemfiles/activerecord_4.gemfile
-      rvm:
-        - 2.7.1
-        - 2.7.0
+      rvm: 2.7.1
+    - gemfile: gemfiles/activerecord_4.gemfile
+      rvm: 2.7.0
     - gemfile: gemfiles/activerecord_6.gemfile
-      rvm:
-        - 2.4.9
-        - 2.4.8
-        - 2.4.7
-        - 2.4.6
-        - 2.3.8
+      rvm: 2.4.9
+    - gemfile: gemfiles/activerecord_6.gemfile
+      rvm: 2.4.8
+    - gemfile: gemfiles/activerecord_6.gemfile
+      rvm: 2.4.7
+    - gemfile: gemfiles/activerecord_6.gemfile
+      rvm: 2.4.6
+    - gemfile: gemfiles/activerecord_6.gemfile
+      rvm: 2.3.8
 
 services: mongodb
 
