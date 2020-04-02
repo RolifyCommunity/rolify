@@ -28,7 +28,6 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.3'
 
-  s.add_dependency "railties", "> 4.2"
   s.add_development_dependency 'ammeter',     '~> 1.1' # Spec generator
   s.add_development_dependency 'bundler',     '~> 2.0' # packaging feature
   s.add_development_dependency 'rake',        '~> 12.3' # Tasks manager
