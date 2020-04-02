@@ -10,12 +10,12 @@ appraise 'mongoid-7' do
 end
 
 appraise 'activerecord-4' do
-  gem "sqlite3", "~> 1.3.6"
+  gem "sqlite3", "~> 1.3.6", "< 1.4"
   gem "activerecord", "~> 4.2.11", :require => "active_record"
 end
 
 appraise 'activerecord-5' do
-  gem "sqlite3", "~> 1.3.6"
+  gem "sqlite3", "~> 1.3.6", "< 1.4"
   gem "activerecord", "~> 5.2.4", :require => "active_record"
 
   # Ammeter dependencies:
@@ -31,13 +31,13 @@ appraise 'activerecord-5' do
 end
 
 appraise 'activerecord-6' do
-  gem "sqlite3", "~> 1.3.6", :platform => "ruby"
+  gem "sqlite3", "~> 1.4", :platform => "ruby"
   gem "activerecord", ">= 6.0.0", :require => "active_record"
 
   # Ammeter dependencies:
-  gem "actionpack", ">= 6.0.0"
-  gem "activemodel", ">= 6.0.0"
-  gem "railties", ">= 6.0.0"
+  gem "actionpack", ">= 6.0.2.2"
+  gem "activemodel", ">= 6.0.2.2"
+  gem "railties", ">= 6.0.2.2"
 
   gem 'rspec-rails'       , github: 'rspec/rspec-rails'
   gem 'rspec-core'        , github: 'rspec/rspec-core'
