@@ -22,7 +22,7 @@ gemfile:
   - gemfiles/mongoid_6.gemfile
   - gemfiles/mongoid_7.gemfile
 
-env: 
+env:
   - ADAPTER=active_record
   - ADAPTER=mongoid
 
