@@ -1,0 +1,31 @@
+name: mongoid
+on: [push]
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:3.4.23
+        ports:
+          - 27017:27017
+    strategy:
+      matrix:
+        ruby: [ 2.3.8, 2.4.9, 2.5.7, 2.6.5  ]
+        gemfile: [ mongoid_6, mongoid_7 ]
+    env:
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
+      ADAPTER: mongoid
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - run: sudo apt-get install -y libsqlite3-dev
+      - run: gem update --system
+      - run: gem install bundler
+      - run: gem --version
+      - run: bundle install
+      - name: Run Tests
+        run: |
+          bundle exec rake

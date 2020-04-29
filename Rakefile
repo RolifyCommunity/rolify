@@ -15,7 +15,7 @@ RSpec::Core::RakeTask.new(:rolify) do |task|
   task.pattern = 'spec/rolify/**/*_spec.rb'
 end
 
-if !ENV["APPRAISAL_INITIALIZED"] && !ENV["TRAVIS"]
+if !ENV["APPRAISAL_INITIALIZED"] && !ENV["CI"]
   task :default => :appraisal
 else
   task :default => [ :spec, 'coveralls:push' ]
