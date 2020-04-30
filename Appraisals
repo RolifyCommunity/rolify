@@ -1,3 +1,8 @@
+appraise 'mongoid-5' do
+  gem "mongoid", "~> 5"
+  gem "bson_ext", "1.5.1"
+end
+
 appraise 'mongoid-6' do
   gem "mongoid", "~> 6"
   gem "bson_ext", "1.5.1"
