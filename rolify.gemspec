@@ -9,7 +9,6 @@ Gem::Specification.new do |s|
   s.version     = Rolify::VERSION
   s.platform    = Gem::Platform::RUBY
   s.homepage    = 'https://github.com/RolifyCommunity/rolify'
-  s.rubyforge_project = s.name
 
   s.license     = 'MIT'
 

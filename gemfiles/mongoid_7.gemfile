@@ -3,14 +3,16 @@
 source "https://rubygems.org"
 
 gem "mongoid", "~> 7"
-gem "bson_ext", platform: "ruby"
+gem "bson_ext", "1.5.1"
+gem "railties", "5.2.4.1"
 
 group :test do
   gem "appraisal"
   gem "coveralls", require: false
   gem "its"
+  gem "pry", "< 0.13.0"
   gem "byebug"
-  gem "pry-byebug"
+  gem "pry-byebug", "< 3.8.0"
   gem "test-unit"
   gem "database_cleaner", "~> 1.6.2"
   gem "codeclimate-test-reporter", require: nil
