@@ -1,3 +1,14 @@
+= 5.3.0
+
+`5.3.0` will be the last version to support Ruby < 2.5 and Rails < 5.2. Support for these will be dropped in the next major release.
+
+Outstanding issues: Rolify does not support Mongoid 6 or 7.
+
+* Add Rails 6 support to migration generator
+* Significant ActiveRecord performance improvements to `add_role` and `without_role`
+* Mongoid fix and performance improvement and to `roles_name`
+* Make it safe to call Thing.with_role(:admin, user) with new record
+
 = 5.2.0 (Dec 14, 2017)
 * Fix regression in generator around belongs_to options compatibility
 * Update version of database_cleaner
@@ -126,7 +137,7 @@
 * fixed a backward incompatible change introduced in Rails 3.2 release (<tt>find_or_create_by_* generated methods</tt>)
 
 = 2.2 (Jan 18, 2012)
-* fixed a bug in the initializer file regarding dynamic shortcuts 
+* fixed a bug in the initializer file regarding dynamic shortcuts
 
 = 2.1 (Nov 30, 2011)
 * added syntactic sugar: <tt>grant</tt> and <tt>revoke</tt> are aliases for <tt>has_role</tt> and <tt>has_no_role</tt>
@@ -167,8 +178,8 @@
 
 = 1.0 (Aug 25, 2011)
 * added a new parameter to disable dynamic shortcut methods due to potential incompatibility with other gems using method_missing with the same pattern
-  * add <tt>Rolify.dynamic_shortcuts = false</tt> in the initializer file or 
-  * use the generator command with a third parameter: 
+  * add <tt>Rolify.dynamic_shortcuts = false</tt> in the initializer file or
+  * use the generator command with a third parameter:
     * <tt>rails g rolify:role Role User false</tt>
 * removed the railtie as it created more problems than it solved
 * code refactoring to do some speed improvements and code clean up
@@ -177,16 +188,16 @@
 * rolify is now on travis-ci to monitor build status
 
 = 0.7 (June 20, 2011)
-* added a method_missing to catch newly created role outside the current ruby process (i.e. dynamic shortcut methods are not defined within this process) 
-  * dynamic shortcut is created on the fly in the method_missing to avoid extra method_missing for the same dynamic shortcut 
-  * check if the role actually exists in the database before defining the new method 
+* added a method_missing to catch newly created role outside the current ruby process (i.e. dynamic shortcut methods are not defined within this process)
+  * dynamic shortcut is created on the fly in the method_missing to avoid extra method_missing for the same dynamic shortcut
+  * check if the role actually exists in the database before defining the new method
   * first call is slower due to method_missing but next calls are fast
   * avoid strange bugs when spawning many ruby processes as the dynamic shortcut methods were only defined in the process that used the <tt>has_role</tt> command
 
 = 0.6 (June 19, 2011)
 * custom User and Role class names support
   * can now use other class names for Role and User classes
-  * fixed generators and templates 
+  * fixed generators and templates
   * join table is explicitly set to avoid alphabetical order issue
 * created a new railtie to load the dynamic shortcuts at startup
 
@@ -208,7 +219,7 @@
   * Trying to remove a role scoped to a resource whereas the user has a global role won't remove it
 
 = v0.3 (June 06, 2011)
-* multiple roles check: 
+* multiple roles check:
   * <tt>has_all_roles?</tt> returns true if the user has ALL the roles in arguments
   * <tt>has_any_role?</tt> returns true if the user has ANY the roles in arguments
 
