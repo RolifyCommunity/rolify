@@ -1,3 +1,3 @@
 module Rolify
-  VERSION = "6.0.0"
+  VERSION = "5.3.0"
 end
