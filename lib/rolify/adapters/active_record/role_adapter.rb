@@ -9,14 +9,20 @@ module Rolify
       end
 
       def where_strict(relation, args)
-        return relation.where(:name => args[:name]) if args[:resource].blank?
-        resource = if args[:resource].is_a?(Class)
-                     {class: args[:resource].to_s, id: nil}
-                   else
-                     {class: args[:resource].class.name, id: args[:resource].id}
-                   end
+        wrap_conditions = relation.name != role_class.name
+        processed_args = { :name => args[:name] }
+        conditions = wrap_conditions ? { role_table => processed_args } : processed_args
+        return relation.where(conditions) if args[:resource].blank?
 
-        relation.where(:name => args[:name], :resource_type => resource[:class], :resource_id => resource[:id])
+        if args[:resource].is_a?(Class)
+          processed_args[:resource_type] = args[:resource].to_s
+          processed_args[:resource_id] = nil
+        else
+          processed_args[:resource_type] = args[:resource].class.name
+          processed_args[:resource_id] = args[:resource].id
+        end
+
+        relation.where(conditions)
       end
 
       def find_cached(relation, args)
@@ -67,9 +73,9 @@ module Rolify
         relation.where("#{column} IS NOT NULL")
       end
 
-      def scope(relation, conditions)
+      def scope(relation, conditions, strict)
         query = relation.joins(:roles)
-        query = where(query, conditions)
+        query = strict ? where_strict(query, conditions) : where(query, conditions)
         query
       end
 
