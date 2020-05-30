@@ -91,7 +91,8 @@ module Rolify
       end
 
       def scope(relation, conditions, strict)
-        roles = where(role_class, conditions).map { |role| role.id }
+        query = strict ? where_strict(role_class, conditions) : where(role_class, conditions)
+        roles = query.map { |role| role.id }
         return [] if roles.size.zero?
         query = relation.any_in(:role_ids => roles)
         query
