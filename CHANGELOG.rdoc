@@ -2,6 +2,7 @@
 
 5.3.0 will be the last version to support Ruby < 2.5 and Rails < 5.2. Support for these will be dropped in the next major release.
 
+* Fix deprecation warning in Ruby 2.7
 * Add Rails 6 support to migration generator
 * Significant ActiveRecord performance improvements to <tt>add_role</tt> and <tt>without_role</tt>
 * Mongoid fix and performance improvement and to <tt>roles_name</tt>
