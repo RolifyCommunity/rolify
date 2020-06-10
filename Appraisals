@@ -1,6 +1,7 @@
 appraise 'mongoid-5' do
   gem "mongoid", "~> 5"
   gem "bson_ext", "1.5.1"
+  gem 'bigdecimal', '1.4.2'
 end
 
 appraise 'mongoid-6' do
@@ -17,6 +18,7 @@ end
 appraise 'activerecord-4' do
   gem "sqlite3", "~> 1.3.6"
   gem "activerecord", "~> 4.2.11", :require => "active_record"
+  gem 'bigdecimal', '1.4.2'
 end
 
 appraise 'activerecord-5' do
