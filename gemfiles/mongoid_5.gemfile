@@ -4,6 +4,7 @@ source "https://rubygems.org"
 
 gem "mongoid", "~> 5"
 gem "bson_ext", "1.5.1"
+gem "bigdecimal", "1.4.2"
 
 group :test do
   gem "appraisal"

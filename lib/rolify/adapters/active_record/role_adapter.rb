@@ -13,7 +13,7 @@ module Rolify
 
         conditions = if args[:resource].is_a?(Class)
                        {:resource_type => args[:resource].to_s, :resource_id => nil }
-                     elsif arg[:resource].present?
+                     elsif args[:resource].present?
                        {:resource_type => args[:resource].class.name, :resource_id => args[:resource].id}
                      else
                        {}
