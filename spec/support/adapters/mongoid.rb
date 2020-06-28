@@ -38,7 +38,7 @@ class Role
   include Mongoid::Document
   has_and_belongs_to_many :users
   has_and_belongs_to_many :strict_users
-  belongs_to :resource, :polymorphic => true
+  belongs_to :resource, :polymorphic => true, :optional => true
 
   field :name, :type => String
   index(
@@ -93,7 +93,7 @@ class Privilege
   include Mongoid::Document
   default_scope -> { order_by id: 'asc' }
   has_and_belongs_to_many :customers
-  belongs_to :resource, :polymorphic => true
+  belongs_to :resource, :polymorphic => true, :optional => true
   scopify
 
   field :name, :type => String
@@ -121,7 +121,7 @@ module Admin
     include Mongoid::Document
     default_scope -> { order_by id: 'asc' }
     has_and_belongs_to_many :moderators, :class_name => 'Admin::Moderator'
-    belongs_to :resource, :polymorphic => true
+    belongs_to :resource, :polymorphic => true, :optional => true
     scopify
 
     field :name, :type => String
