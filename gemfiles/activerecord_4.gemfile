@@ -10,7 +10,7 @@ group :test do
   gem "appraisal"
   gem "coveralls", require: false
   gem "its"
-  gem "pry", "< 0.13.0"
+  gem "pry"
   gem "byebug"
   gem "pry-byebug", "< 3.8.0"
   gem "test-unit"
