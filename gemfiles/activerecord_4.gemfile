@@ -7,15 +7,14 @@ gem "activerecord", "~> 4.2.11", require: "active_record"
 gem "bigdecimal", "1.4.2"
 
 group :test do
-  gem "appraisal"
-  gem "coveralls", require: false
-  gem "its"
-  gem "pry"
-  gem "byebug"
-  gem "pry-byebug", "< 3.8.0"
-  gem "test-unit"
-  gem "database_cleaner", "~> 1.6.2"
   gem "codeclimate-test-reporter", require: nil
+  gem "coveralls", require: false
+  gem "database_cleaner", "~> 1.6.2"
+  gem "its"
+  gem "test-unit"
+  gem "byebug"
+  gem "pry"
+  gem "pry-byebug"
 end
 
 gemspec path: "../"
