@@ -29,12 +29,6 @@ appraise 'activerecord-5' do
   gem "actionpack", "~> 5.2.4"
   gem "activemodel", "~> 5.2.4"
   gem "railties", "~> 5.2.4"
-
-  gem 'rspec-rails'       , github: 'rspec/rspec-rails'
-  gem 'rspec-core'        , github: 'rspec/rspec-core'
-  gem 'rspec-expectations', github: 'rspec/rspec-expectations'
-  gem 'rspec-mocks'       , github: 'rspec/rspec-mocks'
-  gem 'rspec-support'     , github: 'rspec/rspec-support'
 end
 
 appraise 'activerecord-6' do
@@ -45,10 +39,4 @@ appraise 'activerecord-6' do
   gem "actionpack", ">= 6.0.0"
   gem "activemodel", ">= 6.0.0"
   gem "railties", ">= 6.0.0"
-
-  gem 'rspec-rails'       , github: 'rspec/rspec-rails'
-  gem 'rspec-core'        , github: 'rspec/rspec-core'
-  gem 'rspec-expectations', github: 'rspec/rspec-expectations'
-  gem 'rspec-mocks'       , github: 'rspec/rspec-mocks'
-  gem 'rspec-support'     , github: 'rspec/rspec-support'
 end
