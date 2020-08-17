@@ -14,8 +14,6 @@ rvm:
   - 2.7.0
   - 2.6.3
   - 2.5.5
-  - 2.4.6
-  - 2.3.8
 
 gemfile:
   - gemfiles/activerecord_4.gemfile
@@ -37,10 +35,6 @@ matrix:
       env: ADAPTER=mongoid
     - gemfile: gemfiles/activerecord_6.gemfile
       env: ADAPTER=mongoid
-    - gemfile: gemfiles/activerecord_6.gemfile
-      rvm: 2.4.6
-    - gemfile: gemfiles/activerecord_6.gemfile
-      rvm: 2.3.8
     - gemfile: gemfiles/mongoid_5.gemfile
       env: ADAPTER=active_record
     - gemfile: gemfiles/mongoid_6.gemfile

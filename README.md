@@ -46,7 +46,7 @@ rails g rolify Role User
 rails g rolify:role Role User
 ```
 
-The generator will create your Role model, add a migration file, and update your User class with new class methods. 
+The generator will create your Role model, add a migration file, and update your User class with new class methods.
 
 ### 2. Run the migration (only required when using ActiveRecord)
 
