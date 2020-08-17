@@ -11,7 +11,7 @@ module Rolify
 
       def with_role(role_name, user = nil)
         if role_name.is_a? Array
-          role_name.map!(&:to_s)
+          role_name = role_name.map(&:to_s)
         else
           role_name = role_name.to_s
         end
