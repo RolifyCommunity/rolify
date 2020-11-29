@@ -1,4 +1,4 @@
-# rolify [![Gem Version](https://badge.fury.io/rb/rolify.svg)](http://badge.fury.io/rb/rolify) [![build status](https://secure.travis-ci.org/RolifyCommunity/rolify.png)](http://travis-ci.org/RolifyCommunity/rolify) [![Code Climate](https://codeclimate.com/github/RolifyCommunity/rolify.png)](https://codeclimate.com/github/RolifyCommunity/rolify) [![Coverage Status](https://coveralls.io/repos/RolifyCommunity/rolify/badge.svg?branch=master&service=github)](https://coveralls.io/github/RolifyCommunity/rolify?branch=master)
+# rolify [![Gem Version](https://badge.fury.io/rb/rolify.svg)](http://badge.fury.io/rb/rolify) [![build status](https://travis-ci.org/RolifyCommunity/rolify.svg)](http://travis-ci.org/RolifyCommunity/rolify) [![Code Climate](https://codeclimate.com/github/RolifyCommunity/rolify.svg)](https://codeclimate.com/github/RolifyCommunity/rolify) [![Coverage Status](https://coveralls.io/repos/RolifyCommunity/rolify/badge.svg?branch=master&service=github)](https://coveralls.io/github/RolifyCommunity/rolify?branch=master)
 
 Very simple Roles library without any authorization enforcement supporting scope on resource object.
 
@@ -46,7 +46,7 @@ rails g rolify Role User
 rails g rolify:role Role User
 ```
 
-The generator will create your Role model, add a migration file, and update your User class with new class methods. 
+The generator will create your Role model, add a migration file, and update your User class with new class methods.
 
 ### 2. Run the migration (only required when using ActiveRecord)
 

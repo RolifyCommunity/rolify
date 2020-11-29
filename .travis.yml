@@ -11,18 +11,19 @@ after_success:
   - bundle exec codeclimate-test-reporter
 
 rvm:
+  - 2.7.0
   - 2.6.3
   - 2.5.5
-  - 2.4.6
-  - 2.3.8
 
 gemfile:
   - gemfiles/activerecord_4.gemfile
   - gemfiles/activerecord_5.gemfile
+  - gemfiles/activerecord_6.gemfile
+  - gemfiles/mongoid_5.gemfile
   - gemfiles/mongoid_6.gemfile
   - gemfiles/mongoid_7.gemfile
 
-env: 
+env:
   - ADAPTER=active_record
   - ADAPTER=mongoid
 
@@ -32,12 +33,17 @@ matrix:
       env: ADAPTER=mongoid
     - gemfile: gemfiles/activerecord_5.gemfile
       env: ADAPTER=mongoid
+    - gemfile: gemfiles/activerecord_6.gemfile
+      env: ADAPTER=mongoid
+    - gemfile: gemfiles/mongoid_5.gemfile
+      env: ADAPTER=active_record
     - gemfile: gemfiles/mongoid_6.gemfile
       env: ADAPTER=active_record
     - gemfile: gemfiles/mongoid_7.gemfile
       env: ADAPTER=active_record
   allow_failures:
-    - env: ADAPTER=mongoid
+    - gemfile: gemfiles/mongoid_6.gemfile
+    - gemfile: gemfiles/mongoid_7.gemfile
 
 services: mongodb
 
