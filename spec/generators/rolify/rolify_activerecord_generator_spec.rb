@@ -71,6 +71,7 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should contain "validates :resource_type,\n"
                           "          :inclusion => { :in => Rolify.resource_types },\n"
                           "          :allow_nil => true" }
+      it { should contain "scopify" }
     end
 
     describe 'app/models/user.rb' do
@@ -240,6 +241,13 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
       it { should be_a_migration }
       it { should contain "create_table(:admin_roles)" }
       it { should contain "create_table(:admin_users_admin_roles, :id => false) do" }
+      it do
+        if Rails::VERSION::MAJOR < 5
+          should contain "< ActiveRecord::Migration"
+        else
+          should contain "< ActiveRecord::Migration[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
+        end
+      end
 
       context 'mysql2' do
         let(:adapter) { 'Mysql2Adapter' }

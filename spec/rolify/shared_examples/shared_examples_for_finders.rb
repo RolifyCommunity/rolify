@@ -4,47 +4,65 @@ shared_examples_for :finders do |param_name, param_method|
       it { should respond_to(:with_role).with(1).argument }
       it { should respond_to(:with_role).with(2).arguments }
 
-      context "with a global role" do
-        it { subject.with_role("admin".send(param_method)).should eq([ root ]) }
-        it { subject.with_role("moderator".send(param_method)).should be_empty }
-        it { subject.with_role("visitor".send(param_method)).should be_empty }
+      context "when resource setting: strict is set to false" do
+        context "with a global role" do
+          it { subject.with_role("admin".send(param_method)).should eq([ root ]) }
+          it { subject.with_role("moderator".send(param_method)).should be_empty }
+          it { subject.with_role("visitor".send(param_method)).should be_empty }
+        end
+
+        context "with a class scoped role" do
+          context "on Forum class" do
+            it { subject.with_role("admin".send(param_method), Forum).should eq([ root ]) }
+            it { subject.with_role("moderator".send(param_method), Forum).should eq([ modo ]) }
+            it { subject.with_role("visitor".send(param_method), Forum).should be_empty }
+          end
+
+          context "on Group class" do
+            it { subject.with_role("admin".send(param_method), Group).should eq([ root ]) }
+            it { subject.with_role("moderator".send(param_method), Group).should eq([ root ]) }
+            it { subject.with_role("visitor".send(param_method), Group).should be_empty }
+          end
+        end
+
+        context "with an instance scoped role" do
+          context "on Forum.first instance" do
+            it { subject.with_role("admin".send(param_method), Forum.first).should eq([ root ]) }
+            it { subject.with_role("moderator".send(param_method), Forum.first).should eq([ modo ]) }
+            it { subject.with_role("visitor".send(param_method), Forum.first).should be_empty }
+          end
+
+          context "on Forum.last instance" do
+            it { subject.with_role("admin".send(param_method), Forum.last).should eq([ root ]) }
+            it { subject.with_role("moderator".send(param_method), Forum.last).should eq([ modo ]) }
+            it { subject.with_role("visitor".send(param_method), Forum.last).should include(root, visitor) } # =~ doesn't pass using mongoid, don't know why...
+          end
+
+          context "on Group.first instance" do
+            it { subject.with_role("admin".send(param_method), Group.first).should eq([ root ]) }
+            it { subject.with_role("moderator".send(param_method), Group.first).should eq([ root ]) }
+            it { subject.with_role("visitor".send(param_method), Group.first).should eq([ modo ]) }
+          end
+
+          context "on Company.first_instance" do
+            it { subject.with_role("owner".send(param_method), Company.first).should eq([ owner ]) }
+          end
+        end
       end
 
-      context "with a class scoped role" do
-        context "on Forum class" do
-          it { subject.with_role("admin".send(param_method), Forum).should eq([ root ]) }
-          it { subject.with_role("moderator".send(param_method), Forum).should eq([ modo ]) }
-          it { subject.with_role("visitor".send(param_method), Forum).should be_empty }
+      context "when resource setting: strict is set to true" do
+        before(:context) do
+          user_class.strict_rolify = true
+        end
+        after(:context) do
+          user_class.strict_rolify = false
         end
 
-        context "on Group class" do
-          it { subject.with_role("admin".send(param_method), Group).should eq([ root ]) }
-          it { subject.with_role("moderator".send(param_method), Group).should eq([ root ]) }
-          it { subject.with_role("visitor".send(param_method), Group).should be_empty }
-        end
-      end
-
-      context "with an instance scoped role" do
-        context "on Forum.first instance" do
-          it { subject.with_role("admin".send(param_method), Forum.first).should eq([ root ]) }
-          it { subject.with_role("moderator".send(param_method), Forum.first).should eq([ modo ]) }
-          it { subject.with_role("visitor".send(param_method), Forum.first).should be_empty }
-        end
-
-        context "on Forum.last instance" do
-          it { subject.with_role("admin".send(param_method), Forum.last).should eq([ root ]) }
-          it { subject.with_role("moderator".send(param_method), Forum.last).should eq([ modo ]) }
-          it { subject.with_role("visitor".send(param_method), Forum.last).should include(root, visitor) } # =~ doesn't pass using mongoid, don't know why...
-        end
-
-        context "on Group.first instance" do
-          it { subject.with_role("admin".send(param_method), Group.first).should eq([ root ]) }
-          it { subject.with_role("moderator".send(param_method), Group.first).should eq([ root ]) }
-          it { subject.with_role("visitor".send(param_method), Group.first).should eq([ modo ]) }
-        end
-
-        context "on Company.first_instance" do
-          it { subject.with_role("owner".send(param_method), Company.first).should eq([ owner ]) }
+        context "with an instance scoped role" do
+          context "on Forum.first instance" do
+            it { subject.with_role("admin".send(param_method), Forum.first).should be_empty }
+            it { subject.with_role("moderator".send(param_method), Forum.first).should be_empty }
+          end
         end
       end
     end
