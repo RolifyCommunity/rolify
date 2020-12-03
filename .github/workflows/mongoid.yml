@@ -11,9 +11,9 @@ jobs:
           - 27017:27017
     strategy:
       matrix:
-        gemfile: [ mongoid_5 ]
-        ruby: [ 2.3.8, 2.4.9, 2.5.7, 2.6.5  ]
-        allowed_failure: [ false ]
+        gemfile: [mongoid_5]
+        ruby: [2.5.7, 2.6.5]
+        allowed_failure: [false]
         include:
           - gemfile: mongoid_6
             ruby: 2.5.7

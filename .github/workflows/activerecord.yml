@@ -5,13 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        gemfile: [ activerecord_4, activerecord_5 ]
-        ruby: [ 2.3.8, 2.4.9, 2.5.7, 2.6.5 ]
-        include:
-          - gemfile: activerecord_6
-            ruby: 2.5.7
-          - gemfile: activerecord_6
-            ruby: 2.6.5
+        gemfile: [activerecord_4, activerecord_5, activerecord_6]
+        ruby: [2.5.7, 2.6.5]
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
       ADAPTER: active_record
