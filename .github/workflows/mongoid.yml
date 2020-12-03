@@ -3,7 +3,7 @@ on: [push]
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.allowed_failure }}
+    continue-on-error: true
     services:
       mongodb:
         image: mongo:3.4.23
@@ -13,14 +13,6 @@ jobs:
       matrix:
         gemfile: [mongoid_5]
         ruby: [2.5.7, 2.6.5]
-        allowed_failure: [false]
-        include:
-          - gemfile: mongoid_6
-            ruby: 2.5.7
-            allowed_failure: true
-          - gemfile: mongoid_7
-            ruby: 2.5.7
-            allowed_failure: true
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
       ADAPTER: mongoid

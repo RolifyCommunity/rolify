@@ -3,6 +3,7 @@ on: [push]
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
+    continue-on-error: true
     strategy:
       matrix:
         gemfile: [activerecord_4, activerecord_5, activerecord_6]
