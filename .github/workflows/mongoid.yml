@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         gemfile: [mongoid_5]
-        ruby: [2.5.7, 2.6.5]
+        ruby: [2.5.7, 2.6.5, 2.7.2]
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
       ADAPTER: mongoid

@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         gemfile: [activerecord_4, activerecord_5, activerecord_6]
-        ruby: [2.5.7, 2.6.5]
+        ruby: [2.5.7, 2.6.5, 2.7.2]
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
       ADAPTER: active_record
