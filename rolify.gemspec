@@ -26,9 +26,10 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ['lib']
 
-  s.required_ruby_version = '>= 2.3'
+  s.required_ruby_version = '>= 2.5'
 
   s.add_development_dependency 'ammeter',     '~> 1.1' # Spec generator
+  s.add_development_dependency 'appraisal',   '~> 2.0'
   s.add_development_dependency 'bundler',     '~> 2.0' # packaging feature
   s.add_development_dependency 'rake',        '~> 12.3' # Tasks manager
   s.add_development_dependency 'rspec-rails', '~> 3.8'
