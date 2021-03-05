@@ -1,4 +1,78 @@
-= 3.3 (not released yet)
+= 5.3.0 (June 1, 2020)
+
+5.3.0 will be the last version to support Ruby < 2.5 and Rails < 5.2. Support for these will be dropped in the next major release.
+
+* Fix deprecation warning in Ruby 2.7
+* Add Rails 6 support to migration generator
+* Significant ActiveRecord performance improvements to <tt>add_role</tt> and <tt>without_role</tt>
+* Mongoid fix and performance improvement and to <tt>roles_name</tt>
+* Make it safe to call <tt>Thing.with_role(:admin, user)</tt> with new record
+
+= 5.2.0 (Dec 14, 2017)
+* Fix regression in generator around belongs_to options compatibility
+* Update version of database_cleaner
+* Update initializer.rb to include the remove_role_if_empty option and description
+* Allow inverse_of option on rolify method
+* Fix the code-climate-reporter issue that's causing travis to fail
+* Remove a separate index for the name column
+* Fix migration generator for AR 5.x
+* Fixed ambiguous column error
+
+= 5.1.0 (Mar 19, 2016)
+* Rails 5 Support (thanks @lorefnon)
+* Fix user handling in generator (thanks @lorefnon)
+* Fix quoting issues (thanks @lorefnon)
+* Improvements to dynamic module loading (thanks to @DmitryKK)
+
+= 5.0.0 (Nov 17, 2015)
+* Fix migration warning showing when it shouldn't
+* Add role lazy-loading
+* Add has_cached_role and has_cached_strict_role to project.
+  See: https://github.com/RolifyCommunity/rolify#cached-roles-to-avoid-n1-issue
+* Update specs to pass with all Mongoid version.
+
+= 4.1.1 (Aug 06, 2015)
+* Fix a regression in the dynamic method loader.
+
+= 4.1.0 (Aug 04, 2015)
+* added `without_role` method for resources and classes
+* fix `has_role?` with :any and an unsaved user
+* rename the `with_role` method on a resource to `find_as`
+* add a strict parameter to check only roles that were set without supers.
+
+= 4.0.0 (Feb 12, 2015)
+* Increasing version number to 4.0.0 for semantic versioning since `has_role` was removed in 3.5.0
+* Fix spec to pass.
+* Fix dynamic shortcuts being set before migration.
+
+= 3.5.2 (Jan 14, 2015)
+* Fixed regression in RolifyGenerator
+* Updated dependencies
+
+= 3.5.0 (Jan 08, 2015)
+* Removed `has_role` method alias for `add_role`
+* Fixed regression in caching system
+* Fix deprecation warning about timestamp on specs
+* Copy Kernel#capture helper from Rails
+* Add validation on Role.resource_type
+
+= 3.4.1 (Sep 08, 2014)
+* Fixed issue with migrations being generated without a file extension.
+* Updated spec tests to work with Travis CI on Ruby up to 2.1.2 and Rails 4.1.x
+* Made it possible for inheritance of resources.
+* Fixed small bugs throughout project.
+
+= 3.4 (Jan 28, 2014)
+* fixed an initializer bug preventing the rails app to boot
+* enhanced documentation regarding <tt>with_role</tt> method (thanks to @vicomte)
+* added <tt>select(:id)</tt> in SQL subquery used by <tt>in</tt> method in ActiveRecord adapter (thanks to @ryanaip and @badaboda)
+* improved speed when removing roles using <tt>LIMIT(1)</tt> instead of <tt>COUNT</tt> (thanks to @yankovski)
+* fixed travis builds for rubinius and mongoid
+* fixed sanity check running before <tt>Rolify.config</tt> to ensure roles table exists
+* fixed <tt>has_any_role?</tt> to work with unsaved records (thanks to @mhw)
+* fixed specs for Mongoid
+
+= 3.3 (Jan 26, 2014)
 * <b>DEPRECATION NOTICE:</b>Rails 3.1 support dropped: if you use Rails 3.1, please stick to rolify 3.2
 * code cleanup in finders methods
 * generators rewritten entirely. now using ActiveRecord/Mongoid model generator to create Role model
@@ -62,7 +136,7 @@
 * fixed a backward incompatible change introduced in Rails 3.2 release (<tt>find_or_create_by_* generated methods</tt>)
 
 = 2.2 (Jan 18, 2012)
-* fixed a bug in the initializer file regarding dynamic shortcuts 
+* fixed a bug in the initializer file regarding dynamic shortcuts
 
 = 2.1 (Nov 30, 2011)
 * added syntactic sugar: <tt>grant</tt> and <tt>revoke</tt> are aliases for <tt>has_role</tt> and <tt>has_no_role</tt>
@@ -103,8 +177,8 @@
 
 = 1.0 (Aug 25, 2011)
 * added a new parameter to disable dynamic shortcut methods due to potential incompatibility with other gems using method_missing with the same pattern
-  * add <tt>Rolify.dynamic_shortcuts = false</tt> in the initializer file or 
-  * use the generator command with a third parameter: 
+  * add <tt>Rolify.dynamic_shortcuts = false</tt> in the initializer file or
+  * use the generator command with a third parameter:
     * <tt>rails g rolify:role Role User false</tt>
 * removed the railtie as it created more problems than it solved
 * code refactoring to do some speed improvements and code clean up
@@ -113,16 +187,16 @@
 * rolify is now on travis-ci to monitor build status
 
 = 0.7 (June 20, 2011)
-* added a method_missing to catch newly created role outside the current ruby process (i.e. dynamic shortcut methods are not defined within this process) 
-  * dynamic shortcut is created on the fly in the method_missing to avoid extra method_missing for the same dynamic shortcut 
-  * check if the role actually exists in the database before defining the new method 
+* added a method_missing to catch newly created role outside the current ruby process (i.e. dynamic shortcut methods are not defined within this process)
+  * dynamic shortcut is created on the fly in the method_missing to avoid extra method_missing for the same dynamic shortcut
+  * check if the role actually exists in the database before defining the new method
   * first call is slower due to method_missing but next calls are fast
   * avoid strange bugs when spawning many ruby processes as the dynamic shortcut methods were only defined in the process that used the <tt>has_role</tt> command
 
 = 0.6 (June 19, 2011)
 * custom User and Role class names support
   * can now use other class names for Role and User classes
-  * fixed generators and templates 
+  * fixed generators and templates
   * join table is explicitly set to avoid alphabetical order issue
 * created a new railtie to load the dynamic shortcuts at startup
 
@@ -144,7 +218,7 @@
   * Trying to remove a role scoped to a resource whereas the user has a global role won't remove it
 
 = v0.3 (June 06, 2011)
-* multiple roles check: 
+* multiple roles check:
   * <tt>has_all_roles?</tt> returns true if the user has ALL the roles in arguments
   * <tt>has_any_role?</tt> returns true if the user has ANY the roles in arguments
 

@@ -1,7 +1,8 @@
-require 'active_record'
+load File.dirname(__FILE__) + '/utils/active_record.rb'
 
-RSpec::Matchers::OperatorMatcher.register(ActiveRecord::Relation, '=~', RSpec::Matchers::BuiltIn::MatchArray)
-ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
+extend_rspec_with_activerecord_specific_matchers
+establish_connection
+
 ActiveRecord::Base.extend Rolify
 
 load File.dirname(__FILE__) + '/../schema.rb'
@@ -13,9 +14,16 @@ end
 
 class Role < ActiveRecord::Base
   has_and_belongs_to_many :users, :join_table => :users_roles
+  has_and_belongs_to_many :strict_users, :join_table => :strict_users_roles
+
   belongs_to :resource, :polymorphic => true
 
   extend Rolify::Adapter::Scopes
+end
+
+# Strict user and role classes
+class StrictUser < ActiveRecord::Base
+  rolify strict: true
 end
 
 # Resourcifed and rolifed at the same time
@@ -41,7 +49,7 @@ module Admin
   def self.table_name_prefix
     'admin_'
   end
-  
+
   class Moderator < ActiveRecord::Base
     rolify :role_cname => "Admin::Right", :role_join_table_name => "moderators_rights"
   end
@@ -51,7 +59,7 @@ module Admin
     belongs_to :resource, :polymorphic => true
 
     extend Rolify::Adapter::Scopes
-  end  
+  end
 end
 
 
@@ -71,6 +79,14 @@ end
 class Team < ActiveRecord::Base
   #resourcify done during specs setup to be able to use custom user classes
   self.primary_key = "team_code"
-  
+
   default_scope { order(:team_code) }
+end
+
+class Organization < ActiveRecord::Base
+
+end
+
+class Company < Organization
+
 end

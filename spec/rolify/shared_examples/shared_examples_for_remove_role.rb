@@ -5,33 +5,19 @@ shared_examples_for "#remove_role_examples" do |param_name, param_method|
         it { expect { subject.remove_role("admin".send(param_method)) }.to change { subject.roles.size }.by(-1) }
 
         it { should_not have_role("admin".send(param_method)) }
-        it { should     have_role("staff".send(param_method)) }
-        it { should     have_role("manager".send(param_method), Group) }
-        it { should     have_role("moderator".send(param_method), Forum.last) }
-        it { should     have_role("moderator".send(param_method), Group.last) }
-        it { should     have_role("anonymous".send(param_method), Forum.first) }
       end
 
       context "being a class scoped role to the user" do
         it { expect { subject.remove_role("manager".send(param_method)) }.to change { subject.roles.size }.by(-1) }
 
-        it { should_not have_role("admin".send(param_method)) }
-        it { should     have_role("staff".send(param_method)) }
         it { should_not have_role("manager".send(param_method), Group) }
-        it { should     have_role("moderator".send(param_method), Forum.last) }
-        it { should     have_role("moderator".send(param_method), Group.last) }
-        it { should     have_role("anonymous".send(param_method), Forum.first) }
       end
 
       context "being instance scoped roles to the user" do
         it { expect { subject.remove_role("moderator".send(param_method)) }.to change { subject.roles.size }.by(-2) }
 
-        it { should_not have_role("admin".send(param_method)) }
-        it { should     have_role("staff".send(param_method)) }
-        it { should_not have_role("manager".send(param_method), Group) }
         it { should_not have_role("moderator".send(param_method), Forum.last) }
         it { should_not have_role("moderator".send(param_method), Group.last) }
-        it { should     have_role("anonymous".send(param_method), Forum.first) }
       end
 
       context "not being a role of the user" do
@@ -46,12 +32,7 @@ shared_examples_for "#remove_role_examples" do |param_name, param_method|
 
         it { expect { subject.remove_role("staff".send(param_method)) }.not_to change { role_class.count } }
 
-        it { should_not have_role("admin".send(param_method)) }
         it { should_not have_role("staff".send(param_method)) }
-        it { should_not have_role("manager".send(param_method), Group) }
-        it { should_not have_role("moderator".send(param_method), Forum.last) }
-        it { should_not have_role("moderator".send(param_method), Group.last) }
-        it { should     have_role("anonymous".send(param_method), Forum.first) }
       end
 
       context "not used by anyone else" do
@@ -71,23 +52,14 @@ shared_examples_for "#remove_role_examples" do |param_name, param_method|
       context "being a class scoped role to the user" do
         it { expect { subject.remove_role("manager".send(param_method), Forum) }.to change{ subject.roles.size }.by(-1) }
 
-        it { should     have_role("warrior") }
         it { should_not have_role("manager", Forum) }
-        it { should     have_role("player", Forum) }
-        it { should     have_role("moderator".send(param_method), Forum.last) }
-        it { should     have_role("moderator".send(param_method), Group.last) }
-        it { should     have_role("anonymous".send(param_method), Forum.first) }
       end
 
       context "being instance scoped role to the user" do
         it { expect { subject.remove_role("moderator".send(param_method), Forum) }.to change { subject.roles.size }.by(-1) }
 
-        it { should     have_role("warrior") }
-        it { should_not have_role("manager", Forum) }
-        it { should     have_role("player", Forum) }
         it { should_not have_role("moderator".send(param_method), Forum.last) }
         it { should     have_role("moderator".send(param_method), Group.last) }
-        it { should     have_role("anonymous".send(param_method), Forum.first) }
       end
 
       context "not being a role of the user" do
@@ -107,10 +79,7 @@ shared_examples_for "#remove_role_examples" do |param_name, param_method|
       context "being instance scoped role to the user" do
         it { expect { subject.remove_role("moderator".send(param_method), Forum.first) }.to change { subject.roles.size }.by(-1) }
 
-        it { should     have_role("soldier") }
-        it { should     have_role("visitor", Forum) }
         it { should_not have_role("moderator", Forum.first) }
-        it { should     have_role("anonymous", Forum.last) }
       end
 
       context "not being a role of the user" do

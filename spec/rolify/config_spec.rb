@@ -1,14 +1,14 @@
 require "spec_helper"
-require "active_record"
-require "mongoid"
 
-class ARUser < ActiveRecord::Base
-  extend Rolify
-end
-
-class MUser
-  include Mongoid::Document
-  extend Rolify
+if ENV['ADAPTER'] == 'active_record'
+  class ARUser < ActiveRecord::Base
+    extend Rolify
+  end
+else
+  class MUser
+    include Mongoid::Document
+    extend Rolify
+  end
 end
 
 describe Rolify do
@@ -20,7 +20,7 @@ describe Rolify do
     context "using defaults values" do
       subject { Rolify.dynamic_shortcuts }
 
-      it { should be_false }
+      it { should be_falsey }
     end
 
     context "using custom values" do
@@ -30,19 +30,19 @@ describe Rolify do
 
       subject { Rolify.dynamic_shortcuts }
 
-      it { should be_true }
+      it { should be_truthy }
     end
   end
 
   describe :orm do 
-    context "using defaults values" do
+    context "using defaults values", :if => ENV['ADAPTER'] == 'active_record' do
       subject { Rolify.orm }
 
       it { should eq("active_record") }
       
       context "on the User class" do
         before do
-          ARUser.rolify
+          subject.rolify
         end
         
         subject { ARUser }
@@ -52,16 +52,16 @@ describe Rolify do
       
       context "on the Forum class" do
         before do
-          Forum.resourcify
+          subject.resourcify
         end
         
         subject { Forum }
         
-        its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
+        its("resource_adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
       end
     end
 
-    context "using custom values" do
+    context "using custom values", :if => ENV['ADAPTER'] == 'mongoid' do
       context "using :orm setter method" do
         before do
           Rolify.orm = "mongoid"
@@ -88,7 +88,7 @@ describe Rolify do
 
           subject { Forum }
 
-          its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
+          its("resource_adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
         end
       end
       
@@ -118,7 +118,7 @@ describe Rolify do
 
           subject { Forum }
 
-          its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
+          its("resource_adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
         end
       end
     end
@@ -127,7 +127,7 @@ describe Rolify do
       context "using defaults values" do
         subject { Rolify.dynamic_shortcuts }
 
-        it { should be_false }
+        it { should be_falsey }
       end
       
       context "using custom values" do
@@ -138,7 +138,7 @@ describe Rolify do
 
           subject { Rolify.dynamic_shortcuts }
 
-          it { should be_true }
+          it { should be_truthy }
         end
 
         context "using :use_dynamic_shortcuts method" do
@@ -148,7 +148,7 @@ describe Rolify do
 
           subject { Rolify.dynamic_shortcuts }
 
-          it { should be_true }
+          it { should be_truthy }
         end
       end
     end
@@ -161,11 +161,13 @@ describe Rolify do
         config.orm = "mongoid"
       end
     end
+
+    subject { Rolify }
     
-    its(:dynamic_shortcuts) { should be_true }
+    its(:dynamic_shortcuts) { should be_truthy }
     its(:orm) { should eq("mongoid") }
     
-    context "on the User class" do
+    context "on the User class", :if => ENV['ADAPTER'] == 'mongoid' do
       before do
         MUser.rolify
       end
@@ -183,9 +185,8 @@ describe Rolify do
       end
 
       subject { Forum }
-      
       it { should satisfy { |u| u.include? Rolify::Resource }}
-      its("adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
+      its("resource_adapter.class") { should be(Rolify::Adapter::ResourceAdapter) }
     end
   end
 end

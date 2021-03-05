@@ -8,12 +8,51 @@ module Rolify
         relation.where(conditions, *values)
       end
 
+      def where_strict(relation, args)
+        wrap_conditions = relation.name != role_class.name
+
+        conditions = if args[:resource].is_a?(Class)
+                       {:resource_type => args[:resource].to_s, :resource_id => nil }
+                     elsif args[:resource].present?
+                       {:resource_type => args[:resource].class.name, :resource_id => args[:resource].id}
+                     else
+                       {}
+                     end
+
+        conditions.merge!(:name => args[:name])
+        conditions = wrap_conditions ? { role_table => conditions } : conditions
+
+        relation.where(conditions)
+      end
+
+      def find_cached(relation, args)
+        resource_id = (args[:resource].nil? || args[:resource].is_a?(Class) || args[:resource] == :any) ? nil : args[:resource].id
+        resource_type = args[:resource].is_a?(Class) ? args[:resource].to_s : args[:resource].class.name
+
+        return relation.find_all { |role| role.name == args[:name].to_s } if args[:resource] == :any
+
+        relation.find_all do |role|
+          (role.name == args[:name].to_s && role.resource_type == nil && role.resource_id == nil) ||
+          (role.name == args[:name].to_s && role.resource_type == resource_type && role.resource_id == nil) ||
+          (role.name == args[:name].to_s && role.resource_type == resource_type && role.resource_id == resource_id)
+        end
+      end
+
+      def find_cached_strict(relation, args)
+        resource_id = (args[:resource].nil? || args[:resource].is_a?(Class)) ? nil : args[:resource].id
+        resource_type = args[:resource].is_a?(Class) ? args[:resource].to_s : args[:resource].class.name
+
+        relation.find_all do |role|
+          role.resource_id == resource_id && role.resource_type == resource_type && role.name == args[:name].to_s
+        end
+      end
+
       def find_or_create_by(role_name, resource_type = nil, resource_id = nil)
         role_class.where(:name => role_name, :resource_type => resource_type, :resource_id => resource_id).first_or_create
       end
 
       def add(relation, role)
-        relation.role_ids |= [role.id]
+        relation.roles << role unless relation.roles.include?(role)
       end
 
       def remove(relation, role_name, resource = nil)
@@ -24,8 +63,8 @@ module Rolify
         if roles
           relation.roles.delete(roles)
           roles.each do |role|
-            role.destroy if role.send(ActiveSupport::Inflector.demodulize(user_class).tableize.to_sym).empty?
-          end
+            role.destroy if role.send(ActiveSupport::Inflector.demodulize(user_class).tableize.to_sym).limit(1).empty?
+          end if Rolify.remove_role_if_empty
         end
         roles
       end
@@ -34,15 +73,14 @@ module Rolify
         relation.where("#{column} IS NOT NULL")
       end
 
-      def scope(relation, conditions)
-        if Rails.version < "4.0"
-          query = relation.scoped
-        else
-          query = relation.all
-        end
-        query = query.joins(:roles)
-        query = where(query, conditions)
+      def scope(relation, conditions, strict)
+        query = relation.joins(:roles)
+        query = strict ? where_strict(query, conditions) : where(query, conditions)
         query
+      end
+
+      def all_except(user, excluded_obj)
+        user.where.not(user.primary_key => excluded_obj)
       end
 
       private

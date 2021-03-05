@@ -23,6 +23,10 @@ module Rolify
         load "rolify/adapters/#{Rolify.orm}/scopes.rb"
         Rolify::Adapter.const_get(adapter.camelize.to_sym).new(role_cname, user_cname)
       end
+
+      def relation_types_for(relation)
+        relation.descendants.map(&:to_s).push(relation.to_s)
+      end
     end
 
     class RoleAdapterBase < Adapter::Base
@@ -55,6 +59,7 @@ module Rolify
       def in(resources, roles)
         raise NotImplementedError.new("You must implement in")
       end
+
     end
   end
 end

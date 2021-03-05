@@ -1,15 +1,15 @@
-require 'rolify/railtie' if defined?(Rails)
-require 'rolify/utils'
-require 'rolify/role'
+require 'rolify/adapters/base'
 require 'rolify/configure'
 require 'rolify/dynamic'
+require 'rolify/railtie' if defined?(Rails)
 require 'rolify/resource'
-require 'rolify/adapters/base'
+require 'rolify/role'
 
 module Rolify
   extend Configure
 
-  attr_accessor :role_cname, :adapter, :role_join_table_name, :role_table_name
+  attr_accessor :role_cname, :adapter, :resource_adapter, :role_join_table_name, :role_table_name, :strict_rolify
+  @@resource_types = []
 
   def rolify(options = {})
     include Role
@@ -20,7 +20,8 @@ module Rolify
     self.role_table_name = self.role_cname.tableize.gsub(/\//, "_")
 
     rolify_options = { :class_name => options[:role_cname].camelize }
-    rolify_options.merge!(options.reject{ |k,v| ![ :before_add, :after_add, :before_remove, :after_remove ].include? k.to_sym })
+    rolify_options.merge!({ :join_table => self.role_join_table_name }) if Rolify.orm == "active_record"
+    rolify_options.merge!(options.reject{ |k,v| ![ :before_add, :after_add, :before_remove, :after_remove, :inverse_of ].include? k.to_sym })
 
     # Option to support has_many :through
     has_many_through_table = options.delete(:has_many_through)
@@ -28,18 +29,25 @@ module Rolify
       self.role_join_table_name = has_many_through_table
       rolify_options[:through] = self.role_join_table_name
 
-      has_many :roles, rolify_options
+      has_many :roles, **rolify_options
     else
       default_join_table = "#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_table_name}"
       options.reverse_merge!({:role_join_table_name => default_join_table})
       self.role_join_table_name = options[:role_join_table_name]
       rolify_options.merge!({ :join_table => self.role_join_table_name }) if Rolify.orm == "active_record"
 
-      has_and_belongs_to_many :roles, rolify_options
+      has_and_belongs_to_many :roles, **rolify_options
     end
 
     self.adapter = Rolify::Adapter::Base.create("role_adapter", self.role_cname, self.name)
-    load_dynamic_methods if Rolify.dynamic_shortcuts
+
+    #use strict roles
+    self.strict_rolify = true if options[:strict]
+  end
+
+  def adapter
+    return self.superclass.adapter unless self.instance_variable_defined? '@adapter'
+    @adapter
   end
 
   def resourcify(association_name = :roles, options = {})
@@ -50,9 +58,15 @@ module Rolify
     self.role_cname = options[:role_cname]
     self.role_table_name = self.role_cname.tableize.gsub(/\//, "_")
 
-    has_many association_name, resourcify_options
+    has_many association_name, **resourcify_options
 
-    self.adapter = Rolify::Adapter::Base.create("resource_adapter", self.role_cname, self.name)
+    self.resource_adapter = Rolify::Adapter::Base.create("resource_adapter", self.role_cname, self.name)
+    @@resource_types << self.name
+  end
+
+  def resource_adapter
+    return self.superclass.resource_adapter unless self.instance_variable_defined? '@resource_adapter'
+    @resource_adapter
   end
 
   def scopify
@@ -61,6 +75,12 @@ module Rolify
   end
 
   def role_class
+    return self.superclass.role_class unless self.instance_variable_defined? '@role_cname'
     self.role_cname.constantize
   end
+
+  def self.resource_types
+    @@resource_types
+  end
+
 end

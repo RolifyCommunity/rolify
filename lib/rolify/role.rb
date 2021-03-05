@@ -1,16 +1,17 @@
 require "rolify/finders"
+require "rolify/utils"
 
 module Rolify
   module Role
     extend Utils
-    
+
     def self.included(base)
       base.extend Finders
     end
-          
+
     def add_role(role_name, resource = nil)
-      role = self.class.adapter.find_or_create_by(role_name.to_s, 
-                                                  (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource), 
+      role = self.class.adapter.find_or_create_by(role_name.to_s,
+                                                  (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource),
                                                   (resource.id if resource && !resource.is_a?(Class)))
 
       if !roles.include?(role)
@@ -20,14 +21,36 @@ module Rolify
       role
     end
     alias_method :grant, :add_role
-    deprecate :has_role, :add_role
 
     def has_role?(role_name, resource = nil)
+      return has_strict_role?(role_name, resource) if self.class.strict_rolify and resource and resource != :any
+
       if new_record?
-        self.roles.detect { |r| r.name == role_name.to_s && (r.resource == resource || resource.nil?) }.present?
+        role_array = self.roles.detect { |r|
+          r.name.to_s == role_name.to_s &&
+            (r.resource == resource ||
+             resource.nil? ||
+             (resource == :any && r.resource.present?))
+        }
       else
-        self.class.adapter.where(self.roles, :name => role_name, :resource => resource).size > 0
+        role_array = self.class.adapter.where(self.roles, name: role_name, resource: resource)
       end
+
+      return false if role_array.nil?
+      role_array != []
+    end
+
+    def has_strict_role?(role_name, resource)
+      self.class.adapter.where_strict(self.roles, name: role_name, resource: resource).any?
+    end
+
+    def has_cached_role?(role_name, resource = nil)
+      return has_strict_cached_role?(role_name, resource) if self.class.strict_rolify and resource and resource != :any
+      self.class.adapter.find_cached(self.roles, name: role_name, resource: resource).any?
+    end
+
+    def has_strict_cached_role?(role_name, resource = nil)
+      self.class.adapter.find_cached_strict(self.roles, name: role_name, resource: resource).any?
     end
 
     def has_all_roles?(*args)
@@ -44,9 +67,13 @@ module Rolify
     end
 
     def has_any_role?(*args)
-      self.class.adapter.where(self.roles, *args).size > 0
+      if new_record?
+        args.any? { |r| self.has_role?(r) }
+      else
+        self.class.adapter.where(self.roles, *args).size > 0
+      end
     end
-    
+
     def only_has_role?(role_name, resource = nil)
       return self.has_role?(role_name,resource) && self.roles.count == 1
     end
@@ -54,12 +81,12 @@ module Rolify
     def remove_role(role_name, resource = nil)
       self.class.adapter.remove(self, role_name.to_s, resource)
     end
-    
+
     alias_method :revoke, :remove_role
     deprecate :has_no_role, :remove_role
 
     def roles_name
-      self.roles.select(:name).map { |r| r.name }
+      self.roles.pluck(:name)
     end
 
     def method_missing(method, *args, &block)
@@ -67,7 +94,7 @@ module Rolify
         resource = args.first
         self.class.define_dynamic_method $1, resource
         return has_role?("#{$1}", resource)
-      end unless !Rolify.dynamic_shortcuts
+      end if Rolify.dynamic_shortcuts
       super
     end
 

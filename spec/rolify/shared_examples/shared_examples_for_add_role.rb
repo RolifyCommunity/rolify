@@ -10,11 +10,9 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
       end
 
       context "considering a new global role" do
-        subject { role_class.last }
-
-        its(:name) { should eq("moderator") }
-        its(:resource_type) { should be(nil) }
-        its(:resource_id) { should be(nil) }
+        it "creates a new class scoped role" do
+          expect(subject.add_role "expert".send(param_method)).to be_the_same_role("expert")
+        end
       end
 
       context "should not create another role" do
@@ -40,11 +38,9 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
       end
 
       context "considering a new class scoped role" do
-        subject { role_class.last }
-
-        its(:name) { should eq("moderator") }
-        its(:resource_type) { should eq(Forum.to_s) }
-        its(:resource_id) { should be(nil) }
+        it "creates a new class scoped role" do
+          expect(subject.add_role "boss".send(param_method), Forum).to be_the_same_role("boss", Forum)
+        end
       end
 
       context "should not create another role" do
@@ -69,11 +65,8 @@ shared_examples_for "#add_role_examples" do |param_name, param_method|
         expect { subject.add_role "member".send(param_method), Forum.last }.to change { role_class.count }.by(1)
       end
 
-      context "considering a new class scoped role" do
-        subject { role_class.last }
-
-        its(:name) { should eq("member") }
-        its(:resource) { should eq(Forum.last) }
+      it "creates a new instance scoped role" do
+        expect(subject.add_role "mate".send(param_method), Forum.last).to be_the_same_role("mate", Forum.last)
       end
 
       context "should not create another role" do
