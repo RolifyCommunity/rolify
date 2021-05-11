@@ -267,6 +267,33 @@ end
 
 This method should be used with caution. If you don't preload the roles, the `has_cached_role?` might return `false`. In the above example, it would return `false` for `@user.has_cached_role?(:member, Forum)`, because `User.with_role(:admin, Forum)` will load only the `:admin` roles.
 
+### Scoping
+
+user.rb
+```
+has_many :posts, through: :roles, source: :resource, source_type:  :Post
+has_many :moderated_posts, -> { where(roles: {name: :moderator}) }, through: :roles, source: :resource, source_type:  :Post
+```
+let's you do
+```
+@user.posts 
+# => [ all the posts where the @user has a role ]
+@user.moderated_posts
+# => [ all the posts where the @user has a moderator ]
+```
+post.rb
+```
+has_many :users, through: :roles, class_name: 'User', source: :users
+has_many :moderators, -> { where(:roles => {name: :moderator}) }, through: :roles, class_name: 'User', source: :users
+```
+let's you do
+```
+@post.users
+# => [ all the users that have a role in this post ]
+@post.moderators
+# => [ all the users that have a moderator role in this post ]
+```
+
 ## Resources
 
 * [Wiki](https://github.com/RolifyCommunity/rolify/wiki)
