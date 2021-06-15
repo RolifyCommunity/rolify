@@ -12,9 +12,9 @@ module Rolify
         wrap_conditions = relation.name != role_class.name
 
         conditions = if args[:resource].is_a?(Class)
-                       {:resource_type => args[:resource].to_s, :resource_id => nil }
+                       {:resource_type => Rolify.base_class_for(args[:resource]).to_s, :resource_id => nil }
                      elsif args[:resource].present?
-                       {:resource_type => args[:resource].class.name, :resource_id => args[:resource].id}
+                       {:resource_type => Rolify.base_class_for(args[:resource].class).name, :resource_id => args[:resource].id}
                      else
                        {}
                      end
@@ -27,7 +27,7 @@ module Rolify
 
       def find_cached(relation, args)
         resource_id = (args[:resource].nil? || args[:resource].is_a?(Class) || args[:resource] == :any) ? nil : args[:resource].id
-        resource_type = args[:resource].is_a?(Class) ? args[:resource].to_s : args[:resource].class.name
+        resource_type = args[:resource].is_a?(Class) ? Rolify.base_class_for(args[:resource]).to_s : Rolify.base_class_for(args[:resource].class).name
 
         return relation.find_all { |role| role.name == args[:name].to_s } if args[:resource] == :any
 
@@ -40,7 +40,7 @@ module Rolify
 
       def find_cached_strict(relation, args)
         resource_id = (args[:resource].nil? || args[:resource].is_a?(Class)) ? nil : args[:resource].id
-        resource_type = args[:resource].is_a?(Class) ? args[:resource].to_s : args[:resource].class.name
+        resource_type = args[:resource].is_a?(Class) ? Rolify.base_class_for(args[:resource]).to_s : Rolify.base_class_for(args[:resource].class).name
 
         relation.find_all do |role|
           role.resource_id == resource_id && role.resource_type == resource_type && role.name == args[:name].to_s
@@ -57,7 +57,7 @@ module Rolify
 
       def remove(relation, role_name, resource = nil)
         cond = { :name => role_name }
-        cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
+        cond[:resource_type] = (resource.is_a?(Class) ? Rolify.base_class_for(resource).to_s : Rolify.base_class_for(resource.class).name) if resource
         cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
         roles = relation.roles.where(cond)
         if roles
@@ -110,10 +110,10 @@ module Rolify
         if resource
           query.insert(0, "(")
           query += " OR ((#{role_table}.name = ?) AND (#{role_table}.resource_type = ?) AND (#{role_table}.resource_id IS NULL))"
-          values << role << (resource.is_a?(Class) ? resource.to_s : resource.class.name)
+          values << role << (resource.is_a?(Class) ? Rolify.base_class_for(resource).to_s : Rolify.base_class_for(resource.class).name)
           if !resource.is_a? Class
             query += " OR ((#{role_table}.name = ?) AND (#{role_table}.resource_type = ?) AND (#{role_table}.resource_id = ?))"
-            values << role << resource.class.name << resource.id
+            values << role << Rolify.base_class_for(resource.class).name << resource.id
           end
           query += ")"
         end

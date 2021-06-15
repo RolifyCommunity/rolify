@@ -73,4 +73,7 @@ module Rolify
     @@resource_types
   end
 
+  def self.base_class_for(klass)
+    klass.respond_to?(:base_class) ? klass.base_class : klass
+  end
 end
