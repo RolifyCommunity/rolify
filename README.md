@@ -301,7 +301,6 @@ let's you do
 * [Tutorials](https://github.com/RolifyCommunity/rolify/wiki#wiki-tutorials):
   * [How-To use rolify with Devise and CanCanCan](https://github.com/RolifyCommunity/rolify/wiki/Devise---CanCanCan---rolify-Tutorial)
   * [Using rolify with Devise and Authority](https://github.com/RolifyCommunity/rolify/wiki/Using-rolify-with-Devise-and-Authority)
-  * [Step-by-step tutorial](http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html) provided by [RailsApps](http://railsapps.github.com/)
 
 ## Upgrade from previous versions
 
