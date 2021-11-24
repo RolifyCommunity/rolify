@@ -24,10 +24,10 @@ module Rolify
     self.role_join_table_name = options[:role_join_table_name]
 
     rolify_options = { :class_name => options[:role_cname].camelize }
-    rolify_options.merge!({ :join_table => self.role_join_table_name }) if Rolify.orm == "active_record"
     rolify_options.merge!(options.reject{ |k,v| ![ :before_add, :after_add, :before_remove, :after_remove, :inverse_of ].include? k.to_sym })
 
-    has_and_belongs_to_many :roles, **rolify_options
+    has_many self.role_join_table_name.to_sym
+    has_many :roles, through: self.role_join_table_name.to_sym, **rolify_options
 
     self.adapter = Rolify::Adapter::Base.create("role_adapter", self.role_cname, self.name)
 
