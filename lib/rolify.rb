@@ -29,7 +29,7 @@ module Rolify
     join_table_options = { }
     join_table_options.merge!(options.reject{ |k,v| ![ :as ].include? k.to_sym })
 
-    has_many self.role_join_table_name.to_sym, **join_table_options
+    has_many self.role_join_table_name.to_sym, dependent: :destroy, **join_table_options
     has_many :roles, through: self.role_join_table_name.to_sym, **rolify_options
 
     self.adapter = Rolify::Adapter::Base.create("role_adapter", self.role_cname, self.name)
