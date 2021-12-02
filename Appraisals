@@ -1,5 +1,6 @@
 appraise 'mongoid-5' do
   gem "mongoid", "~> 5"
+  gem "mongo", "< 2.17"
   gem "bson_ext", "1.5.1"
   gem 'bigdecimal', '1.4.2'
 end
