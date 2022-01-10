@@ -1,5 +1,5 @@
-require "simplecov"
-SimpleCov.start
+require 'coveralls'
+Coveralls.wear_merged!
 
 require 'rubygems'
 require "bundler/setup"
@@ -12,9 +12,6 @@ begin
 rescue LoadError
 end
 require 'database_cleaner'
-
-require 'coveralls'
-Coveralls.wear_merged!
 
 ENV['ADAPTER'] ||= 'active_record'
 

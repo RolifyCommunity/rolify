@@ -32,7 +32,11 @@ describe Rolify::Generators::RolifyGenerator, :if => ENV['ADAPTER'] == 'active_r
         end
       }
       require File.join(destination_root, "app/models/user.rb")
-      run_generator
+      if Rails::VERSION::MAJOR >= 7
+        run_generator %w(--skip-collision-check)
+      else
+        run_generator
+      end
     }
 
     describe 'config/initializers/rolify.rb' do

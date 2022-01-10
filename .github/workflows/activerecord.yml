@@ -8,6 +8,13 @@ jobs:
       matrix:
         gemfile: [activerecord_4, activerecord_5, activerecord_6]
         ruby: [2.5.7, 2.6.5, 2.7.2]
+        include:
+          - gemfile: activerecord_7
+            ruby: '3.1'
+          - gemfile: activerecord_7
+            ruby: '3.0'
+          - gemfile: activerecord_6
+            ruby: '3.0'
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
       ADAPTER: active_record
