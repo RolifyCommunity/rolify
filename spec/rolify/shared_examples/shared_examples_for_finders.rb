@@ -63,6 +63,11 @@ shared_examples_for :finders do |param_name, param_method|
             it { subject.with_role("admin".send(param_method), Forum.first).should be_empty }
             it { subject.with_role("moderator".send(param_method), Forum.first).should be_empty }
           end
+
+          context "on any resource" do
+            it { subject.with_role("admin".send(param_method), :any).should_not be_empty }
+            it { subject.with_role("moderator".send(param_method), :any).should_not be_empty }
+          end
         end
       end
     end
@@ -115,7 +120,7 @@ shared_examples_for :finders do |param_name, param_method|
         end
       end
     end
-    
+
 
     describe ".with_all_roles" do
       it { should respond_to(:with_all_roles) }
