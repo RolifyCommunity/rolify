@@ -1,7 +1,7 @@
 module Rolify
   module Finders
     def with_role(role_name, resource = nil)
-      strict = self.strict_rolify and resource and resource != :any
+      strict = self.strict_rolify && resource && resource != :any
       self.adapter.scope(
         self,
         { :name => role_name, :resource => resource },
