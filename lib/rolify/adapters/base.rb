@@ -17,7 +17,7 @@ module Rolify
       def role_table
         role_class.table_name
       end
-      
+
       def self.create(adapter, role_cname, user_cname)
         load "rolify/adapters/#{Rolify.orm}/#{adapter}.rb"
         load "rolify/adapters/#{Rolify.orm}/scopes.rb"
