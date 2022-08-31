@@ -61,6 +61,7 @@ module Rolify
         cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
         roles = relation.roles.where(cond)
         if roles
+          join_table = relation.class.reflect_on_association(:roles).options[:through]
           relation.send(join_table).where(role_id: roles.ids).destroy_all
           roles.each do |role|
             role.destroy if role.send(ActiveSupport::Inflector.demodulize(user_class).tableize.to_sym).limit(1).empty?
