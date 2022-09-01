@@ -24,9 +24,7 @@ module Rolify
     self.role_join_table_name = options[:role_join_table_name]
 
     rolify_options = { :class_name => options[:role_cname].camelize }
-    rolify_options.merge!(options.reject{ |k,v| ![ :before_add, :after_add, :before_remove, :after_remove, :inverse_of ].include? k.to_sym })
-    join_table_options = { }
-    join_table_options.merge!(options.reject{ |k,v| ![ :as ].include? k.to_sym })
+    join_table_options = options.select{ |k,v| [ :as, :before_add, :after_add, :before_remove, :after_remove, :inverse_of ].include? k.to_sym }
 
     has_many self.role_join_table_name.to_sym, dependent: :destroy, **join_table_options
     has_many :roles, through: self.role_join_table_name.to_sym, **rolify_options
