@@ -78,6 +78,10 @@ module Rolify
       return self.has_role?(role_name,resource) && self.roles.count == 1
     end
 
+    def only_has_cached_role?(role_name, resource = nil)
+      self.has_cached_role?(role_name, resource) && self.roles.size == 1
+    end
+
     def remove_role(role_name, resource = nil)
       self.class.adapter.remove(self, role_name.to_s, resource)
     end
