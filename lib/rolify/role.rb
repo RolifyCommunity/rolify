@@ -101,12 +101,12 @@ module Rolify
     def respond_to?(method, include_private = false)
       if Rolify.dynamic_shortcuts && (method.to_s.match(/^is_(\w+)_of[?]$/) || method.to_s.match(/^is_(\w+)[?]$/))
         query = self.class.role_class.where(:name => $1)
-        query = self.class.adapter.exists?(query, :resource_type) if method.to_s.match(/^is_(\w+)_of[?]$/)
-        return true if query.count > 0
-        false
-      else
-        super
+        if query
+          query = self.class.adapter.exists?(query, :resource_type) if method.to_s.match(/^is_(\w+)_of[?]$/)
+          return query.count > 0
+        end
       end
+      super
     end
   end
 end
