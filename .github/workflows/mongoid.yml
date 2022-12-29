@@ -18,15 +18,12 @@ jobs:
       ADAPTER: mongoid
     steps:
       - uses: actions/checkout@v3
+      - run: sudo apt-get install -y libsqlite3-dev
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
-      - run: sudo apt-get install -y libsqlite3-dev
-      - run: gem update --system
-      - run: gem install bundler
-      - run: gem --version
-      - run: bundle install
+          bundler-cache: true
       - name: Run Tests
         run: |
           bundle exec rake
