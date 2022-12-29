@@ -7,8 +7,10 @@ jobs:
     strategy:
       matrix:
         gemfile: [activerecord_4, activerecord_5, activerecord_6]
-        ruby: [2.5.7, 2.6.5, 2.7.2]
+        ruby: [2.5.9, 2.6.10, 2.7.7]
         include:
+          - gemfile: activerecord_7
+            ruby: '3.2'
           - gemfile: activerecord_7
             ruby: '3.1'
           - gemfile: activerecord_7
