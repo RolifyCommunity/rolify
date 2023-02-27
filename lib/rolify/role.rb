@@ -80,6 +80,7 @@ module Rolify
 
     def remove_role(role_name, resource = nil)
       self.class.adapter.remove(self, role_name.to_s, resource)
+      self.class.define_dynamic_method(role_name, resource) if Rolify.dynamic_shortcuts
     end
 
     alias_method :revoke, :remove_role
@@ -101,7 +102,7 @@ module Rolify
     def respond_to?(method, include_private = false)
       if Rolify.dynamic_shortcuts && (method.to_s.match(/^is_(\w+)_of[?]$/) || method.to_s.match(/^is_(\w+)[?]$/))
         query = self.class.role_class.where(:name => $1)
-        if query
+        if query.exists?
           query = self.class.adapter.exists?(query, :resource_type) if method.to_s.match(/^is_(\w+)_of[?]$/)
           return query.count > 0
         end
