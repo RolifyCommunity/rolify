@@ -22,6 +22,9 @@ shared_examples_for Rolify::Dynamic do
     it { should respond_to(:is_moderator_of?).with(1).arguments }
     it { should_not respond_to(:is_god?) }
 
+    it { should respond_to(:is_waiting?) }
+    it { should_not respond_to(:is_awaiting?) }
+
     it { subject.is_admin?.should be(true) }
     it { subject.is_admin?.should be(true) }
     it { subject.is_admin?.should be(true) }
@@ -48,6 +51,9 @@ shared_examples_for Rolify::Dynamic do
     it { should respond_to(:is_moderator_of?).with(1).arguments }
     it { should_not respond_to(:is_god?) }
     it { should_not respond_to(:is_god_of?) }
+
+    it { should respond_to(:is_waiting?) }
+    it { should_not respond_to(:is_awaiting?) }
 
     it { subject.is_moderator?.should be(false) }
     it { subject.is_moderator_of?(Forum).should be(false) }
@@ -79,6 +85,9 @@ shared_examples_for Rolify::Dynamic do
     it { should respond_to(:is_manager_of?).with(1).arguments }
     it { should_not respond_to(:is_god?) }
     it { should_not respond_to(:is_god_of?) }
+
+    it { should respond_to(:is_waiting?) }
+    it { should_not respond_to(:is_awaiting?) }
 
     it { subject.is_manager?.should be(false) }
     it { subject.is_manager_of?(Forum).should be(true) }
@@ -126,6 +135,9 @@ shared_examples_for Rolify::Dynamic do
       it { should respond_to(:is_batman_of?).with(1).arguments }
       it { should_not respond_to(:is_god?) }
       it { should_not respond_to(:is_god_of?) }
+
+      it { should respond_to(:is_waiting?) }
+      it { should_not respond_to(:is_awaiting?) }
 
       it { subject.is_batman?.should be(false) }
       it { subject.is_batman_of?(Forum).should be(false) }

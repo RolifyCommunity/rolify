@@ -35,6 +35,10 @@ end
 # Custom role and class names
 class Customer < ActiveRecord::Base
   rolify :role_cname => "Privilege"
+
+  def is_waiting?
+    true
+  end
 end
 
 class Privilege < ActiveRecord::Base
@@ -52,6 +56,10 @@ module Admin
 
   class Moderator < ActiveRecord::Base
     rolify :role_cname => "Admin::Right", :role_join_table_name => "moderators_rights"
+
+    def is_waiting?
+      true
+    end
   end
 
   class Right < ActiveRecord::Base
