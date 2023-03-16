@@ -19,7 +19,9 @@ module Rolify
     self.role_cname = options[:role_cname]
     self.role_table_name = self.role_cname.tableize.gsub(/\//, "_")
 
-    default_join_table = "#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_table_name}"
+    prefix = ( Rolify.orm == "active_record") ? ActiveRecord::Base.table_name_prefix : ""
+    suffix = ( Rolify.orm == "active_record") ? ActiveRecord::Base.table_name_suffix : ""
+    default_join_table = "#{prefix}#{self.to_s.tableize.gsub(/\//, "_")}_#{self.role_table_name}#{suffix}"
     options.reverse_merge!({:role_join_table_name => default_join_table})
     self.role_join_table_name = options[:role_join_table_name]
 
