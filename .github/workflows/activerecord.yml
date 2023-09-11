@@ -21,7 +21,7 @@ jobs:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
       ADAPTER: active_record
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: sudo apt-get install -y libsqlite3-dev
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
