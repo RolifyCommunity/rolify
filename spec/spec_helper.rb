@@ -6,6 +6,7 @@ require "bundler/setup"
 
 require 'rolify'
 require 'rolify/matchers'
+require "logger"
 require 'rails'
 begin
   require 'its'
