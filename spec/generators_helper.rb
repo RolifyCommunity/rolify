@@ -5,6 +5,7 @@ require 'pry'
 
 require 'rolify'
 require 'rolify/matchers'
+require 'logger'
 require 'rails/all'
 require_relative 'support/stream_helpers'
 include StreamHelpers
