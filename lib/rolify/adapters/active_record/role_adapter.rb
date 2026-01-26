@@ -56,7 +56,8 @@ module Rolify
       end
 
       def remove(relation, role_name, resource = nil)
-        cond = { :name => role_name }
+        cond = {}
+        cond[:name] = role_name unless role_name.blank?
         cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
         cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
         roles = relation.roles.where(cond)
