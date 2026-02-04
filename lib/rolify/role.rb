@@ -54,16 +54,23 @@ module Rolify
     end
 
     def has_all_roles?(*args)
-      args.each do |arg|
-        if arg.is_a? Hash
-          return false if !self.has_role?(arg[:name], arg[:resource])
-        elsif arg.is_a?(String) || arg.is_a?(Symbol)
-          return false if !self.has_role?(arg)
-        else
-          raise ArgumentError, "Invalid argument type: only hash or string or symbol allowed"
+      if new_record?
+        # For new records, check in memory
+        args.all? do |arg|
+          if arg.is_a? Hash
+            self.has_role?(arg[:name], arg[:resource])
+          elsif arg.is_a?(String) || arg.is_a?(Symbol)
+            self.has_role?(arg)
+          else
+            raise ArgumentError, "Invalid argument type: only hash or string or symbol allowed"
+          end
         end
+      else
+        # For persisted records, use a single query
+        # Count how many of the specified roles the user has
+        role_count = args.length
+        self.class.adapter.where(self.roles, *args).distinct.count == role_count
       end
-      true
     end
 
     def has_any_role?(*args)
