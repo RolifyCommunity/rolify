@@ -102,6 +102,10 @@ module Rolify
         user.not_in(_id: excluded_obj.to_a)
       end
 
+      def resource_base_class(resource)
+        resource.is_a?(Class) ? resource.to_s : resource.class.name
+      end
+
       private
 
       def build_conditions(relation, args)

@@ -11,7 +11,7 @@ module Rolify
 
     def add_role(role_name, resource = nil)
       role = self.class.adapter.find_or_create_by(role_name.to_s,
-                                                  (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource),
+        (self.class.adapter.resource_base_class(resource) if resource),
                                                   (resource.id if resource && !resource.is_a?(Class)))
 
       if !roles.include?(role)

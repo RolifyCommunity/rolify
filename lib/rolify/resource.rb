@@ -20,7 +20,7 @@ module Rolify
         user ? self.resource_adapter.in(resources, user, role_name) : resources
       end
       alias :with_roles :with_role
-      alias :find_as :with_role 
+      alias :find_as :with_role
       alias :find_multiple_as :with_role
 
 
@@ -28,8 +28,8 @@ module Rolify
         self.resource_adapter.all_except(self, self.find_as(role_name, user))
       end
       alias :without_roles :without_role
-      alias :except_as :without_role 
-      alias :except_multiple_as :without_role 
+      alias :except_as :without_role
+      alias :except_multiple_as :without_role
 
 
 
@@ -38,7 +38,7 @@ module Rolify
       end
 
 
-      
+
     end
 
     def applied_roles
