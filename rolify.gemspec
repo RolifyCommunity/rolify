@@ -21,9 +21,7 @@ Gem::Specification.new do |s|
     'wellington@wellingtoncordeiro.com'
   ]
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- spec/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.files         = `git ls-files lib`.split($/) + ['CHANGELOG.rdoc', 'LICENSE', 'README.md']
   s.require_paths = ['lib']
 
   s.required_ruby_version = '>= 2.5'
